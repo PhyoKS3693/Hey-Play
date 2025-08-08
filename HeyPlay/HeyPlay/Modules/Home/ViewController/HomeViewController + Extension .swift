@@ -1,0 +1,84 @@
+//
+//  HomeViewController + Extension .swift
+//  HeyPlay
+//
+//  Created by Phyo Kyaw Swar on 07/08/2025.
+//
+
+import Foundation
+import UIKit
+extension HomeViewControllerViewController : UITableViewDelegate , UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sectionList.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch sectionList[indexPath.section] {
+        case .user:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeUserInfoTableViewCell.identifier, for: indexPath) as? HomeUserInfoTableViewCell else {
+                return UITableViewCell()
+            }
+            return cell
+         case .banner:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: BannerTableViewCell.identifier, for: indexPath) as? BannerTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.items = [UIImage(named: "image1") , UIImage(named: "image2"), UIImage(named: "image3")]
+            return cell
+            
+        case .recent:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentTableViewCell.identifier, for: indexPath) as? RecentTableViewCell else {
+                return UITableViewCell()
+            }
+            return cell
+        case .movie:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else {
+                return UITableViewCell()
+            }
+            return cell
+        case .series:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SeriesTableViewCell.identifier, for: indexPath ) as? SeriesTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            return cell
+        }
+       
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.section == sectionList.last?.rawValue ?? 0 {
+            DispatchQueue.main.async {
+                self.bottomConstraint.constant = 70
+            }
+        }
+        else {
+            DispatchQueue.main.async {
+                self.bottomConstraint.constant = 0
+            }
+        }
+        
+    }
+}
+
+extension HomeViewControllerViewController {
+    func setNavigationBarIcon() {
+        let logoImageView = UIImageView(image: UIImage(named: "ic-nav-bar"))
+        let logoItem = UIBarButtonItem(customView: logoImageView)
+        navigationItem.leftBarButtonItem = logoItem
+    }
+    
+    func setRightBarItems() {
+        let searchImgView = UIImageView(image: UIImage(named: "ic-search"))
+        let searchItem = UIBarButtonItem(customView: searchImgView)
+        
+        let notiImgView = UIImageView(image: UIImage(named: "ic-noti"))
+        let notiItem = UIBarButtonItem(customView: notiImgView)
+        
+        navigationItem.rightBarButtonItems = [searchItem , notiItem]
+    }
+}

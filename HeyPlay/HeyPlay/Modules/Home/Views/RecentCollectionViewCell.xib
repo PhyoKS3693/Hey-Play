@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="gTV-IL-0wX" customClass="RecentCollectionViewCell" customModule="HeyPlay" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="150" height="136"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="150" height="136"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="recent" translatesAutoresizingMaskIntoConstraints="NO" id="5qs-7t-Ka8">
+                        <rect key="frame" x="0.0" y="0.0" width="150" height="90"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="AP1-kU-dpd"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YNr-DN-U5a">
+                        <rect key="frame" x="65" y="35" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="18h-w2-Ypv"/>
+                            <constraint firstAttribute="width" constant="20" id="SDB-tM-MPb"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="ic-play"/>
+                        <connections>
+                            <action selector="onClickPlay:" destination="gTV-IL-0wX" eventType="touchUpInside" id="b4H-SS-Iv7"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Testing Movie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EW4-ua-0H5">
+                        <rect key="frame" x="8" y="98" width="106" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="mey-Ev-iB2"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" name="white_Color"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKv-Fl-CTE">
+                        <rect key="frame" x="122" y="103" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="9lg-C4-GOe"/>
+                            <constraint firstAttribute="height" constant="20" id="S9Z-G6-6Rr"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="ic-delete"/>
+                        <connections>
+                            <action selector="onClickDelete:" destination="gTV-IL-0wX" eventType="touchUpInside" id="oGH-vc-SS0"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="EW4-ua-0H5" firstAttribute="bottom" secondItem="gTV-IL-0wX" secondAttribute="bottom" constant="-8" id="5Ie-46-ur0"/>
+                <constraint firstItem="5qs-7t-Ka8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="IIX-cu-pPN"/>
+                <constraint firstItem="iKv-Fl-CTE" firstAttribute="centerY" secondItem="EW4-ua-0H5" secondAttribute="centerY" id="LEK-nT-a9W"/>
+                <constraint firstItem="iKv-Fl-CTE" firstAttribute="leading" secondItem="EW4-ua-0H5" secondAttribute="trailing" constant="8" id="agw-re-QSg"/>
+                <constraint firstItem="EW4-ua-0H5" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="8" id="cjz-5k-Bmd"/>
+                <constraint firstItem="YNr-DN-U5a" firstAttribute="centerX" secondItem="5qs-7t-Ka8" secondAttribute="centerX" id="dBg-Yo-Buy"/>
+                <constraint firstItem="EW4-ua-0H5" firstAttribute="top" secondItem="5qs-7t-Ka8" secondAttribute="bottom" constant="8" symbolic="YES" id="duX-49-BM7"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="iKv-Fl-CTE" secondAttribute="trailing" constant="8" id="fAZ-hd-b0q"/>
+                <constraint firstAttribute="trailing" secondItem="5qs-7t-Ka8" secondAttribute="trailing" id="gB1-qW-PCF"/>
+                <constraint firstItem="5qs-7t-Ka8" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="i9S-ho-geC"/>
+                <constraint firstItem="YNr-DN-U5a" firstAttribute="centerY" secondItem="5qs-7t-Ka8" secondAttribute="centerY" id="m2R-9E-iCk"/>
+            </constraints>
+            <connections>
+                <outlet property="btnDelete" destination="iKv-Fl-CTE" id="Vi1-wc-b4m"/>
+                <outlet property="btnPlay" destination="YNr-DN-U5a" id="5ge-oY-uKb"/>
+                <outlet property="imgThumbnil" destination="5qs-7t-Ka8" id="hzN-sG-1UQ"/>
+                <outlet property="lblName" destination="EW4-ua-0H5" id="4xd-H7-Id5"/>
+            </connections>
+            <point key="canvasLocation" x="0.0" y="20"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="ic-delete" width="20" height="20"/>
+        <image name="ic-play" width="20" height="20"/>
+        <image name="recent" width="144" height="81"/>
+        <namedColor name="white_Color">
+            <color red="0.99607843137254903" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

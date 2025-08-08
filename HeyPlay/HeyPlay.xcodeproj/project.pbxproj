@@ -1,0 +1,615 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D9CC2E2BA7524BFCB2CF6C71 /* Pods_HeyPlay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */; };
+		F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */; };
+		F0003A7F2E45138000C7984D /* SeriesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0003A7E2E45138000C7984D /* SeriesTableViewCell.xib */; };
+		F0003A802E45138000C7984D /* SeriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A7D2E45138000C7984D /* SeriesTableViewCell.swift */; };
+		F0003A832E4514A000C7984D /* SeriesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0003A822E4514A000C7984D /* SeriesCollectionViewCell.xib */; };
+		F0003A842E4514A000C7984D /* SeriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A812E4514A000C7984D /* SeriesCollectionViewCell.swift */; };
+		F076089A2E44C11800E2402E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F07608912E44C11800E2402E /* Assets.xcassets */; };
+		F076089C2E44C11800E2402E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07608942E44C11800E2402E /* LaunchScreen.storyboard */; };
+		F076089D2E44C11800E2402E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07608962E44C11800E2402E /* Main.storyboard */; };
+		F076089E2E44C11800E2402E /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F076088B2E44C11800E2402E /* BaseViewController.swift */; };
+		F076089F2E44C11800E2402E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07608902E44C11800E2402E /* AppDelegate.swift */; };
+		F07608A12E44C11800E2402E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07608982E44C11800E2402E /* ViewController.swift */; };
+		F0A61B972E44FB8B00513A60 /* RecentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A61B952E44FB8B00513A60 /* RecentTableViewCell.swift */; };
+		F0A61B982E44FB8B00513A60 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0A61B962E44FB8B00513A60 /* RecentTableViewCell.xib */; };
+		F0A61B9B2E44FC7100513A60 /* RecentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0A61B9A2E44FC7100513A60 /* RecentCollectionViewCell.xib */; };
+		F0A61B9C2E44FC7100513A60 /* RecentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A61B992E44FC7100513A60 /* RecentCollectionViewCell.swift */; };
+		F0A61B9F2E45051C00513A60 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A61B9D2E45051C00513A60 /* MovieTableViewCell.swift */; };
+		F0A61BA02E45051C00513A60 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0A61B9E2E45051C00513A60 /* MovieTableViewCell.xib */; };
+		F0A61BA32E45091300513A60 /* FullMovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0A61BA22E45091300513A60 /* FullMovieCollectionViewCell.xib */; };
+		F0A61BA42E45091300513A60 /* FullMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A61BA12E45091300513A60 /* FullMovieCollectionViewCell.swift */; };
+		F0D17AB22E44CE4E00BA21FB /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17AB02E44CE4E00BA21FB /* CustomTabView.swift */; };
+		F0D17AB42E44CEC700BA21FB /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17AB32E44CEC700BA21FB /* BaseView.swift */; };
+		F0D17AB62E44CF1D00BA21FB /* CustomTabView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D17AB52E44CF1D00BA21FB /* CustomTabView.xib */; };
+		F0D17AB82E44D03200BA21FB /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17AB72E44D03200BA21FB /* Enums.swift */; };
+		F0D17ABB2E44D15300BA21FB /* UIView + Extension .swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17ABA2E44D15300BA21FB /* UIView + Extension .swift */; };
+		F0D17AC02E44D84300BA21FB /* HomeViewControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17ABE2E44D84300BA21FB /* HomeViewControllerViewController.swift */; };
+		F0D17AC62E44D89C00BA21FB /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17AC42E44D89C00BA21FB /* BannerTableViewCell.swift */; };
+		F0D17AC72E44D89C00BA21FB /* BannerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D17AC52E44D89C00BA21FB /* BannerTableViewCell.xib */; };
+		F0D17ACD2E44D96400BA21FB /* HomeViewController + Extension .swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17ACC2E44D96400BA21FB /* HomeViewController + Extension .swift */; };
+		F0D17ACF2E44D9E800BA21FB /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17ACE2E44D9E800BA21FB /* UITableView + Extension.swift */; };
+		F0F836CF2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F836CD2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift */; };
+		F0F836D02E4521D4008F3635 /* HomeUserInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F836CE2E4521D4008F3635 /* HomeUserInfoTableViewCell.xib */; };
+		F0F836D62E452F56008F3635 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F836D52E452F56008F3635 /* SceneDelegate.swift */; };
+		F0F836D92E4534AE008F3635 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F836D72E4534AE008F3635 /* BannerCollectionViewCell.swift */; };
+		F0F836DA2E4534AE008F3635 /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F836D82E4534AE008F3635 /* BannerCollectionViewCell.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeyPlay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E100A9832C8E15C7079DFEF /* Pods-HeyPlay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.release.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.release.xcconfig"; sourceTree = "<group>"; };
+		DAAFCF8DF016EC327AD13549 /* Pods-HeyPlay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.debug.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.debug.xcconfig"; sourceTree = "<group>"; };
+		F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
+		F0003A7D2E45138000C7984D /* SeriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesTableViewCell.swift; sourceTree = "<group>"; };
+		F0003A7E2E45138000C7984D /* SeriesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeriesTableViewCell.xib; sourceTree = "<group>"; };
+		F0003A812E4514A000C7984D /* SeriesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesCollectionViewCell.swift; sourceTree = "<group>"; };
+		F0003A822E4514A000C7984D /* SeriesCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeriesCollectionViewCell.xib; sourceTree = "<group>"; };
+		F07608572E44BFCF00E2402E /* HeyPlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeyPlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F076088B2E44C11800E2402E /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		F07608902E44C11800E2402E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F07608912E44C11800E2402E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F07608922E44C11800E2402E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F07608932E44C11800E2402E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F07608952E44C11800E2402E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F07608982E44C11800E2402E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F0A61B952E44FB8B00513A60 /* RecentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentTableViewCell.swift; sourceTree = "<group>"; };
+		F0A61B962E44FB8B00513A60 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
+		F0A61B992E44FC7100513A60 /* RecentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentCollectionViewCell.swift; sourceTree = "<group>"; };
+		F0A61B9A2E44FC7100513A60 /* RecentCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecentCollectionViewCell.xib; sourceTree = "<group>"; };
+		F0A61B9D2E45051C00513A60 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
+		F0A61B9E2E45051C00513A60 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
+		F0A61BA12E45091300513A60 /* FullMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullMovieCollectionViewCell.swift; sourceTree = "<group>"; };
+		F0A61BA22E45091300513A60 /* FullMovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FullMovieCollectionViewCell.xib; sourceTree = "<group>"; };
+		F0D17AB02E44CE4E00BA21FB /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
+		F0D17AB32E44CEC700BA21FB /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		F0D17AB52E44CF1D00BA21FB /* CustomTabView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTabView.xib; sourceTree = "<group>"; };
+		F0D17AB72E44D03200BA21FB /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		F0D17ABA2E44D15300BA21FB /* UIView + Extension .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extension .swift"; sourceTree = "<group>"; };
+		F0D17ABE2E44D84300BA21FB /* HomeViewControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerViewController.swift; sourceTree = "<group>"; };
+		F0D17AC42E44D89C00BA21FB /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
+		F0D17AC52E44D89C00BA21FB /* BannerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerTableViewCell.xib; sourceTree = "<group>"; };
+		F0D17ACC2E44D96400BA21FB /* HomeViewController + Extension .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeViewController + Extension .swift"; sourceTree = "<group>"; };
+		F0D17ACE2E44D9E800BA21FB /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
+		F0F836CD2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserInfoTableViewCell.swift; sourceTree = "<group>"; };
+		F0F836CE2E4521D4008F3635 /* HomeUserInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeUserInfoTableViewCell.xib; sourceTree = "<group>"; };
+		F0F836D52E452F56008F3635 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		F0F836D72E4534AE008F3635 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		F0F836D82E4534AE008F3635 /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F07608542E44BFCF00E2402E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9CC2E2BA7524BFCB2CF6C71 /* Pods_HeyPlay.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9CD814E44C98F9E1FE4103FB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DAAFCF8DF016EC327AD13549 /* Pods-HeyPlay.debug.xcconfig */,
+				4E100A9832C8E15C7079DFEF /* Pods-HeyPlay.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F076084E2E44BFCF00E2402E = {
+			isa = PBXGroup;
+			children = (
+				F07608992E44C11800E2402E /* HeyPlay */,
+				F07608582E44BFCF00E2402E /* Products */,
+				9CD814E44C98F9E1FE4103FB /* Pods */,
+				FCFD9369A7C39FF624A0690D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F07608582E44BFCF00E2402E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F07608572E44BFCF00E2402E /* HeyPlay.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F076088C2E44C11800E2402E /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				F076088B2E44C11800E2402E /* BaseViewController.swift */,
+				F0D17AB32E44CEC700BA21FB /* BaseView.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		F076088D2E44C11800E2402E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				F0D17AB72E44D03200BA21FB /* Enums.swift */,
+				F0D17ABA2E44D15300BA21FB /* UIView + Extension .swift */,
+				F0D17ACE2E44D9E800BA21FB /* UITableView + Extension.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		F076088E2E44C11800E2402E /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				F0D17AC32E44D88B00BA21FB /* Views */,
+				F0D17ABD2E44D82D00BA21FB /* ViewController */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		F076088F2E44C11800E2402E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				F0F836D22E4529ED008F3635 /* Splash */,
+				F076088E2E44C11800E2402E /* Home */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		F07608992E44C11800E2402E /* HeyPlay */ = {
+			isa = PBXGroup;
+			children = (
+				F0D17AB12E44CE4E00BA21FB /* Custom */,
+				F076088C2E44C11800E2402E /* Base */,
+				F076088D2E44C11800E2402E /* Common */,
+				F076088F2E44C11800E2402E /* Modules */,
+				F07608902E44C11800E2402E /* AppDelegate.swift */,
+				F0F836D52E452F56008F3635 /* SceneDelegate.swift */,
+				F07608912E44C11800E2402E /* Assets.xcassets */,
+				F07608922E44C11800E2402E /* Info.plist */,
+				F07608942E44C11800E2402E /* LaunchScreen.storyboard */,
+				F07608962E44C11800E2402E /* Main.storyboard */,
+				F07608982E44C11800E2402E /* ViewController.swift */,
+			);
+			path = HeyPlay;
+			sourceTree = "<group>";
+		};
+		F0D17AB12E44CE4E00BA21FB /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				F0D17AB02E44CE4E00BA21FB /* CustomTabView.swift */,
+				F0D17AB52E44CF1D00BA21FB /* CustomTabView.xib */,
+				F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
+		F0D17ABD2E44D82D00BA21FB /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				F0D17ABE2E44D84300BA21FB /* HomeViewControllerViewController.swift */,
+				F0D17ACC2E44D96400BA21FB /* HomeViewController + Extension .swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		F0D17AC32E44D88B00BA21FB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F0D17AC42E44D89C00BA21FB /* BannerTableViewCell.swift */,
+				F0D17AC52E44D89C00BA21FB /* BannerTableViewCell.xib */,
+				F0F836D72E4534AE008F3635 /* BannerCollectionViewCell.swift */,
+				F0F836D82E4534AE008F3635 /* BannerCollectionViewCell.xib */,
+				F0A61B952E44FB8B00513A60 /* RecentTableViewCell.swift */,
+				F0A61B962E44FB8B00513A60 /* RecentTableViewCell.xib */,
+				F0A61B992E44FC7100513A60 /* RecentCollectionViewCell.swift */,
+				F0A61B9A2E44FC7100513A60 /* RecentCollectionViewCell.xib */,
+				F0A61B9D2E45051C00513A60 /* MovieTableViewCell.swift */,
+				F0A61B9E2E45051C00513A60 /* MovieTableViewCell.xib */,
+				F0A61BA12E45091300513A60 /* FullMovieCollectionViewCell.swift */,
+				F0A61BA22E45091300513A60 /* FullMovieCollectionViewCell.xib */,
+				F0003A7D2E45138000C7984D /* SeriesTableViewCell.swift */,
+				F0003A7E2E45138000C7984D /* SeriesTableViewCell.xib */,
+				F0003A812E4514A000C7984D /* SeriesCollectionViewCell.swift */,
+				F0003A822E4514A000C7984D /* SeriesCollectionViewCell.xib */,
+				F0F836CD2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift */,
+				F0F836CE2E4521D4008F3635 /* HomeUserInfoTableViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F0F836D22E4529ED008F3635 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		FCFD9369A7C39FF624A0690D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F07608562E44BFCF00E2402E /* HeyPlay */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F076086A2E44BFD200E2402E /* Build configuration list for PBXNativeTarget "HeyPlay" */;
+			buildPhases = (
+				2C57985BFCCC631792DE8701 /* [CP] Check Pods Manifest.lock */,
+				F07608532E44BFCF00E2402E /* Sources */,
+				F07608542E44BFCF00E2402E /* Frameworks */,
+				F07608552E44BFCF00E2402E /* Resources */,
+				C6321905FCC9189633719764 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeyPlay;
+			productName = HeyPlay;
+			productReference = F07608572E44BFCF00E2402E /* HeyPlay.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F076084F2E44BFCF00E2402E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					F07608562E44BFCF00E2402E = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = F07608522E44BFCF00E2402E /* Build configuration list for PBXProject "HeyPlay" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F076084E2E44BFCF00E2402E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F07608582E44BFCF00E2402E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F07608562E44BFCF00E2402E /* HeyPlay */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F07608552E44BFCF00E2402E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F076089A2E44C11800E2402E /* Assets.xcassets in Resources */,
+				F0F836DA2E4534AE008F3635 /* BannerCollectionViewCell.xib in Resources */,
+				F0A61BA32E45091300513A60 /* FullMovieCollectionViewCell.xib in Resources */,
+				F0003A7F2E45138000C7984D /* SeriesTableViewCell.xib in Resources */,
+				F0A61B9B2E44FC7100513A60 /* RecentCollectionViewCell.xib in Resources */,
+				F0A61BA02E45051C00513A60 /* MovieTableViewCell.xib in Resources */,
+				F0F836D02E4521D4008F3635 /* HomeUserInfoTableViewCell.xib in Resources */,
+				F076089C2E44C11800E2402E /* LaunchScreen.storyboard in Resources */,
+				F076089D2E44C11800E2402E /* Main.storyboard in Resources */,
+				F0D17AB62E44CF1D00BA21FB /* CustomTabView.xib in Resources */,
+				F0003A832E4514A000C7984D /* SeriesCollectionViewCell.xib in Resources */,
+				F0A61B982E44FB8B00513A60 /* RecentTableViewCell.xib in Resources */,
+				F0D17AC72E44D89C00BA21FB /* BannerTableViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2C57985BFCCC631792DE8701 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HeyPlay-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6321905FCC9189633719764 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HeyPlay/Pods-HeyPlay-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HeyPlay/Pods-HeyPlay-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HeyPlay/Pods-HeyPlay-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F07608532E44BFCF00E2402E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F076089E2E44C11800E2402E /* BaseViewController.swift in Sources */,
+				F0F836CF2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift in Sources */,
+				F076089F2E44C11800E2402E /* AppDelegate.swift in Sources */,
+				F0F836D92E4534AE008F3635 /* BannerCollectionViewCell.swift in Sources */,
+				F0003A842E4514A000C7984D /* SeriesCollectionViewCell.swift in Sources */,
+				F0A61BA42E45091300513A60 /* FullMovieCollectionViewCell.swift in Sources */,
+				F0D17AB22E44CE4E00BA21FB /* CustomTabView.swift in Sources */,
+				F0D17AC02E44D84300BA21FB /* HomeViewControllerViewController.swift in Sources */,
+				F0D17ACF2E44D9E800BA21FB /* UITableView + Extension.swift in Sources */,
+				F0A61B9F2E45051C00513A60 /* MovieTableViewCell.swift in Sources */,
+				F0D17AB42E44CEC700BA21FB /* BaseView.swift in Sources */,
+				F0D17AC62E44D89C00BA21FB /* BannerTableViewCell.swift in Sources */,
+				F0D17AB82E44D03200BA21FB /* Enums.swift in Sources */,
+				F0003A802E45138000C7984D /* SeriesTableViewCell.swift in Sources */,
+				F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */,
+				F0A61B972E44FB8B00513A60 /* RecentTableViewCell.swift in Sources */,
+				F0F836D62E452F56008F3635 /* SceneDelegate.swift in Sources */,
+				F0D17ACD2E44D96400BA21FB /* HomeViewController + Extension .swift in Sources */,
+				F0D17ABB2E44D15300BA21FB /* UIView + Extension .swift in Sources */,
+				F0A61B9C2E44FC7100513A60 /* RecentCollectionViewCell.swift in Sources */,
+				F07608A12E44C11800E2402E /* ViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F07608942E44C11800E2402E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F07608932E44C11800E2402E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		F07608962E44C11800E2402E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F07608952E44C11800E2402E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F076086B2E44BFD200E2402E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DAAFCF8DF016EC327AD13549 /* Pods-HeyPlay.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HeyPlay/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = Main.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.heyplaymyanmar.app.HeyPlay;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F076086C2E44BFD200E2402E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4E100A9832C8E15C7079DFEF /* Pods-HeyPlay.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HeyPlay/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = Main.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.heyplaymyanmar.app.HeyPlay;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F076086D2E44BFD200E2402E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F076086E2E44BFD200E2402E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F07608522E44BFCF00E2402E /* Build configuration list for PBXProject "HeyPlay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F076086D2E44BFD200E2402E /* Debug */,
+				F076086E2E44BFD200E2402E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F076086A2E44BFD200E2402E /* Build configuration list for PBXNativeTarget "HeyPlay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F076086B2E44BFD200E2402E /* Debug */,
+				F076086C2E44BFD200E2402E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F076084F2E44BFCF00E2402E /* Project object */;
+}
