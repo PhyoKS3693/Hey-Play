@@ -19,6 +19,8 @@ class FullMovieCollectionViewCell: UICollectionViewCell {
         // Initialization code
         imgMovie.clipsToBounds = true
         imgMovie.cornerRadius = 8
+        
+        viewType.backgroundColor = .white.withAlphaComponent(0.4)
     }
 
 }

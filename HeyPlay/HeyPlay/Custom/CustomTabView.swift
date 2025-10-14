@@ -15,6 +15,7 @@ class CustomTabView: BaseView {
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var lblTitle: UILabel!
     
+    var onTapAction: ((_ tapBarItem : TabBarItem) -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,5 +25,10 @@ class CustomTabView: BaseView {
     }
     
     @IBAction func onClickAction(_ sender: Any) {
+        if let btn = sender as? UIButton {
+            let item = TabBarItem(rawValue: btn.tag)
+            onTapAction?(item ?? .home)
+        }
+        
     }
 }

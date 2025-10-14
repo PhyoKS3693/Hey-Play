@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-enum TabBarItem {
-    case home
-    case hot
-    case movie
-    case series
-    case menu
+enum TabBarItem : Int{
+    case home = 0
+    case hot = 1
+    case movie = 2
+    case series = 3
+    case menu = 4
     
     func getTitle() -> String {
         switch self {
@@ -67,4 +67,56 @@ enum HomeSection : Int{
     case recent = 2
     case movie = 3
     case series = 4
+}
+
+
+enum HotActionType {
+    case favorite
+    case addToWatchlist
+    
+    func getInactiveImage() -> UIImage {
+        switch self {
+        case .favorite:
+            return UIImage(named: "ic-heart-inactive")!
+        case .addToWatchlist:
+            return UIImage(named: "ic-addToWatch-inactive")!
+        }
+    }
+    
+    func getActiveImage() -> UIImage {
+        switch self {
+        case .favorite:
+            return UIImage(named: "ic-heart-inactive")!
+        case .addToWatchlist:
+            return UIImage(named: "ic-addToWatch-inactive")!
+        }
+    }
+}
+
+enum MovieSeriesType {
+    case movie
+    case series
+    
+    func getTitle() -> String {
+        switch self {
+        case .movie:
+            return "Movies"
+        case .series:
+            return "Series"
+        }
+    }
+}
+
+enum SeriesType : Int{
+    case local = 0
+    case international = 1
+    
+    func getTitle() -> String {
+        switch self {
+        case .local:
+            return "Local"
+        case .international:
+            return "International"
+        }
+    }
 }

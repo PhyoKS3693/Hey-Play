@@ -7,7 +7,21 @@
 
 import Foundation
 import UIKit
-extension HomeViewControllerViewController : UITableViewDelegate , UITableViewDataSource {
+
+extension HomeViewController {
+    func setupTableView() {
+        tblHome.delegate = self
+        tblHome.dataSource = self
+        tblHome.registerForCell(strID: HomeUserInfoTableViewCell.identifier)
+        tblHome.registerForCell(strID: BannerTableViewCell.identifier)
+        tblHome.registerForCell(strID: RecentTableViewCell.identifier)
+        tblHome.registerForCell(strID: MovieTableViewCell.identifier)
+        tblHome.registerForCell(strID: SeriesTableViewCell.identifier)
+        tblHome.showsVerticalScrollIndicator = false
+        tblHome.reloadData()
+    }
+}
+extension HomeViewController : UITableViewDelegate , UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionList.count
     }
@@ -65,19 +79,31 @@ extension HomeViewControllerViewController : UITableViewDelegate , UITableViewDa
     }
 }
 
-extension HomeViewControllerViewController {
+extension HomeViewController {
     func setNavigationBarIcon() {
-        let logoImageView = UIImageView(image: UIImage(named: "ic-nav-bar"))
-        let logoItem = UIBarButtonItem(customView: logoImageView)
+        let logoImageView = UIImageView(
+            image: UIImage(named: "ic-nav-bar")
+        )
+        let logoItem = UIBarButtonItem(
+            customView: logoImageView
+        )
         navigationItem.leftBarButtonItem = logoItem
     }
     
     func setRightBarItems() {
-        let searchImgView = UIImageView(image: UIImage(named: "ic-search"))
-        let searchItem = UIBarButtonItem(customView: searchImgView)
+        let searchImgView = UIImageView(
+            image: UIImage(named: "ic-search")
+        )
+        let searchItem = UIBarButtonItem(
+            customView: searchImgView
+        )
         
-        let notiImgView = UIImageView(image: UIImage(named: "ic-noti"))
-        let notiItem = UIBarButtonItem(customView: notiImgView)
+        let notiImgView = UIImageView(
+            image: UIImage(named: "ic-noti")
+        )
+        let notiItem = UIBarButtonItem(
+            customView: notiImgView
+        )
         
         navigationItem.rightBarButtonItems = [searchItem , notiItem]
     }

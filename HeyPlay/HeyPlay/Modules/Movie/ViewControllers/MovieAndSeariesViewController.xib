@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MovieAndSeariesViewController" customModule="HeyPlay" customModuleProvider="target">
+            <connections>
+                <outlet property="bgView" destination="WdC-lo-pfR" id="ZjG-De-kH6"/>
+                <outlet property="collectionView" destination="K6V-OZ-7Jl" id="Yvm-7W-FZJ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WdC-lo-pfR">
+                    <rect key="frame" x="0.0" y="59" width="393" height="793"/>
+                    <subviews>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="K6V-OZ-7Jl">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3uS-j7-38v">
+                                <size key="itemSize" width="128" height="128"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="K6V-OZ-7Jl" firstAttribute="centerY" secondItem="WdC-lo-pfR" secondAttribute="centerY" id="8QM-IH-9Yn"/>
+                        <constraint firstItem="K6V-OZ-7Jl" firstAttribute="width" secondItem="WdC-lo-pfR" secondAttribute="width" id="mMq-fH-jnS"/>
+                        <constraint firstItem="K6V-OZ-7Jl" firstAttribute="centerX" secondItem="WdC-lo-pfR" secondAttribute="centerX" id="mwN-bT-z1o"/>
+                        <constraint firstItem="K6V-OZ-7Jl" firstAttribute="height" secondItem="WdC-lo-pfR" secondAttribute="height" id="tna-1N-w9o"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="WdC-lo-pfR" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Sx9-45-phZ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WdC-lo-pfR" secondAttribute="trailing" id="bWd-jf-hF6"/>
+                <constraint firstItem="WdC-lo-pfR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="glz-j9-Z6M"/>
+                <constraint firstAttribute="bottom" secondItem="WdC-lo-pfR" secondAttribute="bottom" id="oCI-u2-e3X"/>
+            </constraints>
+            <point key="canvasLocation" x="-4" y="20"/>
+        </view>
+    </objects>
+</document>

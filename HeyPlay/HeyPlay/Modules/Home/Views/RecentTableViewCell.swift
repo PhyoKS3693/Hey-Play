@@ -17,6 +17,8 @@ class RecentTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
+        self.selectionStyle = .none
+        
         lblTitle.text = "Recent"
         
         bgView.backgroundColor = .darkGrey

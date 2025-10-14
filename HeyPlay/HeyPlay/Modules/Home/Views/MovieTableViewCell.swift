@@ -16,6 +16,7 @@ class MovieTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.selectionStyle = .none
         
         bgView.backgroundColor = .darkGrey
         

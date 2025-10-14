@@ -9,5 +9,5 @@ target 'HeyPlay' do
   pod 'Kingfisher'
   pod 'SnapKit'
   pod 'FSPagerView'
-  
+  pod 'ViewPager-Swift'
 end

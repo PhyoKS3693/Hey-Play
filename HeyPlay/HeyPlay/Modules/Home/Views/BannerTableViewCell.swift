@@ -9,18 +9,6 @@ import UIKit
 import FSPagerView
 class BannerTableViewCell: UITableViewCell {
 
-//    @IBOutlet weak var pagerView: FSPagerView! {
-//        didSet {
-//            pagerView.delegate = self
-//            pagerView.dataSource = self
-//            pagerView.cornerRadius = 10
-//            pagerView.interitemSpacing = 10
-//            pagerView.transformer = FSPagerViewTransformer(type: .linear)
-//            pagerView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
-//            pagerView.reloadData()
-//        }
-//    }
-    
     @IBOutlet weak var collectionView: UICollectionView!
     var items = [UIImage?](){
         didSet {
@@ -31,6 +19,7 @@ class BannerTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.selectionStyle = .none
         setupCollectionView()
     }
 
@@ -65,17 +54,3 @@ extension BannerTableViewCell : UICollectionViewDelegate , UICollectionViewDataS
         return CGSize(width: collectionView.bounds.width - 20, height: collectionView.bounds.height)
     }
 }
-
-//extension BannerTableViewCell : FSPagerViewDataSource, FSPagerViewDelegate {
-//    func numberOfItems(in pagerView: FSPagerView) -> Int {
-//        return items.count
-//    }
-//    
-//    func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
-//        let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
-//        cell.imageView?.image = items[index] ?? UIImage()
-//        cell.imageView?.cornerRadius = 10
-//        cell.imageView?.clipsToBounds = true
-//        return cell
-//    }
-//}
