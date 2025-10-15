@@ -13,7 +13,7 @@ struct OTPTextView: View {
     let maxDigits = 6
     
     var body: some View {
-        VStack {
+        ZStack {
             HStack(spacing: 12) {
                 ForEach(0..<maxDigits, id: \.self) { index in
                     ZStack {
@@ -37,7 +37,6 @@ struct OTPTextView: View {
                 .foregroundColor(.clear)
                 .accentColor(.clear)
                 .disableAutocorrection(true)
-                .frame(width: 0, height: 0)
                 .onValueChange(of: otpText) { newVal in
                     // handle newVal change
                     if newVal.count > maxDigits {
