@@ -7,6 +7,9 @@
 
 import Foundation
 import UIKit
+import SwiftUI
+import Combine
+
 
 extension UIView {
     @objc public class var identifier: String {
@@ -256,4 +259,28 @@ extension UIView {
         self.layer.masksToBounds = true
     }
 }
+
+
+
+extension View {
+    func onValueChange<T: Equatable>(
+        of value: T,
+        perform action: @escaping (T) -> Void
+    ) -> some View {
+        // For iOS 14+, use the native onChange
+        if #available(iOS 14, *) {
+            return AnyView(
+                self.onChange(of: value, perform: action)
+            )
+        } else {
+            // Fallback for iOS 13 — use onReceive
+            return AnyView(
+                self.onReceive(Just(value)) { newValue in
+                    action(newValue)
+                }
+            )
+        }
+    }
+}
+
 

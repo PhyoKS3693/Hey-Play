@@ -4,6 +4,55 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <scenes/>
+    <scenes>
+        <!--Splash View Controller-->
+        <scene sceneID="zpq-dz-FPp">
+            <objects>
+                <viewController storyboardIdentifier="SplashViewController" id="VCG-EQ-QZ2" customClass="SplashViewController" customModule="HeyPlay" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Fmu-0M-5Zn">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic.splash.logo" translatesAutoresizingMaskIntoConstraints="NO" id="iBm-aa-f00">
+                                <rect key="frame" x="140" y="371.66666666666669" width="113" height="94"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="113" id="h3M-PU-zxh"/>
+                                    <constraint firstAttribute="height" constant="94" id="xlc-yx-AnM"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8iz-bW-ezP">
+                                <rect key="frame" x="20" y="485.66666666666669" width="353" height="40.666666666666686"/>
+                                <string key="text">ဖျော်ဖြေမှု ရသစုံပေး အချိန်နေရာမရွေး 
+သင့်နဲအတူရှိနေမယ်</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="v2n-WJ-ngw"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="iBm-aa-f00" firstAttribute="centerX" secondItem="v2n-WJ-ngw" secondAttribute="centerX" id="EDZ-3E-dXI"/>
+                            <constraint firstItem="8iz-bW-ezP" firstAttribute="leading" secondItem="v2n-WJ-ngw" secondAttribute="leading" constant="20" id="Q1m-0D-DWc"/>
+                            <constraint firstItem="v2n-WJ-ngw" firstAttribute="trailing" secondItem="8iz-bW-ezP" secondAttribute="trailing" constant="20" id="gad-4B-6n7"/>
+                            <constraint firstItem="8iz-bW-ezP" firstAttribute="top" secondItem="iBm-aa-f00" secondAttribute="bottom" constant="20" id="pJ9-O8-JxP"/>
+                            <constraint firstItem="iBm-aa-f00" firstAttribute="centerY" secondItem="v2n-WJ-ngw" secondAttribute="centerY" constant="-20" id="zvE-0q-GZO"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imgLogo" destination="iBm-aa-f00" id="Hmm-Er-DWz"/>
+                        <outlet property="lblMessage" destination="8iz-bW-ezP" id="DPc-ef-MUg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SiL-gY-i0L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-897" y="-398"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ic.splash.logo" width="112.66666412353516" height="94"/>
+    </resources>
 </document>

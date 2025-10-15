@@ -15,8 +15,7 @@ class HomeViewController: BaseViewController {
     var sectionList : [HomeSection] = [.user, .banner , .recent , .movie , .series]
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        print("Is there a Navigation Controller? \(self.navigationController != nil)")
+        setupBottomBar()
         setupTableView()
         setNavigationBarIcon()
         setRightBarItems()

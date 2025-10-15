@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 class BaseViewController: UIViewController {
 
@@ -16,15 +17,27 @@ class BaseViewController: UIViewController {
     var stackView : UIStackView?
     var selectedTabItem : TabBarItem?
     let delegate = UIApplication.shared.delegate as? AppDelegate
+    
+    var cancellables = Set<AnyCancellable>()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setCurrentVC()
         setNavBar()
-        setupBottomBar()
         setTabBarItem()
+        setupUI()
+        bindObserver()
+    }
+    
+    func setCurrentVC() {
+        ViewNavigation.shared.currentViewController = self
     }
     
     func setupUI() {
+        
+    }
+    
+    func bindObserver() {
         
     }
     

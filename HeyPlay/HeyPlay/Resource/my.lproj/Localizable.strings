@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  HeyPlay
+
+  Created by Phyo Kyaw Swar on 14/10/2025.
+  
+*/
+
+"splashTitle" = "ဖျော်ဖြေမှု ရသစုံပေး အချိန်နေရာမရွေး\nသင့်နဲအတူရှိနေမယ်";
+
+// MARK: - login
+"Get Started" = "Get Started";
+"Hello! Let’s join with us" = "Hello! Let’s join with us";
+"Phone Number" = "Phone Number";
+"09 123456789" = "09 123456789";
+"Continue" = "Continue";
+"Continue with Apple" = "Continue with Apple";
+"Continue with Google" = "Continue with Google";
+"Continue with Facebook" = "Continue with Facebook";
+"Continue with Line" = "Continue with Line";
+"OR" = "OR";
+"Skip" = "Skip";
+
+// MARK: - OTP
+"Verification" = "Verification";
+"Please enter your 6-digits OTP codes that’s\nwe’ve sent to your mobile number" = "Please enter your 6-digits OTP codes that’s\nwe’ve sent to your mobile number %@";
+"Verify" = "Verify";
+"If you didn’t receive a code? Resend OTP in " = "If you didn’t receive a code? Resend OTP in (%ds)";
+"Your OTP code is wrong" = "Your OTP code is wrong";
+"Cancel" = "Cancel";
+"Resend" = "Resend";
