@@ -24,7 +24,6 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
         setCurrentVC()
         setNavBar()
-        setTabBarItem()
         setupUI()
         bindObserver()
     }

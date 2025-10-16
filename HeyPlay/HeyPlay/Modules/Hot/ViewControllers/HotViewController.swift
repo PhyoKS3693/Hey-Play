@@ -17,5 +17,11 @@ class HotViewController: BaseViewController {
     
     override func setupUI() {
         super.setupUI()
+        setBottomTabBar()
+    }
+    
+    func setBottomTabBar() {
+        setupBottomBar()
+        setTabBarItem()
     }
 }

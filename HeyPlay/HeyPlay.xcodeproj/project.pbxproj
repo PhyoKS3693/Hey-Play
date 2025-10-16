@@ -85,6 +85,12 @@
 		F0D17AC72E44D89C00BA21FB /* BannerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D17AC52E44D89C00BA21FB /* BannerTableViewCell.xib */; };
 		F0D17ACD2E44D96400BA21FB /* HomeViewController + Extension .swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17ACC2E44D96400BA21FB /* HomeViewController + Extension .swift */; };
 		F0D17ACF2E44D9E800BA21FB /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17ACE2E44D9E800BA21FB /* UITableView + Extension.swift */; };
+		F0D9CAA82E9F797700BC6F68 /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D9CAA72E9F797700BC6F68 /* MovieDetailView.swift */; };
+		F0D9CAAA2E9F7A1800BC6F68 /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D9CAA92E9F7A1800BC6F68 /* CustomNavigationBarView.swift */; };
+		F0D9CAAC2E9F7D6600BC6F68 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D9CAAB2E9F7D6600BC6F68 /* BlurView.swift */; };
+		F0D9CAAE2E9F838800BC6F68 /* MovieDetailTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D9CAAD2E9F838800BC6F68 /* MovieDetailTopView.swift */; };
+		F0D9CAB02E9F83D800BC6F68 /* MovieDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D9CAAF2E9F83D800BC6F68 /* MovieDetailBottomView.swift */; };
+		F0D9CAB22E9F91F700BC6F68 /* CastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D9CAB12E9F91F700BC6F68 /* CastView.swift */; };
 		F0F836CF2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F836CD2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift */; };
 		F0F836D02E4521D4008F3635 /* HomeUserInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F836CE2E4521D4008F3635 /* HomeUserInfoTableViewCell.xib */; };
 		F0F836D92E4534AE008F3635 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F836D72E4534AE008F3635 /* BannerCollectionViewCell.swift */; };
@@ -177,6 +183,12 @@
 		F0D17AC52E44D89C00BA21FB /* BannerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerTableViewCell.xib; sourceTree = "<group>"; };
 		F0D17ACC2E44D96400BA21FB /* HomeViewController + Extension .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeViewController + Extension .swift"; sourceTree = "<group>"; };
 		F0D17ACE2E44D9E800BA21FB /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
+		F0D9CAA72E9F797700BC6F68 /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
+		F0D9CAA92E9F7A1800BC6F68 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
+		F0D9CAAB2E9F7D6600BC6F68 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		F0D9CAAD2E9F838800BC6F68 /* MovieDetailTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailTopView.swift; sourceTree = "<group>"; };
+		F0D9CAAF2E9F83D800BC6F68 /* MovieDetailBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailBottomView.swift; sourceTree = "<group>"; };
+		F0D9CAB12E9F91F700BC6F68 /* CastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastView.swift; sourceTree = "<group>"; };
 		F0F836CD2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserInfoTableViewCell.swift; sourceTree = "<group>"; };
 		F0F836CE2E4521D4008F3635 /* HomeUserInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeUserInfoTableViewCell.xib; sourceTree = "<group>"; };
 		F0F836D72E4534AE008F3635 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -318,6 +330,8 @@
 				F0D17AB72E44D03200BA21FB /* Enums.swift */,
 				F0232FA42E9DFED900C90769 /* ViewNavigation.swift */,
 				F0232FE72E9E298800C90769 /* RoundedButtonView.swift */,
+				F0D9CAA92E9F7A1800BC6F68 /* CustomNavigationBarView.swift */,
+				F0D9CAAB2E9F7D6600BC6F68 /* BlurView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -334,6 +348,7 @@
 		F076088F2E44C11800E2402E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				F0D9CAA52E9F767A00BC6F68 /* MovieDetail */,
 				F0232FE92E9E4B1B00C90769 /* OTP */,
 				F0232FA62E9E090400C90769 /* Login */,
 				F0C3B9C62E48850100ACE9EF /* Movie */,
@@ -467,6 +482,25 @@
 				F0003A822E4514A000C7984D /* SeriesCollectionViewCell.xib */,
 				F0F836CD2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift */,
 				F0F836CE2E4521D4008F3635 /* HomeUserInfoTableViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F0D9CAA52E9F767A00BC6F68 /* MovieDetail */ = {
+			isa = PBXGroup;
+			children = (
+				F0D9CAA62E9F796900BC6F68 /* Views */,
+			);
+			path = MovieDetail;
+			sourceTree = "<group>";
+		};
+		F0D9CAA62E9F796900BC6F68 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F0D9CAA72E9F797700BC6F68 /* MovieDetailView.swift */,
+				F0D9CAAD2E9F838800BC6F68 /* MovieDetailTopView.swift */,
+				F0D9CAAF2E9F83D800BC6F68 /* MovieDetailBottomView.swift */,
+				F0D9CAB12E9F91F700BC6F68 /* CastView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -646,13 +680,16 @@
 				F076089E2E44C11800E2402E /* BaseViewController.swift in Sources */,
 				F0F836CF2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift in Sources */,
 				F076089F2E44C11800E2402E /* AppDelegate.swift in Sources */,
+				F0D9CAAE2E9F838800BC6F68 /* MovieDetailTopView.swift in Sources */,
 				F0232FEB2E9E4B2700C90769 /* OTPView.swift in Sources */,
 				F0C3B9E22E48939500ACE9EF /* ViewPagerViewController + Extension.swift in Sources */,
 				F0232FBE2E9E100600C90769 /* FontUtility.swift in Sources */,
 				F0F836D92E4534AE008F3635 /* BannerCollectionViewCell.swift in Sources */,
 				F0003A842E4514A000C7984D /* SeriesCollectionViewCell.swift in Sources */,
+				F0D9CAAA2E9F7A1800BC6F68 /* CustomNavigationBarView.swift in Sources */,
 				F0232FBC2E9E0EC000C90769 /* LocalStorage.swift in Sources */,
 				F0A61BA42E45091300513A60 /* FullMovieCollectionViewCell.swift in Sources */,
+				F0D9CAB22E9F91F700BC6F68 /* CastView.swift in Sources */,
 				F0232FE82E9E298800C90769 /* RoundedButtonView.swift in Sources */,
 				F0C3B9CF2E4888EF00ACE9EF /* SeriesTypeCollectionViewCell.swift in Sources */,
 				F0232FED2E9E563100C90769 /* OTPTextView.swift in Sources */,
@@ -665,12 +702,14 @@
 				F0C3B9B72E48747600ACE9EF /* HotViewController.swift in Sources */,
 				F0D17AC62E44D89C00BA21FB /* BannerTableViewCell.swift in Sources */,
 				F0D17AB82E44D03200BA21FB /* Enums.swift in Sources */,
+				F0D9CAB02E9F83D800BC6F68 /* MovieDetailBottomView.swift in Sources */,
 				F0003A802E45138000C7984D /* SeriesTableViewCell.swift in Sources */,
 				F0C3B9C92E48851000ACE9EF /* MovieAndSeariesViewController.swift in Sources */,
 				F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */,
 				F0C3B9E02E48936100ACE9EF /* PageContainerCollectionViewCell.swift in Sources */,
 				F0A61B972E44FB8B00513A60 /* RecentTableViewCell.swift in Sources */,
 				F0D17ACD2E44D96400BA21FB /* HomeViewController + Extension .swift in Sources */,
+				F0D9CAAC2E9F7D6600BC6F68 /* BlurView.swift in Sources */,
 				F0232FE62E9E221B00C90769 /* TextWithTitleView.swift in Sources */,
 				F0D17ABB2E44D15300BA21FB /* UIView + Extension .swift in Sources */,
 				F0232FA52E9DFED900C90769 /* ViewNavigation.swift in Sources */,
@@ -678,6 +717,7 @@
 				F0232FEF2E9E5B6900C90769 /* WrongOTPAlertView.swift in Sources */,
 				F0A61B9C2E44FC7100513A60 /* RecentCollectionViewCell.swift in Sources */,
 				F0C3B9AE2E45D47000ACE9EF /* HotTableViewCell.swift in Sources */,
+				F0D9CAA82E9F797700BC6F68 /* MovieDetailView.swift in Sources */,
 				F0232FB12E9E0A4300C90769 /* LoginViewController.swift in Sources */,
 				F0232FAF2E9E09E500C90769 /* LoginView.swift in Sources */,
 				F0C3B9B42E48679800ACE9EF /* HotViewController + Extension.swift in Sources */,
@@ -726,6 +766,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3VX8NLJM4;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HeyPlay/Info.plist;
@@ -754,6 +795,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B3VX8NLJM4;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HeyPlay/Info.plist;

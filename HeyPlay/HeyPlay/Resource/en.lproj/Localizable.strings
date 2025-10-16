@@ -29,3 +29,11 @@
 "Your OTP code is wrong" = "Your OTP code is wrong";
 "Cancel" = "Cancel";
 "Resend" = "Resend";
+
+//MARK: - Movie Detail
+"VIP" = "VIP";
+"Play" = "Play";
+"Watchlist" = "Watchlist";
+"Trailers & Info" = "Trailers & Info";
+"Recommend" = "Recommend";
+"Description" = "Description";

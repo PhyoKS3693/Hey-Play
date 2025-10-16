@@ -55,6 +55,10 @@ struct FontUtility {
     static func medium() -> UIFont {
         return font(.medium, size: 17)
     }
+    
+    static func regular(size : Int) -> UIFont {
+        return font(.regular, size: CGFloat(size))
+    }
 
     
     static func largeTitleFont() -> Font {
@@ -67,5 +71,9 @@ struct FontUtility {
     
     static func mediumFont() -> Font {
         return Font(medium())
+    }
+    
+    static func regularFont(size : Int) -> Font {
+        return Font(regular(size: size))
     }
 }

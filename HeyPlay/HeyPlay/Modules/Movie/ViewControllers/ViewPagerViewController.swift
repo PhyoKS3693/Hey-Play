@@ -30,12 +30,23 @@ class ViewPagerViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        
+    }
+    
+    override func setupUI() {
+        super.setupUI()
         if movieSeriesType == .series {
             setupTabs()
         }
+        setBottomTabBar()
         setupCollectionView()
         setNavTitle()
         setRightBarItems()
+    }
+    
+    func setBottomTabBar() {
+        setupBottomBar()
+        setTabBarItem()
     }
 
     private func setupTabs() {

@@ -15,10 +15,23 @@ class HomeViewController: BaseViewController {
     var sectionList : [HomeSection] = [.user, .banner , .recent , .movie , .series]
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBottomBar()
+        view.backgroundColor = .black
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    override func setupUI() {
+        super.setupUI()
+        setBottomTabBar()
         setupTableView()
         setNavigationBarIcon()
         setRightBarItems()
+    }
+    func setBottomTabBar() {
+        setupBottomBar()
+        setTabBarItem()
     }
 
 }

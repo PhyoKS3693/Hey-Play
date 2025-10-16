@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 struct OTPView : View {
     @State var tapVerify : Bool = false
@@ -31,6 +32,11 @@ struct OTPView : View {
                 }
                 if isShowAlert {
                     showAlert()
+                }
+            }
+            .onReceive(Just(tapVerify)) { newValue in
+                if newValue {
+                    presentHomeVC()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -62,6 +68,21 @@ struct OTPView : View {
             .transition(.scale)
             .zIndex(1)
         }
+    }
+    
+    private func presentHomeVC() {
+        guard let window = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.windows.first })
+            .first else { return }
+        
+        //           let vc = HomeViewController()
+        //           rootVC.present(vc, animated: true)
+        let controller = HomeViewController()
+        
+        let navVC = UINavigationController(rootViewController: controller)
+        navVC.navigationBar.isHidden = false
+        window.rootViewController = navVC
+        window.makeKeyAndVisible()
     }
 }
 
