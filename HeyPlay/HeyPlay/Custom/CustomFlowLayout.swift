@@ -48,7 +48,7 @@ class HorizontalTwoRowLayout: UICollectionViewFlowLayout {
         self.scrollDirection = .horizontal
 
         // Define constants for spacing and cell dimensions.
-        let fullHeightCellWidth: CGFloat = (collectionView.bounds.width / 3)
+        let fullHeightCellWidth: CGFloat = (collectionView.bounds.width / 2)
         let halfHeightCellWidth: CGFloat = ((collectionView.bounds.width - fullHeightCellWidth) - minimumInteritemSpacing) / 2
         
         var xOffset: CGFloat = 0.0

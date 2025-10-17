@@ -32,8 +32,10 @@
 
 //MARK: - Movie Detail
 "VIP" = "VIP";
+"FREE" = "FREE";
 "Play" = "Play";
 "Watchlist" = "Watchlist";
 "Trailers & Info" = "Trailers & Info";
 "Recommend" = "Recommend";
 "Description" = "Description";
+"Episodes" = "Episodes";

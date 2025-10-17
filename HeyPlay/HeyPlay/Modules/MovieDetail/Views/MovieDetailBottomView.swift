@@ -11,22 +11,35 @@ import SwiftUI
 struct MovieDetailBottomView : View {
     @Binding var tapTrailer : Bool
     @Binding var tapRecommend : Bool
+    @Binding var tapEpisodes : Bool
+    @Binding var detailType : DetailType
+    
     var body: some View {
         VStack {
             TrailerAndRecommendView(
                 tapTrailer: $tapTrailer,
-                tapRecommend: $tapRecommend
+                tapRecommend: $tapRecommend,
+                tapEpisodes: $tapEpisodes,
+                detailType: $detailType
             )
-            ZStack {
-                VStack {
-                    MovieDetailDescriptionView()
-                    CastView()
-                }
+            if tapEpisodes {
+                EpisodesListView()
             }
-            .background(Color.grey)
-            .cornerRadius(20)
-            .padding(.horizontal , 10)
             
+             if tapRecommend {
+                RecommendView()
+            }
+            
+            if tapTrailer {
+                ZStack {
+                    VStack {
+                        MovieDetailDescriptionView()
+                        CastView()
+                    }
+                }
+                .background(Color.grey)
+                .cornerRadius(20)
+            }
         }
         
     }
@@ -35,10 +48,31 @@ struct MovieDetailBottomView : View {
 struct TrailerAndRecommendView : View {
     @Binding var tapTrailer : Bool
     @Binding var tapRecommend : Bool
+    @Binding var tapEpisodes : Bool
+    @Binding var detailType : DetailType
     var body: some View {
             HStack(spacing: 16) {
+                
+                if detailType == .series {
+                    Button(action: {
+                        tapEpisodes = true
+                        tapTrailer = false
+                        tapRecommend = false
+                    }) {
+                        Text("Episodes".localized())
+                        .font(FontUtility.regularFont(size: 13))
+                        .foregroundColor(.white)
+                        
+                    }
+                    .frame(maxWidth: 150, minHeight: 40)
+                    .background(tapEpisodes ? Color.primaryBg : Color.recommendBG)
+                    .cornerRadius(25)
+                }
+                
                 Button(action: {
+                    tapEpisodes = false
                     tapTrailer = true
+                    tapRecommend = false
                 }) {
                     Text("Trailers & Info".localized())
                     .font(FontUtility.regularFont(size: 13))
@@ -46,10 +80,12 @@ struct TrailerAndRecommendView : View {
                     
                 }
                 .frame(maxWidth: 150, minHeight: 40)
-                .background(Color.primaryBg)
+                .background(tapTrailer ? Color.primaryBg : Color.recommendBG)
                 .cornerRadius(25)
                 
                 Button(action: {
+                    tapEpisodes = false
+                    tapTrailer = false
                     tapRecommend = true
                 }) {
                     Text("Recommend".localized())
@@ -58,12 +94,12 @@ struct TrailerAndRecommendView : View {
                     
                 }
                 .frame(maxWidth: 150, minHeight: 40)
-                .background(Color.recommendBG)
+                .background(tapRecommend ? Color.primaryBg : Color.recommendBG)
                 .cornerRadius(20)
                 
                 Spacer()
             }
-            .padding()
+            .padding(.vertical , 10)
     }
 }
 
@@ -88,14 +124,14 @@ struct MovieDetailDescriptionView : View {
                 .font(FontUtility.normalFont())
         }
         .padding()
-        
-        
     }
 }
 
 #Preview {
     MovieDetailBottomView(
-        tapTrailer: .constant(false),
-        tapRecommend: .constant(false)
+        tapTrailer: .constant(true),
+        tapRecommend: .constant(false),
+        tapEpisodes: .constant(false),
+        detailType: .constant(.series)
     )
 }

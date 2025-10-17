@@ -28,4 +28,13 @@ class ViewNavigation : BaseViewController{
         vc.navigationController?.pushViewController(controller, animated: true)
     }
     
+    func showMovieDetail(detailType : DetailType) {
+        guard let vc = currentViewController as? HomeViewController else {
+            return
+        }
+        let controller = MovieDetailViewController()
+        controller.detailType = detailType
+        vc.navigationController?.pushViewController(controller, animated: true)
+    }
+    
 }

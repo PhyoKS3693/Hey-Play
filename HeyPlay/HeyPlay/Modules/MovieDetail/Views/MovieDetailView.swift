@@ -9,13 +9,20 @@ import Foundation
 import SwiftUI
 
 struct MovieDetailView : View {
-    @State var tapTrailer : Bool = false
+    @State var tapTrailer : Bool = true
     @State var tapRecommend : Bool = false
+    @State var tapEpisodes : Bool = false
+    @State var detailType : DetailType = .series
+    
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
         VStack(spacing: 0, content: {
             Spacer()
                 .frame(height: 50)
-            CustomNavBar()
+            CustomNavBar(onBack: {
+                presentationMode.wrappedValue.dismiss()
+            })
                 .background(Color.black)
             ScrollView(content: {
                 VStack {
@@ -23,15 +30,19 @@ struct MovieDetailView : View {
                         MovieDetailTopView()
                         VStack {
                             Spacer()
-                            MovieDetailInfoView()
+                            MovieDetailInfoView(
+                                detailType: $detailType
+                            )
                         }
                         .padding(.bottom , 10)
                     })
-                    .frame(width: .infinity , height: 400)
+                    .frame(height: 400)
                     
                     MovieDetailBottomView(
                         tapTrailer: $tapTrailer,
-                        tapRecommend: $tapRecommend
+                        tapRecommend: $tapRecommend,
+                        tapEpisodes: $tapEpisodes,
+                        detailType: $detailType
                     )
                 }
             })

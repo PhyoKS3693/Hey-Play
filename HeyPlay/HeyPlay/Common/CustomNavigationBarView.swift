@@ -61,7 +61,6 @@ struct CustomNavBar: View {
                     .clipShape(Circle())
             }
         }
-        .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .cornerRadius(20)
     }

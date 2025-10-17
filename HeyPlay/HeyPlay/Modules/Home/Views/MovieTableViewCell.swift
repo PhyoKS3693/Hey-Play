@@ -13,6 +13,8 @@ class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var btnViewAll: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    var navigateToMovieDetail: ((Int) -> Void)?
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -64,5 +66,8 @@ extension MovieTableViewCell : UICollectionViewDelegate , UICollectionViewDataSo
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigateToMovieDetail?(indexPath.item)
+    }
     
 }
