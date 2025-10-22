@@ -1,3 +1,4 @@
+            layer.actions = ["bounds": NSNull()]
 //
 //  FSPageControl.swift
 //  FSPagerView

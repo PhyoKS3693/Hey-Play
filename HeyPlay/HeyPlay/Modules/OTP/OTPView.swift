@@ -23,16 +23,32 @@ struct OTPView : View {
                 VStack {
                     OTPTopView(phoneNumber: "12*****483")
                     OTPTextView()
-                    RoundedButtonView(
-                        buttonType: .verify,
-                        isTap: $tapVerify
-                    )
+                    
+                    
+                    Button {
+                        showMainTabBar()
+                    } label: {
+                        Text("Verify")
+                            .font(FontUtility.normalFont())
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, maxHeight: 40)
+                    .background(Color.primaryBg)
+                    .cornerRadius(20)
+                    .padding(.horizontal, 20)
+
+                        
+                    
                     TimerView(timeCount: $timeCount)
                     Spacer()
                 }
+                
+                
                 if isShowAlert {
                     showAlert()
                 }
+                
+                
             }
             .onReceive(Just(tapVerify)) { newValue in
                 if newValue {
@@ -84,7 +100,22 @@ struct OTPView : View {
         window.rootViewController = navVC
         window.makeKeyAndVisible()
     }
+    
+    private func showMainTabBar() {
+        let vc = HomeViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = false
+        
+        // Access main window
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            window.rootViewController = navVC
+            window.makeKeyAndVisible()
+        }
+    }
 }
+
+
 
 struct OTPTopView : View {
     var phoneNumber : String = ""
