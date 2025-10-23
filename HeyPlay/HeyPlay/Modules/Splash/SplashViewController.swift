@@ -38,7 +38,8 @@ class SplashViewController: BaseViewController {
         .sink { _ in
             self.countdownTime -= 1
             if self.countdownTime == 0 {
-                ViewNavigation.shared.showLoginView()
+                //ViewNavigation.shared.showLoginView()
+                ViewNavigation.shared.showMenu()
             }
         }
         .store(in: &cancellables)

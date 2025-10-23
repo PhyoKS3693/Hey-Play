@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD1E03DA2EA9D253009283FA /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03D92EA9D253009283FA /* MenuViewController.swift */; };
+		AD1E03DC2EA9EC7A009283FA /* MenuScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03DB2EA9EC7A009283FA /* MenuScreen.swift */; };
+		AD1E03DE2EA9F202009283FA /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03DD2EA9F202009283FA /* MenuViewModel.swift */; };
+		AD1E03E02EAA02F6009283FA /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03DF2EAA02F6009283FA /* HostController.swift */; };
+		AD1E03E42EAA1AF1009283FA /* MenuDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03E32EAA1AF1009283FA /* MenuDataSource.swift */; };
 		D9CC2E2BA7524BFCB2CF6C71 /* Pods_HeyPlay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */; };
 		F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */; };
 		F0003A7F2E45138000C7984D /* SeriesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0003A7E2E45138000C7984D /* SeriesTableViewCell.xib */; };
@@ -100,6 +105,11 @@
 /* Begin PBXFileReference section */
 		2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeyPlay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E100A9832C8E15C7079DFEF /* Pods-HeyPlay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.release.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.release.xcconfig"; sourceTree = "<group>"; };
+		AD1E03D92EA9D253009283FA /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		AD1E03DB2EA9EC7A009283FA /* MenuScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreen.swift; sourceTree = "<group>"; };
+		AD1E03DD2EA9F202009283FA /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
+		AD1E03DF2EAA02F6009283FA /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
+		AD1E03E32EAA1AF1009283FA /* MenuDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDataSource.swift; sourceTree = "<group>"; };
 		DAAFCF8DF016EC327AD13549 /* Pods-HeyPlay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.debug.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.debug.xcconfig"; sourceTree = "<group>"; };
 		F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
 		F0003A7D2E45138000C7984D /* SeriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesTableViewCell.swift; sourceTree = "<group>"; };
@@ -216,6 +226,31 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		AD1E03D82EA9D230009283FA /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E03D92EA9D253009283FA /* MenuViewController.swift */,
+				AD1E03DB2EA9EC7A009283FA /* MenuScreen.swift */,
+				AD1E03DD2EA9F202009283FA /* MenuViewModel.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		AD1E03E12EAA0F32009283FA /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		AD1E03E22EAA101E009283FA /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E03E32EAA1AF1009283FA /* MenuDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		F0232FA22E9DFC7C00C90769 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +353,7 @@
 		F076088C2E44C11800E2402E /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				AD1E03DF2EAA02F6009283FA /* HostController.swift */,
 				F076088B2E44C11800E2402E /* BaseViewController.swift */,
 				F0D17AB32E44CEC700BA21FB /* BaseView.swift */,
 			);
@@ -348,6 +384,7 @@
 		F076088F2E44C11800E2402E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				AD1E03D82EA9D230009283FA /* Menu */,
 				F0D9CAA52E9F767A00BC6F68 /* MovieDetail */,
 				F0232FE92E9E4B1B00C90769 /* OTP */,
 				F0232FA62E9E090400C90769 /* Login */,
@@ -362,6 +399,8 @@
 		F07608992E44C11800E2402E /* HeyPlay */ = {
 			isa = PBXGroup;
 			children = (
+				AD1E03E22EAA101E009283FA /* DataSource */,
+				AD1E03E12EAA0F32009283FA /* Networking */,
 				F0232FBA2E9E0EB200C90769 /* Utility */,
 				F0232FA22E9DFC7C00C90769 /* Extension */,
 				F0D17AB12E44CE4E00BA21FB /* Custom */,
@@ -677,6 +716,7 @@
 				F0C3B9B02E485EB000ACE9EF /* HotActionView.swift in Sources */,
 				F0C3B9DC2E48931700ACE9EF /* ViewPagerViewController.swift in Sources */,
 				F0232FB92E9E0E8500C90769 /* String + Extension.swift in Sources */,
+				AD1E03DA2EA9D253009283FA /* MenuViewController.swift in Sources */,
 				F076089E2E44C11800E2402E /* BaseViewController.swift in Sources */,
 				F0F836CF2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift in Sources */,
 				F076089F2E44C11800E2402E /* AppDelegate.swift in Sources */,
@@ -703,6 +743,7 @@
 				F0D17AC62E44D89C00BA21FB /* BannerTableViewCell.swift in Sources */,
 				F0D17AB82E44D03200BA21FB /* Enums.swift in Sources */,
 				F0D9CAB02E9F83D800BC6F68 /* MovieDetailBottomView.swift in Sources */,
+				AD1E03DC2EA9EC7A009283FA /* MenuScreen.swift in Sources */,
 				F0003A802E45138000C7984D /* SeriesTableViewCell.swift in Sources */,
 				F0C3B9C92E48851000ACE9EF /* MovieAndSeariesViewController.swift in Sources */,
 				F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */,
@@ -713,13 +754,16 @@
 				F0232FE62E9E221B00C90769 /* TextWithTitleView.swift in Sources */,
 				F0D17ABB2E44D15300BA21FB /* UIView + Extension .swift in Sources */,
 				F0232FA52E9DFED900C90769 /* ViewNavigation.swift in Sources */,
+				AD1E03E02EAA02F6009283FA /* HostController.swift in Sources */,
 				F0232F9B2E9DFAE900C90769 /* SplashViewController.swift in Sources */,
 				F0232FEF2E9E5B6900C90769 /* WrongOTPAlertView.swift in Sources */,
 				F0A61B9C2E44FC7100513A60 /* RecentCollectionViewCell.swift in Sources */,
+				AD1E03E42EAA1AF1009283FA /* MenuDataSource.swift in Sources */,
 				F0C3B9AE2E45D47000ACE9EF /* HotTableViewCell.swift in Sources */,
 				F0D9CAA82E9F797700BC6F68 /* MovieDetailView.swift in Sources */,
 				F0232FB12E9E0A4300C90769 /* LoginViewController.swift in Sources */,
 				F0232FAF2E9E09E500C90769 /* LoginView.swift in Sources */,
+				AD1E03DE2EA9F202009283FA /* MenuViewModel.swift in Sources */,
 				F0C3B9B42E48679800ACE9EF /* HotViewController + Extension.swift in Sources */,
 				F07608A12E44C11800E2402E /* ViewController.swift in Sources */,
 			);
@@ -773,7 +817,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -802,7 +846,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
