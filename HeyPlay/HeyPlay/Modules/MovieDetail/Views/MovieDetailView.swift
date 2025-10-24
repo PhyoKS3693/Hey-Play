@@ -13,47 +13,85 @@ struct MovieDetailView : View {
     @State var tapRecommend : Bool = false
     @State var tapEpisodes : Bool = false
     @State var detailType : DetailType = .series
+    @State private var isSticky = false
+    @State private var scrollOffset: CGFloat = 0
     
     @Environment(\.presentationMode) var presentationMode
-
+    
     var body: some View {
-        VStack(spacing: 0, content: {
+        VStack {
             Spacer()
                 .frame(height: 50)
             CustomNavBar(onBack: {
                 presentationMode.wrappedValue.dismiss()
             })
-                .background(Color.black)
-            ScrollView(content: {
-                VStack {
-                    ZStack(alignment: .top, content: {
+            
+            if isSticky {
+                SeriesAndTrailerAndRecommendView(
+                    tapTrailer: $tapTrailer,
+                    tapRecommend: $tapRecommend,
+                    tapEpisodes: $tapEpisodes,
+                    detailType: $detailType
+                )
+            }
+                ScrollView {
+                    ZStack(alignment: .bottom, content: {
                         MovieDetailTopView()
-                        VStack {
-                            Spacer()
-                            MovieDetailInfoView(
-                                detailType: $detailType
-                            )
-                        }
-                        .padding(.bottom , 10)
+                        MovieDetailInfoView(
+                            detailType: $detailType
+                        )
+                        .padding(.bottom , 15)
                     })
-                    .frame(height: 400)
                     
+                    SeriesAndTrailerAndRecommendView(
+                        tapTrailer: $tapTrailer,
+                        tapRecommend: $tapRecommend,
+                        tapEpisodes: $tapEpisodes,
+                        detailType: $detailType
+                    )
                     MovieDetailBottomView(
                         tapTrailer: $tapTrailer,
                         tapRecommend: $tapRecommend,
                         tapEpisodes: $tapEpisodes,
                         detailType: $detailType
                     )
+                    
+                    
+                    GeometryReader { geo in
+                        Color.clear
+                            .preference(
+                                key: ScrollOffsetPreferenceKey.self,
+                                value: geo.frame(in: .global).minY
+                            )
+                    }
+                    .frame(height: 0)
+                    
                 }
-            })
-            Spacer()
-                .frame(height: 50)
-        })
+                .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+                    scrollOffset = value
+                    print("Scroll offset: \(scrollOffset)")
+                    if tapRecommend {
+                        self.isSticky = scrollOffset <= 1590
+                    }
+                    else if tapTrailer || tapEpisodes {
+                        self.isSticky = false
+                    }
+                   
+                }
+            
+        }
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
     }
+    
 }
 
+struct ScrollOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
 
 
 #Preview {

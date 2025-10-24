@@ -48,7 +48,7 @@ class HorizontalTwoRowLayout: UICollectionViewFlowLayout {
         self.scrollDirection = .horizontal
 
         // Define constants for spacing and cell dimensions.
-        let fullHeightCellWidth: CGFloat = (collectionView.bounds.width / 2)
+        let fullHeightCellWidth: CGFloat = (collectionView.bounds.width / 2) - 8
         let halfHeightCellWidth: CGFloat = ((collectionView.bounds.width - fullHeightCellWidth) - minimumInteritemSpacing) / 2
         
         var xOffset: CGFloat = 0.0
@@ -56,7 +56,7 @@ class HorizontalTwoRowLayout: UICollectionViewFlowLayout {
         // Calculate attributes for the first, full-height cell.
         if collectionView.numberOfItems(inSection: 0) > 0 {
             let indexPath = IndexPath(item: 0, section: 0)
-            let frame = CGRect(x: xOffset, y: 0, width: fullHeightCellWidth, height: contentHeight)
+            let frame = CGRect(x: xOffset, y: 0, width: fullHeightCellWidth, height: contentHeight + 8)
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = frame
             cache.append(attributes)
@@ -85,7 +85,7 @@ class HorizontalTwoRowLayout: UICollectionViewFlowLayout {
                 yOffset = 0
             }
 
-            let frame = CGRect(x: x, y: y, width: (halfHeightCellWidth), height: (collectionView.bounds.height - minimumLineSpacing) / 2 )
+            let frame = CGRect(x: x, y: y, width: (halfHeightCellWidth - 8), height: (collectionView.bounds.height - minimumLineSpacing) / 2 )
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = frame
             cache.append(attributes)

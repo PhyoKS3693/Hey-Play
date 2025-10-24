@@ -15,37 +15,35 @@ struct MovieDetailBottomView : View {
     @Binding var detailType : DetailType
     
     var body: some View {
-        VStack {
-            TrailerAndRecommendView(
-                tapTrailer: $tapTrailer,
-                tapRecommend: $tapRecommend,
-                tapEpisodes: $tapEpisodes,
-                detailType: $detailType
-            )
-            if tapEpisodes {
-                EpisodesListView()
-            }
-            
-             if tapRecommend {
-                RecommendView()
-            }
-            
-            if tapTrailer {
-                ZStack {
-                    VStack {
-                        MovieDetailDescriptionView()
-                        CastView()
-                    }
+        ScrollView {
+            VStack(content: {
+                if tapEpisodes {
+                    EpisodesListView()
                 }
-                .background(Color.grey)
-                .cornerRadius(20)
-            }
+                
+                if tapRecommend {
+                    RecommendView()
+                }
+                
+                if tapTrailer {
+                    ZStack {
+                        VStack {
+                            MovieDetailDescriptionView()
+                            CastView()
+                        }
+                    }
+                    .background(Color.grey)
+                    .cornerRadius(20)
+                }
+                Spacer()
+            })
         }
+        .background(Color.black)
         
     }
 }
 
-struct TrailerAndRecommendView : View {
+struct SeriesAndTrailerAndRecommendView : View {
     @Binding var tapTrailer : Bool
     @Binding var tapRecommend : Bool
     @Binding var tapEpisodes : Bool
