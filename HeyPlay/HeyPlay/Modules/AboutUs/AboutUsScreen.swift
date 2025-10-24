@@ -12,13 +12,18 @@ struct AboutUsScreen: View {
     var host: HostController?
     
     @StateObject private var viewModel: AboutUsViewModel
+    @State private var isLoading = true
     
     init(_ viewModel: AboutUsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {
-        Text("Hello, About Us!")
+        ZStack {
+            CommonWebView(source: .url("https://www.apple.com/newsroom/"), isLoading: $isLoading)
+        }
+        .navigationTitle("About Us")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

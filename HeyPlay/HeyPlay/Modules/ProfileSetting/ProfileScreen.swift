@@ -17,7 +17,9 @@ struct ProfileScreen: View {
     }
     
     var body: some View {
-        Text("Hello, Profile")
+        VStack {
+            
+        }
     }
 }
 
