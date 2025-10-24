@@ -11,6 +11,15 @@ struct MenuScreen: View {
     
     var host: HostController?
     
+    var didSelectProfile: (() -> Void)?
+    var didSelectChangePhoneNumber: (() -> Void)?
+    var didSelectWatchList: (() -> Void)?
+    var didSelectSubscriptionPlan: (() -> Void)?
+    var didSelectVIPHistory: (() -> Void)?
+    var didSelectRedemptionCode: (() -> Void)?
+    var didSelectPolicies: (() -> Void)?
+    var didSelectAboutUs: (() -> Void)?
+    
     @StateObject private var viewModel: MenuViewModel
     
     init(_ viewModel: MenuViewModel) {
@@ -312,21 +321,21 @@ struct MenuScreen: View {
     private func handleSelection(_ item: MenuItem) {
         switch item {
         case .profile:
-            print("Go to Profile")
+            didSelectProfile?()
         case .changePhone:
-            print("Go to Change Phone Number")
+            didSelectChangePhoneNumber?()
         case .watchlist:
-            print("Go to Watchlist")
+            didSelectWatchList?()
         case .subscription:
-            print("Go to Subscription Plan")
+            didSelectSubscriptionPlan?()
         case .vipHistory:
-            print("Go to VIP History")
+            didSelectVIPHistory?()
         case .redemption:
-            print("Go to Redemption Code")
+            didSelectRedemptionCode?()
         case .policies:
-            print("Go to Policies")
+            didSelectPolicies?()
         case .about:
-            print("Go to About Us")
+            didSelectAboutUs?()
         }
     }
 }
