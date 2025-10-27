@@ -39,3 +39,9 @@
 "Recommend" = "Recommend";
 "Description" = "Description";
 "Episodes" = "Episodes";
+
+//MARK: - Search
+"search" = "Search";
+"Search by keywords" = "Search by keywords";
+"Recent" = "Recent";
+"Clear All" = "Clear All";

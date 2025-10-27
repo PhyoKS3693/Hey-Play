@@ -38,12 +38,12 @@ struct CastItemView : View {
                     .padding(.leading , 10)
                 VStack(alignment: .leading, content: {
                     Text(title)
-                        .font(FontUtility.regularFont(size: 8))
+                        .font(FontUtility.smallText3())
                         .foregroundColor(Color.castType)
                         .multilineTextAlignment(.leading)
                     
                     Text(name)
-                        .font(FontUtility.regularFont(size: 10))
+                        .font(FontUtility.smallText1())
                         .foregroundColor(Color.white)
                         .multilineTextAlignment(.leading)
                 })

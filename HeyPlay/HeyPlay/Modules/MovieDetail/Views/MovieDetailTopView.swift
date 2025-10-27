@@ -40,33 +40,31 @@ struct MovieTitleInfoView : View {
         VStack(alignment: .center, spacing: 8) {
             // MARK: Movie title
             Text("ကြောက်သလို မမေ့နော်") // your title text
-         .font(FontUtility.largeTitleFont())
+                .font(FontUtility.heading1())
                 .foregroundColor(.white)
             
             // MARK: Details row
-            HStack(spacing: 10) {
-                Image("ic.calendar")
-                    .resizable()
-                    .frame(width: 20 , height: 20)
-                Text("July, 2025")
-                    .font(FontUtility.normalFont())
-                    .foregroundColor(.white.opacity(0.8))
-                
-                Image("ic.time")
-                    .resizable()
-                    .frame(width: 20 , height: 20)
-                Text("1 hr 30m")
-                    .font(FontUtility.normalFont())
-                    .foregroundColor(.white.opacity(0.8))
-                
-                Image("ic.type")
-                    .resizable()
-                    .frame(width: 20 , height: 20)
-                Text("Comedy, Horror")
-                    .font(FontUtility.normalFont())
-                    .foregroundColor(.white.opacity(0.8))
-                
-            }
+                HStack(spacing: 10) {
+                    Image("ic.calendar")
+                        .resizable()
+                        .frame(width: 20 , height: 20)
+                    Text("July, 2025")
+                        .font(FontUtility.smallText1())
+                        .foregroundColor(.white.opacity(0.8))
+                    
+                    Image("ic.time")
+                        .resizable()
+                        .frame(width: 20 , height: 20)
+                    Text("1 hr 30m")
+                        .font(FontUtility.smallText1())
+                        .foregroundColor(.white.opacity(0.8))
+                    Image("ic.type")
+                        .resizable()
+                        .frame(width: 20 , height: 20)
+                    Text("Comedy")
+                        .font(FontUtility.smallText1())
+                        .foregroundColor(.white.opacity(0.8))
+                }
         }
         .padding(.top , 10)
     }

@@ -98,12 +98,12 @@ struct OTPTopView : View {
             
             Text("Verification".localized())
                 .foregroundColor(.white)
-                .font(FontUtility.mediumFont())
+                .font(FontUtility.headline2())
             
             Text(String(format: "Please enter your 6-digits OTP codes that’s\nwe’ve sent to your mobile number".localized(), phoneNumber))
                 .multilineTextAlignment(.center)
                 .foregroundColor(.white)
-                .font(FontUtility.normalFont())
+                .font(FontUtility.subHeadline())
             
         })
         .padding()
@@ -117,7 +117,7 @@ struct TimerView : View {
     var body: some View {
         Text(String(format: "If you didn’t receive a code? Resend OTP in ".localized(), timeCount))
             .foregroundColor(.white)
-            .font(FontUtility.normalFont())
+            .font(FontUtility.body2())
             .padding()
             .onReceive(timer) { _ in
                 if timeCount > 0 {

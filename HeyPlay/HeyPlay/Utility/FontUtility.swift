@@ -44,36 +44,145 @@ struct FontUtility {
     }
 
     
-    static func largeTitle() -> UIFont {
-        return font(.medium, size: 17)
+//    static func largeTitle() -> UIFont {
+//        return font(.medium, size: 17)
+//    }
+//    
+//    static func normal() -> UIFont {
+//        return font(.medium, size: 13)
+//    }
+//    
+//    static func medium() -> UIFont {
+//        return font(.medium, size: 17)
+//    }
+//    
+//    static func regular(size : Int) -> UIFont {
+//        return font(.regular, size: CGFloat(size))
+//    }
+//
+//    
+//    static func largeTitleFont() -> Font {
+//        return Font(largeTitle())
+//    }
+//    
+//    static func normalFont() -> Font {
+//        return Font(normal())
+//    }
+//    
+//    static func mediumFont() -> Font {
+//        return Font(medium())
+//    }
+//    
+//    static func regularFont(size : Int) -> Font {
+//        return Font(regular(size: size))
+//    }
+    
+    
+    //MARK: - FontStyleGuideLine
+    static func largeTitle() -> Font {
+        return Font(font(.semiBold, size: 23))
     }
     
-    static func normal() -> UIFont {
+    static func heading1() -> Font {
+        return Font(font(.semiBold, size: 22))
+    }
+    
+    static func heading2() -> Font {
+        return Font(font(.semiBold, size: 20))
+    }
+    
+    static func headline1() -> Font {
+        return Font(font(.semiBold, size: 17))
+    }
+    
+    static func headline2() -> Font {
+        return Font(font(.semiBold, size: 17))
+    }
+    
+    static func subHeadline() -> Font {
+        return Font(font(.medium, size: 13))
+    }
+    
+    static func body1() -> Font {
+        return Font(font(.regular, size: 13))
+    }
+    
+    static func body2() -> Font {
+        return Font(font(.regular, size: 12))
+    }
+    
+    static func caption() -> Font {
+        return Font(font(.regular, size: 11))
+    }
+    
+    static func smallText1() -> Font {
+        return Font(font(.regular, size: 10))
+    }
+    
+    static func smallText2() -> Font {
+        return Font(font(.regular, size: 10))
+    }
+    
+    static func smallText3() -> Font {
+        return Font(font(.regular, size: 8))
+    }
+    
+    static func smallText4() -> Font {
+        return Font(font(.regular, size: 10))
+    }
+    
+    
+    //MARK: - UIFont
+    static func largeTitle() -> UIFont {
+        return font(.semiBold, size: 23)
+    }
+    
+    static func heading1() -> UIFont {
+        return font(.semiBold, size: 22)
+    }
+    
+    static func heading2() -> UIFont {
+        return font(.semiBold, size: 20)
+    }
+    
+    static func headline1() -> UIFont {
+        return font(.semiBold, size: 17)
+    }
+    
+    static func headline2() -> UIFont {
+        return font(.semiBold, size: 17)
+    }
+    
+    static func subHeadline() -> UIFont {
         return font(.medium, size: 13)
     }
     
-    static func medium() -> UIFont {
-        return font(.medium, size: 17)
+    static func body1() -> UIFont {
+        return font(.regular, size: 13)
     }
     
-    static func regular(size : Int) -> UIFont {
-        return font(.regular, size: CGFloat(size))
-    }
-
-    
-    static func largeTitleFont() -> Font {
-        return Font(largeTitle())
+    static func body2() -> UIFont {
+        return font(.regular, size: 12)
     }
     
-    static func normalFont() -> Font {
-        return Font(normal())
+    static func caption() -> UIFont {
+        return font(.regular, size: 11)
     }
     
-    static func mediumFont() -> Font {
-        return Font(medium())
+    static func smallText1() -> UIFont {
+        return font(.regular, size: 10)
     }
     
-    static func regularFont(size : Int) -> Font {
-        return Font(regular(size: size))
+    static func smallText2() -> UIFont {
+        return font(.regular, size: 10)
     }
+    
+    static func smallText3() -> UIFont {
+        return font(.regular, size: 8)
+    }
+    
+    static func smallText4() -> UIFont {
+        return font(.regular, size: 10)
+    }
+    
 }

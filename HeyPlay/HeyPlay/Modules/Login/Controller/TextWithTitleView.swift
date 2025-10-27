@@ -14,7 +14,7 @@ struct TextWithTitleView : View {
     var body: some View {
         VStack (alignment: .leading , spacing: 10, content: {
             Text("Phone Number".localized())
-                .font(FontUtility.normalFont())
+                .font(FontUtility.caption())
                 .foregroundColor(.white)
             
             ZStack(alignment: .leading) {
@@ -28,7 +28,7 @@ struct TextWithTitleView : View {
                     .padding(.horizontal, 20)
                     .frame(height: 40)
                     .background(Color.black)
-                    .font(FontUtility.normalFont())
+                    .font(FontUtility.caption())
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(Color.white, lineWidth: 1)

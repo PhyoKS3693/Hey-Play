@@ -62,11 +62,11 @@ struct EpisodeInfoView : View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10, content: {
             Text(episodeName)
-                .font(FontUtility.regularFont(size: 12))
+                .font(FontUtility.body2())
                 .foregroundColor(.white)
             
             Text(description)
-                .font(FontUtility.regularFont(size: 10))
+                .font(FontUtility.body2())
                 .foregroundColor(Color.castType)
         })
     }

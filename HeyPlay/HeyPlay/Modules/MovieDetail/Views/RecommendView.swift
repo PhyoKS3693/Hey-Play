@@ -91,7 +91,7 @@ struct RecommendItemView : View {
             
             HStack {
                 Text(movieTile)
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.subHeadline())
                     .foregroundColor(.white)
                 Spacer()
             }
@@ -111,7 +111,7 @@ struct PackageType : View {
                     .resizable()
                     .frame(width: 16 , height: 16)
                 Text(type.getTitle())
-                    .font(FontUtility.regularFont(size: 6))
+                    .font(FontUtility.smallText4())
                     .foregroundColor(.white)
             })
             .padding(.all , 5)

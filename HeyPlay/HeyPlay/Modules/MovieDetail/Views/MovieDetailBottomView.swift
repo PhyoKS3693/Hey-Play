@@ -58,7 +58,7 @@ struct SeriesAndTrailerAndRecommendView : View {
                         tapRecommend = false
                     }) {
                         Text("Episodes".localized())
-                        .font(FontUtility.regularFont(size: 13))
+                            .font(FontUtility.body1())
                         .foregroundColor(.white)
                         
                     }
@@ -73,7 +73,7 @@ struct SeriesAndTrailerAndRecommendView : View {
                     tapRecommend = false
                 }) {
                     Text("Trailers & Info".localized())
-                    .font(FontUtility.regularFont(size: 13))
+                        .font(FontUtility.body1())
                     .foregroundColor(.white)
                     
                 }
@@ -87,7 +87,7 @@ struct SeriesAndTrailerAndRecommendView : View {
                     tapRecommend = true
                 }) {
                     Text("Recommend".localized())
-                    .font(FontUtility.regularFont(size: 13))
+                        .font(FontUtility.body1())
                     .foregroundColor(.white)
                     
                 }
@@ -111,7 +111,7 @@ struct MovieDetailDescriptionView : View {
                 .cornerRadius(20)
             HStack {
                 Text("Description".localized())
-                    .font(FontUtility.largeTitleFont())
+                    .font(FontUtility.headline2())
                     .foregroundColor(.white)
                 Spacer()
             }
@@ -119,7 +119,7 @@ struct MovieDetailDescriptionView : View {
             
             Text("Watch live and new program every monthsWatch live and new program every monthsWatch live and new program every monthsWatch live and new program every monthsWatch live and new program every monthsWatch live and new program every months")
                 .foregroundColor(.white)
-                .font(FontUtility.normalFont())
+                .font(FontUtility.body2())
         }
         .padding()
     }

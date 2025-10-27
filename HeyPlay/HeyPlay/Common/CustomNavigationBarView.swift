@@ -39,7 +39,7 @@ struct CustomNavBar: View {
                     .frame(width: 20, height: 20)
                 
                 Text("VIP".localized())
-                    .font(FontUtility.largeTitleFont())
+                    .font(FontUtility.heading2())
                     .foregroundColor(.white)
             }
             .padding(.horizontal, 15)

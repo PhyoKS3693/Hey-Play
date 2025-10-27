@@ -44,6 +44,9 @@
 		F0232FEB2E9E4B2700C90769 /* OTPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0232FEA2E9E4B2700C90769 /* OTPView.swift */; };
 		F0232FED2E9E563100C90769 /* OTPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0232FEC2E9E563100C90769 /* OTPTextView.swift */; };
 		F0232FEF2E9E5B6900C90769 /* WrongOTPAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0232FEE2E9E5B6900C90769 /* WrongOTPAlertView.swift */; };
+		F0641B052EAB5584003FC69A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0641B042EAB5584003FC69A /* SearchView.swift */; };
+		F0641B072EAB7273003FC69A /* RecentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0641B062EAB7273003FC69A /* RecentView.swift */; };
+		F0641B092EAB7A5C003FC69A /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0641B082EAB7A5C003FC69A /* FlowLayout.swift */; };
 		F076089A2E44C11800E2402E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F07608912E44C11800E2402E /* Assets.xcassets */; };
 		F076089C2E44C11800E2402E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07608942E44C11800E2402E /* LaunchScreen.storyboard */; };
 		F076089D2E44C11800E2402E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F07608962E44C11800E2402E /* Main.storyboard */; };
@@ -144,6 +147,9 @@
 		F0232FEA2E9E4B2700C90769 /* OTPView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPView.swift; sourceTree = "<group>"; };
 		F0232FEC2E9E563100C90769 /* OTPTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPTextView.swift; sourceTree = "<group>"; };
 		F0232FEE2E9E5B6900C90769 /* WrongOTPAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongOTPAlertView.swift; sourceTree = "<group>"; };
+		F0641B042EAB5584003FC69A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		F0641B062EAB7273003FC69A /* RecentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentView.swift; sourceTree = "<group>"; };
+		F0641B082EAB7A5C003FC69A /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		F07608572E44BFCF00E2402E /* HeyPlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeyPlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F076088B2E44C11800E2402E /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		F07608902E44C11800E2402E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -305,6 +311,23 @@
 			path = OTP;
 			sourceTree = "<group>";
 		};
+		F0641B022EAB5574003FC69A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F0641B042EAB5584003FC69A /* SearchView.swift */,
+				F0641B062EAB7273003FC69A /* RecentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F0641B032EAB5574003FC69A /* Search  */ = {
+			isa = PBXGroup;
+			children = (
+				F0641B022EAB5574003FC69A /* Views */,
+			);
+			path = "Search ";
+			sourceTree = "<group>";
+		};
 		F076084E2E44BFCF00E2402E = {
 			isa = PBXGroup;
 			children = (
@@ -341,6 +364,7 @@
 				F0D9CAA92E9F7A1800BC6F68 /* CustomNavigationBarView.swift */,
 				F0D9CAAB2E9F7D6600BC6F68 /* BlurView.swift */,
 				F0BC715B2EA8BA6900D2CF55 /* LimitedScrollView.swift */,
+				F0641B082EAB7A5C003FC69A /* FlowLayout.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -357,6 +381,7 @@
 		F076088F2E44C11800E2402E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				F0641B032EAB5574003FC69A /* Search  */,
 				F0D9CAA52E9F767A00BC6F68 /* MovieDetail */,
 				F0232FE92E9E4B1B00C90769 /* OTP */,
 				F0232FA62E9E090400C90769 /* Login */,
@@ -701,6 +726,7 @@
 				F0F836CF2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift in Sources */,
 				F076089F2E44C11800E2402E /* AppDelegate.swift in Sources */,
 				F0D9CAAE2E9F838800BC6F68 /* MovieDetailTopView.swift in Sources */,
+				F0641B072EAB7273003FC69A /* RecentView.swift in Sources */,
 				F0232FEB2E9E4B2700C90769 /* OTPView.swift in Sources */,
 				F0C3B9E22E48939500ACE9EF /* ViewPagerViewController + Extension.swift in Sources */,
 				F0232FBE2E9E100600C90769 /* FontUtility.swift in Sources */,
@@ -711,9 +737,11 @@
 				F0A61BA42E45091300513A60 /* FullMovieCollectionViewCell.swift in Sources */,
 				F0D9CAB22E9F91F700BC6F68 /* CastView.swift in Sources */,
 				F0BC712E2EA0E49400D2CF55 /* MovieDetailViewController.swift in Sources */,
+				F0641B052EAB5584003FC69A /* SearchView.swift in Sources */,
 				F0232FE82E9E298800C90769 /* RoundedButtonView.swift in Sources */,
 				F0C3B9CF2E4888EF00ACE9EF /* SeriesTypeCollectionViewCell.swift in Sources */,
 				F0232FED2E9E563100C90769 /* OTPTextView.swift in Sources */,
+				F0641B092EAB7A5C003FC69A /* FlowLayout.swift in Sources */,
 				F0D17AB22E44CE4E00BA21FB /* CustomTabView.swift in Sources */,
 				F0BC71302EA2146C00D2CF55 /* EpisodesListView.swift in Sources */,
 				F0D17ACF2E44D9E800BA21FB /* UITableView + Extension.swift in Sources */,
