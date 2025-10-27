@@ -10,7 +10,7 @@ import SwiftUI
 struct WatchListScreen: View {
     var host: HostController?
     
-    @StateObject private var viewModel: WatchListViewModel
+    @ObservedObject private var viewModel: WatchListViewModel
     
     init(_ viewModel: WatchListViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

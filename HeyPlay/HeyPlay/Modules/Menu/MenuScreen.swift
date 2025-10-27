@@ -20,7 +20,7 @@ struct MenuScreen: View {
     var didSelectPolicies: (() -> Void)?
     var didSelectAboutUs: (() -> Void)?
     
-    @StateObject private var viewModel: MenuViewModel
+    @ObservedObject private var viewModel: MenuViewModel
     
     init(_ viewModel: MenuViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -39,7 +39,7 @@ struct MenuScreen: View {
                 ForEach(viewModel.sections) { section in
                     VStack {
                         sectionTitle(section.section.rawValue)
-                        LazyVStack {
+                        VStack {
                             ForEach(section.items) { item in
                                 Button {
                                     handleSelection(item)
@@ -48,10 +48,10 @@ struct MenuScreen: View {
                                 }
                             }
                         }
-                        .background {
+                        .background(
                             RoundedRectangle(cornerRadius: 15)
                                 .fill(Color("darkGrey_Color"))
-                        }
+                        )
                         
                     }
                     .padding(.horizontal, 12)
@@ -81,12 +81,12 @@ struct MenuScreen: View {
                         Text("Login")
                             .padding(.vertical, 4)
                             .font(FontUtility.mediumFont())
-                            .foregroundStyle(Color("white_color"))
+                            .foregroundColor(Color("white_color"))
                         
                         Text("Choose Login Method")
                             .padding(.bottom, 4)
                             .font(FontUtility.regularFont(size: 11))
-                            .foregroundStyle(Color("white_color"))
+                            .foregroundColor(Color("white_color"))
                     }
                     
                     Spacer()
@@ -99,10 +99,10 @@ struct MenuScreen: View {
             }
 
         }
-        .background {
+        .background (
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color("darkGrey_Color"))
-        }
+        )
         .padding(.horizontal, 12)
     }
     
@@ -126,12 +126,12 @@ struct MenuScreen: View {
                     Text(userName)
                         .padding(.vertical, 4)
                         .font(FontUtility.mediumFont())
-                        .foregroundStyle(Color("white_color"))
+                        .foregroundColor(Color("white_color"))
                     
                     Text(userPhoneNumber)
                         .padding(.bottom, 4)
                         .font(FontUtility.regularFont(size: 11))
-                        .foregroundStyle(Color("white_color"))
+                        .foregroundColor(Color("white_color"))
                 }
                 
                 Spacer()
@@ -147,24 +147,24 @@ struct MenuScreen: View {
                         
                         Text(userId)
                             .font(FontUtility.regularFont(size: 10))
-                            .foregroundStyle(Color("yellow_color"))
+                            .foregroundColor(Color("yellow_color"))
                             .padding(.trailing, 8)
                     }
                     .frame(height: 26)
-                    .background {
+                    .background (
                         RoundedRectangle(cornerRadius: 13)
                             .fill(Color("yellow_color").opacity(0.1))
-                    }
+                    )
                     .padding(.trailing, 20)
                 }
 
             }
 
         }
-        .background {
+        .background (
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color("darkGrey_Color"))
-        }
+        )
         .padding(.horizontal, 12)
     }
     
@@ -188,12 +188,12 @@ struct MenuScreen: View {
                     Text(userName)
                         .padding(.vertical, 4)
                         .font(FontUtility.mediumFont())
-                        .foregroundStyle(Color("white_color"))
+                        .foregroundColor(Color("white_color"))
                     
                     Text(userPhoneNumber)
                         .padding(.bottom, 4)
                         .font(FontUtility.regularFont(size: 11))
-                        .foregroundStyle(Color("white_color"))
+                        .foregroundColor(Color("white_color"))
                 }
                 
                 Spacer()
@@ -209,13 +209,13 @@ struct MenuScreen: View {
                         
                         Text(userId)
                             .font(FontUtility.regularFont(size: 10))
-                            .foregroundStyle(Color("yellow_color"))
+                            .foregroundColor(Color("yellow_color"))
                             .padding(.trailing, 8)
                     }
-                    .background {
+                    .background (
                         RoundedRectangle(cornerRadius: 13)
                             .fill(Color("yellow_color").opacity(0.1))
-                    }
+                    )
                     .frame(height: 26)
                     .padding(.trailing, 20)
                 }
@@ -237,11 +237,11 @@ struct MenuScreen: View {
                 VStack(alignment: .leading) {
                     Text("VIP Package")
                         .font(FontUtility.mediumFont())
-                        .foregroundStyle(Color("primaryBgColor"))
+                        .foregroundColor(Color("primaryBgColor"))
                     
                     Text("Expire Date : \(expireDate)")
                         .font(FontUtility.regularFont(size: 10))
-                        .foregroundStyle(Color("white_color"))
+                        .foregroundColor(Color("white_color"))
                 }
                 
                 Spacer()
@@ -257,15 +257,15 @@ struct MenuScreen: View {
                         
                         Text("30 Days")
                             .font(FontUtility.regularFont(size: 13))
-                            .foregroundStyle(Color("white_color"))
+                            .foregroundColor(Color("white_color"))
                             .padding(.trailing, 8)
                     }
                 }
-                .background {
+                .background (
                     RoundedRectangle(cornerRadius: 13)
                         .fill(Color("grey_Color"))
                     
-                }
+                )
                 .frame(height: 31)
                 .padding(.trailing, 8)
 
@@ -274,10 +274,10 @@ struct MenuScreen: View {
             .padding(.bottom, 12)
 
         }
-        .background {
+        .background (
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color("darkGrey_Color"))
-        }
+        )
         .padding(.horizontal, 12)
     }
     
@@ -289,7 +289,7 @@ struct MenuScreen: View {
         HStack {
             Text(sectionName)
                 .font(FontUtility.largeTitleFont())
-                .foregroundStyle(Color("white_color"))
+                .foregroundColor(Color("white_color"))
             
             Spacer()
         }
@@ -305,7 +305,7 @@ struct MenuScreen: View {
             
             Text(sectionName)
                 .font(FontUtility.normalFont())
-                .foregroundStyle(Color("white_color"))
+                .foregroundColor(Color("white_color"))
             
             Spacer()
             

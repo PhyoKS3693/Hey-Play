@@ -10,7 +10,7 @@ import SwiftUI
 struct ChangePhoneNumberScreen: View {
     var host: HostController?
     
-    @StateObject private var viewModel: ChangePhoneNumberViewModel
+    @ObservedObject private var viewModel: ChangePhoneNumberViewModel
     
     init(_ viewModel: ChangePhoneNumberViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

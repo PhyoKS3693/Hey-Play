@@ -10,7 +10,7 @@ import SwiftUI
 struct SubscriptionScreen: View {
     var host: HostController?
     
-    @StateObject private var viewModel: SubscriptionViewModel
+    @ObservedObject private var viewModel: SubscriptionViewModel
     
     init(_ viewModel: SubscriptionViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

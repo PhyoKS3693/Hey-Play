@@ -11,7 +11,7 @@ struct AboutUsScreen: View {
     
     var host: HostController?
     
-    @StateObject private var viewModel: AboutUsViewModel
+    @ObservedObject private var viewModel: AboutUsViewModel
     @State private var isLoading = true
     
     init(_ viewModel: AboutUsViewModel) {
@@ -22,8 +22,6 @@ struct AboutUsScreen: View {
         ZStack {
             CommonWebView(source: .url("https://www.apple.com/newsroom/"), isLoading: $isLoading)
         }
-        .navigationTitle("About Us")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -10,7 +10,7 @@ import SwiftUI
 struct VIPHistoryScreen: View {
     var host: HostController?
     
-    @StateObject private var viewModel: VIPHistoryViewModel
+    @ObservedObject private var viewModel: VIPHistoryViewModel
     
     init(_ viewModel: VIPHistoryViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

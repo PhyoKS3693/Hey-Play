@@ -10,7 +10,7 @@ import SwiftUI
 struct RedemptionCodeScreen: View {
     var host: HostController?
     
-    @StateObject private var viewModel: RedemptionCodeViewModel
+    @ObservedObject private var viewModel: RedemptionCodeViewModel
     
     init(_ viewModel: RedemptionCodeViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

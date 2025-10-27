@@ -10,7 +10,7 @@ import SwiftUI
 struct ProfileScreen: View {
     var host: HostController?
     
-    @StateObject private var viewModel: ProfileViewModel
+    @ObservedObject private var viewModel: ProfileViewModel
     
     init(_ viewModel: ProfileViewModel) {
         _viewModel = .init(wrappedValue: viewModel)

@@ -11,7 +11,7 @@ struct PoliciesScreen: View {
     
     var host: HostController?
     
-    @StateObject private var viewModel: PoliciesViewModel
+    @ObservedObject private var viewModel: PoliciesViewModel
     @State private var isLoading = true
     
     init(_ viewModel: PoliciesViewModel) {
@@ -22,8 +22,6 @@ struct PoliciesScreen: View {
         ZStack {
             CommonWebView(source: .url("https://www.apple.com/privacy/"), isLoading: $isLoading)
         }
-        .navigationTitle("Privacy Policy")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
