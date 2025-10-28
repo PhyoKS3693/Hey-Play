@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "quill_info.png",
+      "filename" : "Rectangle 1706.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "quill_info@2x.png",
+      "filename" : "Rectangle 1706@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "quill_info@3x.png",
+      "filename" : "Rectangle 1706@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
