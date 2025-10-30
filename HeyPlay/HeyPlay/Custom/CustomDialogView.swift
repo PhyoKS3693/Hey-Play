@@ -91,12 +91,12 @@ struct CustomDialogView<Content: View>: View {
                 .padding(.top, showCloseButton ? 0 : 20)
             
             Text(title)
-                .font(FontUtility.mediumFont())
+                .font(FontUtility.headline2())
                 .foregroundColor(Color("white_color"))
             
             if let message = message {
                 Text(message)
-                    .font(FontUtility.normalFont())
+                    .font(FontUtility.subHeadline())
                     .foregroundColor(Color("white_color"))
             }
             
@@ -108,7 +108,7 @@ struct CustomDialogView<Content: View>: View {
                         secondaryAction?()
                     } label: {
                         Text(secondaryButtonTitle)
-                            .font(FontUtility.regularFont(size: 13))
+                            .font(FontUtility.body1())
                             .foregroundColor(Color("white_color"))
                     }
                     .frame(maxWidth: .infinity)
@@ -123,7 +123,7 @@ struct CustomDialogView<Content: View>: View {
                         primaryAction?()
                     } label: {
                         Text(primaryButtonTitle)
-                            .font(FontUtility.regularFont(size: 13))
+                            .font(FontUtility.body1())
                             .foregroundColor(Color("white_color"))
                     }
                     .frame(maxWidth: .infinity)

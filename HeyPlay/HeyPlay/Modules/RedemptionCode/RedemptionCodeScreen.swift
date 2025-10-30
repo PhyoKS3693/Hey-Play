@@ -26,12 +26,12 @@ struct RedemptionCodeScreen: View {
                 .frame(width: 220, height: 220)
             
             Text("Successful")
-                .font(FontUtility.mediumFont())
+                .font(FontUtility.headline2())
                 .foregroundColor(Color("white_color"))
                 .padding(.horizontal, 4)
             
             Text("Your redemption code is success")
-                .font(FontUtility.regularFont(size: 13))
+                .font(FontUtility.body1())
                 .foregroundColor(Color("white_color"))
                 .padding(.horizontal, 4)
             
@@ -39,7 +39,7 @@ struct RedemptionCodeScreen: View {
                 didTapOkay?()
             } label: {
                 Text("Okay")
-                    .font(FontUtility.regularFont(size: 13))
+                    .font(FontUtility.body1())
                     .foregroundColor(Color("white_color"))
             }
             .frame(maxWidth: .infinity)
