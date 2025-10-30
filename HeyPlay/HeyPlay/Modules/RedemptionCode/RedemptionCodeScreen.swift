@@ -10,6 +10,8 @@ import SwiftUI
 struct RedemptionCodeScreen: View {
     var host: HostController?
     
+    var didTapOkay: (() -> Void)?
+    
     @ObservedObject private var viewModel: RedemptionCodeViewModel
     
     init(_ viewModel: RedemptionCodeViewModel) {
@@ -17,7 +19,34 @@ struct RedemptionCodeScreen: View {
     }
     
     var body: some View {
-        Text("Hello, Redemption Code")
+        VStack(spacing: 20){
+            Image("redeem_success")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 220, height: 220)
+            
+            Text("Successful")
+                .font(FontUtility.mediumFont())
+                .foregroundColor(Color("white_color"))
+                .padding(.horizontal, 4)
+            
+            Text("Your redemption code is success")
+                .font(FontUtility.regularFont(size: 13))
+                .foregroundColor(Color("white_color"))
+                .padding(.horizontal, 4)
+            
+            Button {
+                didTapOkay?()
+            } label: {
+                Text("Okay")
+                    .font(FontUtility.regularFont(size: 13))
+                    .foregroundColor(Color("white_color"))
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color("pink_Color"))
+            .cornerRadius(20)
+        }
     }
 }
 

@@ -38,6 +38,7 @@
 		AD1E04A52EAB7C73009283FA /* RedemptionCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04A42EAB7C73009283FA /* RedemptionCodeViewModel.swift */; };
 		AD1E04A72EAB8A37009283FA /* CommonWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04A62EAB8A37009283FA /* CommonWebView.swift */; };
 		AD1E04E52EB0B698009283FA /* SubscriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04E42EB0B698009283FA /* SubscriptionDataSource.swift */; };
+		AD1E05532EB20CFC009283FA /* CustomDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E05522EB20CFC009283FA /* CustomDialogView.swift */; };
 		D9CC2E2BA7524BFCB2CF6C71 /* Pods_HeyPlay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */; };
 		F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */; };
 		F0003A7F2E45138000C7984D /* SeriesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0003A7E2E45138000C7984D /* SeriesTableViewCell.xib */; };
@@ -162,6 +163,7 @@
 		AD1E04A42EAB7C73009283FA /* RedemptionCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionCodeViewModel.swift; sourceTree = "<group>"; };
 		AD1E04A62EAB8A37009283FA /* CommonWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWebView.swift; sourceTree = "<group>"; };
 		AD1E04E42EB0B698009283FA /* SubscriptionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDataSource.swift; sourceTree = "<group>"; };
+		AD1E05522EB20CFC009283FA /* CustomDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDialogView.swift; sourceTree = "<group>"; };
 		DAAFCF8DF016EC327AD13549 /* Pods-HeyPlay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.debug.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.debug.xcconfig"; sourceTree = "<group>"; };
 		F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
 		F0003A7D2E45138000C7984D /* SeriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesTableViewCell.swift; sourceTree = "<group>"; };
@@ -628,6 +630,7 @@
 				F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */,
 				F0C3B9AF2E485EB000ACE9EF /* HotActionView.swift */,
 				F0C3B9B12E485EB800ACE9EF /* HotActionView.xib */,
+				AD1E05522EB20CFC009283FA /* CustomDialogView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -894,6 +897,7 @@
 				AD1E04772EAB77BC009283FA /* AboutUsViewController.swift in Sources */,
 				AD1E04992EAB7C04009283FA /* WatchListViewModel.swift in Sources */,
 				F0D17AB82E44D03200BA21FB /* Enums.swift in Sources */,
+				AD1E05532EB20CFC009283FA /* CustomDialogView.swift in Sources */,
 				F0D9CAB02E9F83D800BC6F68 /* MovieDetailBottomView.swift in Sources */,
 				AD1E03DC2EA9EC7A009283FA /* MenuScreen.swift in Sources */,
 				F0003A802E45138000C7984D /* SeriesTableViewCell.swift in Sources */,

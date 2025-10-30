@@ -25,6 +25,10 @@ final class RedemptionCodeViewController: UIHostingController<RedemptionCodeScre
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
+        
+        rootView.didTapOkay = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
 }
