@@ -22,12 +22,15 @@ class BaseViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setCurrentVC()
         setNavBar()
         setupUI()
         bindObserver()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setCurrentVC()
+    }
     func setCurrentVC() {
         ViewNavigation.shared.currentViewController = self
     }
