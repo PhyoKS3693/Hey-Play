@@ -71,11 +71,11 @@ struct AlertMessageView : View {
         VStack{
             Text(title)
                 .foregroundColor(.white)
-                .font(FontUtility.largeTitleFont())
+                .font(FontUtility.headline2())
             Spacer()
             Text(message)
                 .foregroundColor(.white)
-                .font(FontUtility.normalFont())
+                .font(FontUtility.subHeadline())
         }
         .padding()
     }
@@ -94,7 +94,7 @@ struct ButtonsView : View {
                 isShow = false
             } label: {
                 Text("Cancel".localized())
-                    .font(FontUtility.mediumFont())
+                    .font(FontUtility.body1())
                     .foregroundColor(.white)
                     
                     
@@ -109,7 +109,7 @@ struct ButtonsView : View {
                 isShow = false
             } label: {
                 Text("Resend".localized())
-                    .font(FontUtility.mediumFont())
+                    .font(FontUtility.body1())
                     .foregroundColor(.white)
                     
                     

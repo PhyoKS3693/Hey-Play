@@ -27,7 +27,7 @@ struct WatchListScreen: View {
                     self.isShowRecent = true
                 } label: {
                     Text("Recent")
-                        .font(FontUtility.regularFont(size: 13))
+                        .font(FontUtility.body1())
                         .foregroundColor(Color("white_color"))
                         .padding(6)
                 }
@@ -41,7 +41,7 @@ struct WatchListScreen: View {
                     self.isShowRecent = false
                 } label: {
                     Text("Watchlist")
-                        .font(FontUtility.regularFont(size: 13))
+                        .font(FontUtility.body1())
                         .foregroundColor(Color("white_color"))
                         .padding(6)
                 }
@@ -56,7 +56,7 @@ struct WatchListScreen: View {
                     self.didTapClearAll?()
                 } label: {
                     Text("Clear All")
-                        .font(FontUtility.regularFont(size: 12))
+                        .font(FontUtility.body2())
                         .foregroundColor(Color("red_Color"))
                         .padding(.horizontal, 8)
                 }
@@ -96,7 +96,7 @@ struct WatchListScreen: View {
             
             VStack(alignment: .leading) {
                 Text(videoTitle)
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 4)
                 
@@ -106,11 +106,11 @@ struct WatchListScreen: View {
                         .padding(.trailing, 4)
                     
                     Text("Last watch on:")
-                        .font(FontUtility.regularFont(size: 10))
+                        .font(FontUtility.smallText1())
                         .foregroundColor(Color("white_color"))
                     
                     Text(lastWatchTime)
-                        .font(FontUtility.regularFont(size: 10))
+                        .font(FontUtility.smallText1())
                         .foregroundColor(Color("white_color"))
                     
                     Spacer()
@@ -148,7 +148,7 @@ struct WatchListScreen: View {
             
             VStack(alignment: .leading) {
                 Text(videoTitle)
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 4)
                 
@@ -158,11 +158,11 @@ struct WatchListScreen: View {
                         .padding(.trailing, 4)
                     
                     Text("Watchlist on:")
-                        .font(FontUtility.regularFont(size: 10))
+                        .font(FontUtility.smallText1())
                         .foregroundColor(Color("white_color"))
                     
                     Text(lastWatchTime)
-                        .font(FontUtility.regularFont(size: 10))
+                        .font(FontUtility.smallText1())
                         .foregroundColor(Color("white_color"))
                     
                     Spacer()

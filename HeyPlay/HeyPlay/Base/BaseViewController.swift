@@ -22,12 +22,15 @@ class BaseViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setCurrentVC()
         setNavBar()
         setupUI()
         bindObserver()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setCurrentVC()
+    }
     func setCurrentVC() {
         ViewNavigation.shared.currentViewController = self
     }
@@ -120,17 +123,17 @@ class BaseViewController: UIViewController {
     }
     
     func updateItem() {
-        if let _ = self.stackView {
-            self.stackView?.removeFromSuperview()
-        }
-        
-        if let _ = self.bottomBGView {
-            self.bottomBGView?.removeFromSuperview()
-        }
+//        if let _ = self.stackView {
+//            self.stackView?.removeFromSuperview()
+//        }
+//        
+//        if let _ = self.bottomBGView {
+//            self.bottomBGView?.removeFromSuperview()
+//        }
         
         updateView()
-        setupBottomBar()
-        setTabBarItem()
+//        setupBottomBar()
+//        setTabBarItem()
         
     }
     

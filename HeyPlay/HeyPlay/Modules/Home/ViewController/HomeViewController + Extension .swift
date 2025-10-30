@@ -53,10 +53,17 @@ extension HomeViewController : UITableViewDelegate , UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else {
                 return UITableViewCell()
             }
+            cell.navigateToMovieDetail = { [weak self]  id in
+                ViewNavigation.shared.showMovieDetail(detailType: .movie)
+            }
             return cell
         case .series:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SeriesTableViewCell.identifier, for: indexPath ) as? SeriesTableViewCell else {
                 return UITableViewCell()
+            }
+        
+            cell.navigateToSeriesDetail = { [weak self]  id in
+                ViewNavigation.shared.showMovieDetail(detailType: .series)
             }
             
             return cell
@@ -91,20 +98,28 @@ extension HomeViewController {
     }
     
     func setRightBarItems() {
-        let searchImgView = UIImageView(
-            image: UIImage(named: "ic-search")
-        )
         let searchItem = UIBarButtonItem(
-            customView: searchImgView
+            image:  UIImage(named: "ic-search")?.withRenderingMode(.alwaysOriginal),
+            style: .done,
+            target: self,
+            action: #selector(presentSearch)
         )
         
-        let notiImgView = UIImageView(
-            image: UIImage(named: "ic-noti")
-        )
         let notiItem = UIBarButtonItem(
-            customView: notiImgView
+            image:  UIImage(named: "ic-noti")?.withRenderingMode(.alwaysOriginal),
+            style: .done,
+            target: self,
+            action: #selector(presentNoti)
         )
         
         navigationItem.rightBarButtonItems = [searchItem , notiItem]
+    }
+    
+    @objc func presentSearch() {
+        ViewNavigation.shared.showSearchView()
+    }
+    
+    @objc func presentNoti() {
+        ViewNavigation.shared.showNotification()
     }
 }

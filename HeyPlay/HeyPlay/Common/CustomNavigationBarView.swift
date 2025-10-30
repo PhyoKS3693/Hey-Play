@@ -39,7 +39,7 @@ struct CustomNavBar: View {
                     .frame(width: 20, height: 20)
                 
                 Text("VIP".localized())
-                    .font(FontUtility.largeTitleFont())
+                    .font(FontUtility.heading2())
                     .foregroundColor(.white)
             }
             .padding(.horizontal, 15)
@@ -61,7 +61,6 @@ struct CustomNavBar: View {
                     .clipShape(Circle())
             }
         }
-        .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .cornerRadius(20)
     }

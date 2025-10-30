@@ -21,14 +21,14 @@ struct VIPHistoryScreen: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Start Date")
-                        .font(FontUtility.regularFont(size: 11))
+                        .font(FontUtility.caption())
                         .foregroundColor(Color("white_color"))
                     
                     Button {
                         print("start tap")
                     } label: {
                         Text("2025-02-07")
-                            .font(FontUtility.regularFont(size: 13))
+                            .font(FontUtility.body1())
                             .foregroundColor(Color("white_color"))
                     }
                     .padding(10)
@@ -41,14 +41,14 @@ struct VIPHistoryScreen: View {
                 
                 VStack(alignment: .leading) {
                     Text("End Date")
-                        .font(FontUtility.regularFont(size: 11))
+                        .font(FontUtility.caption())
                         .foregroundColor(Color("white_color"))
                     
                     Button {
                         print("end tap")
                     } label: {
                         Text("2025-02-07")
-                            .font(FontUtility.regularFont(size: 13))
+                            .font(FontUtility.body1())
                             .foregroundColor(Color("white_color"))
                     }
                     .frame(width: 140, height: 40)
@@ -91,12 +91,12 @@ struct VIPHistoryScreen: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(type)
-                            .font(FontUtility.mediumFont())
+                            .font(FontUtility.headline2())
                             .foregroundColor(Color("white_color"))
                             .padding(.vertical, 4)
                         
                         Text("Billed \(type)")
-                            .font(FontUtility.regularFont(size: 10))
+                            .font(FontUtility.smallText1())
                             .foregroundColor(Color("white_color"))
                             .padding(.vertical, 2)
                     }
@@ -106,14 +106,14 @@ struct VIPHistoryScreen: View {
                     
                     VStack(alignment: .trailing) {
                         Text("\(amount) MMK")
-                            .font(FontUtility.mediumFont())
+                            .font(FontUtility.headline2())
                             .foregroundColor(Color("white_color"))
                             .padding(.horizontal, 4)
                 
                         
                         if status == 1 {
                             Text("Active")
-                                .font(FontUtility.regularFont(size: 8))
+                                .font(FontUtility.smallText3())
                                 .foregroundColor(Color("black_Color"))
                                 .padding(.horizontal, 4)
                                 .padding(.vertical, 2)
@@ -124,7 +124,7 @@ struct VIPHistoryScreen: View {
                             
                         } else if status == 2 {
                             Text("Failed")
-                                .font(FontUtility.regularFont(size: 8))
+                                .font(FontUtility.smallText3())
                                 .foregroundColor(Color("black_Color"))
                                 .padding(.horizontal, 4)
                                 .padding(.vertical, 2)
@@ -134,7 +134,7 @@ struct VIPHistoryScreen: View {
                                 )
                         }else {
                             Text("Expired")
-                                .font(FontUtility.regularFont(size: 8))
+                                .font(FontUtility.smallText3())
                                 .foregroundColor(Color("black_Color"))
                                 .padding(.horizontal, 4)
                                 .padding(.vertical, 2)
@@ -150,14 +150,14 @@ struct VIPHistoryScreen: View {
             
             HStack {
                 Text("Payment ID")
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 4)
                 
                 Spacer()
                 
                 Text(paymentId)
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 4)
             }
@@ -167,14 +167,14 @@ struct VIPHistoryScreen: View {
             
             HStack {
                 Text("Gateway")
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 4)
                 
                 Spacer()
                 
                 Text(paymentMethod)
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 4)
             }
@@ -184,14 +184,14 @@ struct VIPHistoryScreen: View {
             
             HStack {
                 Text("Duration")
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 8)
                 
                 Spacer()
                 
                 Text(duration)
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 8)
             }

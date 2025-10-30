@@ -17,6 +17,7 @@ class ViewController: BaseViewController {
         setBottomTabBar()
     }
     func setBottomTabBar() {
+        selectedTabItem = .menu
         setupBottomBar()
         setTabBarItem()
     }

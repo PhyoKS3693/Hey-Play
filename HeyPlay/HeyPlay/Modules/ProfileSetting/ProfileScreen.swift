@@ -38,14 +38,14 @@ struct ProfileScreen: View {
                 }
                 
                 Text("Name")
-                    .font(FontUtility.regularFont(size: 11))
+                    .font(FontUtility.caption())
                     .foregroundColor(Color("white_color"))
                 
                 TextField("", text: $userName)
                     .padding(.horizontal, 20)
                     .frame(height: 40)
                     .background(Color.black)
-                    .font(FontUtility.normalFont())
+                    .font(FontUtility.body1())
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(Color.white, lineWidth: 1)
@@ -54,11 +54,11 @@ struct ProfileScreen: View {
                 
                 HStack {
                     Text("Account")
-                        .font(FontUtility.regularFont(size: 11))
+                        .font(FontUtility.caption())
                         .foregroundColor(Color("white_color"))
                     
                     Text("(Optional)")
-                        .font(FontUtility.regularFont(size: 11))
+                        .font(FontUtility.caption())
                         .foregroundColor(Color("grey_color"))
                 }
                 
@@ -66,7 +66,7 @@ struct ProfileScreen: View {
                     .padding(.horizontal, 20)
                     .frame(height: 40)
                     .background(Color.black)
-                    .font(FontUtility.normalFont())
+                    .font(FontUtility.body1())
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(Color.white, lineWidth: 1)
@@ -74,7 +74,7 @@ struct ProfileScreen: View {
                     .foregroundColor(.white)
                 
                 Text("Linked Accounts")
-                    .font(FontUtility.mediumFont())
+                    .font(FontUtility.headline2())
                     .foregroundColor(Color("white_color"))
                     .padding(.vertical, 10)
                 
@@ -101,14 +101,14 @@ struct ProfileScreen: View {
                 
                 VStack (alignment: .leading) {
                     Text(name)
-                        .font(FontUtility.regularFont(size: 13))
+                        .font(FontUtility.caption())
                         .foregroundColor(.white)
                         .padding(.top, 8)
                         .padding(.bottom, 4)
                     
                     if url != nil {
                         Text(url ?? "")
-                            .font(FontUtility.regularFont(size: 13))
+                            .font(FontUtility.body1())
                             .foregroundColor(.white)
                             .padding(.bottom, 8)
                     }

@@ -14,6 +14,8 @@ class SeriesTableViewCell: UITableViewCell {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var btnViewAll: UIButton!
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
+    
+    var navigateToSeriesDetail : ((Int) -> Void)?
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -40,6 +42,7 @@ class SeriesTableViewCell: UITableViewCell {
     }
     
     @IBAction func onClickViewAll(_ sender: Any) {
+        
     }
 }
 
@@ -58,5 +61,9 @@ extension SeriesTableViewCell : UICollectionViewDelegate , UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.width , height: 90)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigateToSeriesDetail?(indexPath.item)
     }
 }

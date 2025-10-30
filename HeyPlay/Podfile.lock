@@ -1,10 +1,6 @@
 PODS:
   - FSPagerView (0.8.3)
-<<<<<<< Updated upstream
   - Kingfisher (8.3.2)
-=======
-  - Kingfisher (8.3.1)
->>>>>>> Stashed changes
   - SnapKit (5.7.1)
   - ViewPager-Swift (2.0.2)
 
@@ -23,14 +19,10 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   FSPagerView: 670405b2f18e2a87fa37f20b00de783e562c25a8
-<<<<<<< Updated upstream
   Kingfisher: 0621d0ac0c78fecb19f6dc5303bde2b52abaf2f5
-=======
-  Kingfisher: 3204d23de16b5ea53541c44ca5a8efb55741dec3
->>>>>>> Stashed changes
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   ViewPager-Swift: 92fa2a54d56998c85526eaaafc4b7b3f4830ca36
 
-PODFILE CHECKSUM: 761146e779d80786c3f1dddd7c586e73a47604e9
+PODFILE CHECKSUM: a8f0c40727ac12a55048cd49bea5847dd52b5026
 
 COCOAPODS: 1.16.2

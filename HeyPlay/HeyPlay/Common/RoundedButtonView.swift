@@ -74,7 +74,7 @@ struct RoundedButtonView :  View {
                 }
                 
                 Text(buttonType.getTitle())
-                    .font(FontUtility.normalFont())
+                    .font(FontUtility.body1())
                 
                 if buttonType != .normal && buttonType != .verify {
                     Spacer()

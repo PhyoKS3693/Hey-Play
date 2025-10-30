@@ -86,12 +86,12 @@ struct MenuScreen: View {
                     VStack(alignment: .leading) {
                         Text("Login")
                             .padding(.vertical, 4)
-                            .font(FontUtility.mediumFont())
+                            .font(FontUtility.subHeadline())
                             .foregroundColor(Color("white_color"))
                         
                         Text("Choose Login Method")
                             .padding(.bottom, 4)
-                            .font(FontUtility.regularFont(size: 11))
+                            .font(FontUtility.caption())
                             .foregroundColor(Color("white_color"))
                     }
                     
@@ -131,12 +131,12 @@ struct MenuScreen: View {
                 VStack(alignment: .leading) {
                     Text(userName)
                         .padding(.vertical, 4)
-                        .font(FontUtility.mediumFont())
+                        .font(FontUtility.subHeadline())
                         .foregroundColor(Color("white_color"))
                     
                     Text(userPhoneNumber)
                         .padding(.bottom, 4)
-                        .font(FontUtility.regularFont(size: 11))
+                        .font(FontUtility.caption())
                         .foregroundColor(Color("white_color"))
                 }
                 
@@ -152,7 +152,7 @@ struct MenuScreen: View {
                             .padding(.leading, 8)
                         
                         Text(userId)
-                            .font(FontUtility.regularFont(size: 10))
+                            .font(FontUtility.caption())
                             .foregroundColor(Color("yellow_color"))
                             .padding(.trailing, 8)
                     }
@@ -193,12 +193,12 @@ struct MenuScreen: View {
                 VStack(alignment: .leading) {
                     Text(userName)
                         .padding(.vertical, 4)
-                        .font(FontUtility.mediumFont())
+                        .font(FontUtility.subHeadline())
                         .foregroundColor(Color("white_color"))
                     
                     Text(userPhoneNumber)
                         .padding(.bottom, 4)
-                        .font(FontUtility.regularFont(size: 11))
+                        .font(FontUtility.caption())
                         .foregroundColor(Color("white_color"))
                 }
                 
@@ -214,7 +214,7 @@ struct MenuScreen: View {
                             .padding(.leading, 8)
                         
                         Text(userId)
-                            .font(FontUtility.regularFont(size: 10))
+                            .font(FontUtility.caption())
                             .foregroundColor(Color("yellow_color"))
                             .padding(.trailing, 8)
                     }
@@ -242,11 +242,11 @@ struct MenuScreen: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("VIP Package")
-                        .font(FontUtility.mediumFont())
+                        .font(FontUtility.subHeadline())
                         .foregroundColor(Color("primaryBgColor"))
                     
                     Text("Expire Date : \(expireDate)")
-                        .font(FontUtility.regularFont(size: 10))
+                        .font(FontUtility.caption())
                         .foregroundColor(Color("white_color"))
                 }
                 
@@ -262,7 +262,7 @@ struct MenuScreen: View {
                             .padding(.leading, 8)
                         
                         Text("30 Days")
-                            .font(FontUtility.regularFont(size: 13))
+                            .font(FontUtility.subHeadline())
                             .foregroundColor(Color("white_color"))
                             .padding(.trailing, 8)
                     }
@@ -294,7 +294,7 @@ struct MenuScreen: View {
     private func sectionTitle(_ sectionName: String) -> some View {
         HStack {
             Text(sectionName)
-                .font(FontUtility.largeTitleFont())
+                .font(FontUtility.largeTitle())
                 .foregroundColor(Color("white_color"))
             
             Spacer()
@@ -310,7 +310,7 @@ struct MenuScreen: View {
                 .padding(.horizontal, 10)
             
             Text(sectionName)
-                .font(FontUtility.normalFont())
+                .font(FontUtility.smallText1())
                 .foregroundColor(Color("white_color"))
             
             Spacer()

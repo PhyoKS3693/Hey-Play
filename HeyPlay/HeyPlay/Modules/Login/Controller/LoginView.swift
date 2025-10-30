@@ -78,11 +78,11 @@ struct LoginTopView : View {
                 .padding(.bottom, 20)
             
             Text("Get Started".localized())
-                .font(FontUtility.largeTitleFont())
+                .font(FontUtility.headline2())
                 .foregroundColor(.white)
             
             Text("Hello! Let’s join with us".localized())
-                .font(FontUtility.normalFont())
+                .font(FontUtility.subHeadline())
                 .foregroundColor(.white)
         })
     }
@@ -96,7 +96,7 @@ struct SepartorView : View {
                 .foregroundColor(.lightGrey)
             
             Text("OR".localized())
-                .font(FontUtility.largeTitleFont())
+                .font(FontUtility.smallText1())
                 .foregroundColor(.white)
             
             Rectangle()
@@ -116,7 +116,7 @@ struct SkipButtonView : View {
                 isTapSkip = true
             } label: {
                 Text("Skip".localized())
-                    .font(FontUtility.normalFont())
+                    .font(FontUtility.smallText1())
                     .foregroundColor(.white)
                     .padding()
             }
