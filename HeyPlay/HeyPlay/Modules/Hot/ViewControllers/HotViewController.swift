@@ -21,6 +21,7 @@ class HotViewController: BaseViewController {
     }
     
     func setBottomTabBar() {
+        selectedTabItem = .hot
         setupBottomBar()
         setTabBarItem()
     }

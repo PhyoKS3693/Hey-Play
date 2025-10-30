@@ -45,6 +45,7 @@ class ViewPagerViewController: BaseViewController {
     }
     
     func setBottomTabBar() {
+        selectedTabItem = movieSeriesType == .movie ? .movie : .series
         setupBottomBar()
         setTabBarItem()
     }

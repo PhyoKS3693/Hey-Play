@@ -30,6 +30,7 @@ class HomeViewController: BaseViewController {
         setRightBarItems()
     }
     func setBottomTabBar() {
+        selectedTabItem = .home
         setupBottomBar()
         setTabBarItem()
     }

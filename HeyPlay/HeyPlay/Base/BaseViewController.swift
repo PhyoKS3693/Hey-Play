@@ -123,17 +123,17 @@ class BaseViewController: UIViewController {
     }
     
     func updateItem() {
-        if let _ = self.stackView {
-            self.stackView?.removeFromSuperview()
-        }
-        
-        if let _ = self.bottomBGView {
-            self.bottomBGView?.removeFromSuperview()
-        }
+//        if let _ = self.stackView {
+//            self.stackView?.removeFromSuperview()
+//        }
+//        
+//        if let _ = self.bottomBGView {
+//            self.bottomBGView?.removeFromSuperview()
+//        }
         
         updateView()
-        setupBottomBar()
-        setTabBarItem()
+//        setupBottomBar()
+//        setTabBarItem()
         
     }
     
