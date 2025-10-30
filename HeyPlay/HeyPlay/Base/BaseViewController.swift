@@ -149,7 +149,7 @@ class BaseViewController: UIViewController {
             case .series:
                 self.showMovieSeriesVc(with: .series)
             case .menu:
-                self.showMenuVC(color: .red)
+                self.showMenuVC()
             }
         }
        
@@ -187,10 +187,9 @@ class BaseViewController: UIViewController {
     }
     
     
-    func showMenuVC(color : UIColor ){
+    func showMenuVC( ){
         if let delegate = self.delegate {
-            let initialViewController = ViewController()
-            initialViewController.view.backgroundColor = color
+            let initialViewController = MenuViewController()
             let nav = UINavigationController(rootViewController: initialViewController)
             nav.isNavigationBarHidden = false
             delegate.window?.isHidden = false

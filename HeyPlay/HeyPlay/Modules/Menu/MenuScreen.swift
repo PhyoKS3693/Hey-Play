@@ -364,13 +364,13 @@ struct MenuScreen: View {
         ) {
             VStack(alignment: .leading) {
                 Text("Redemption Code")
-                    .font(FontUtility.regularFont(size: 11))
+                    .font(FontUtility.caption())
                     .foregroundColor(Color("white_color"))
                 
                 TextField("", text: $redeemCode)
                     .padding(.horizontal, 20)
                     .frame(height: 40)
-                    .font(FontUtility.normalFont())
+                    .font(FontUtility.body1())
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(Color.white, lineWidth: 1)

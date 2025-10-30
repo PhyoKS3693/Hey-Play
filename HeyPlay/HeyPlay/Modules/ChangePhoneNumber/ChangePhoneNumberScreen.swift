@@ -26,24 +26,24 @@ struct ChangePhoneNumberScreen: View {
                 .frame(width: 228, height: 234)
             
             Text("Phone Number")
-                .font(FontUtility.mediumFont())
+                .font(FontUtility.subHeadline())
                 .foregroundColor(Color("white_color"))
                 .padding(.horizontal, 4)
             
             Text("Your new phone number")
-                .font(FontUtility.regularFont(size: 13))
+                .font(FontUtility.body1())
                 .foregroundColor(Color("white_color"))
                 .padding(.horizontal, 4)
             
             VStack(alignment: .leading) {
                 Text("Phone Number")
-                    .font(FontUtility.regularFont(size: 11))
+                    .font(FontUtility.caption())
                     .foregroundColor(Color("white_color"))
                 
                 TextField("", text: $newPhoneNumber)
                     .padding(.horizontal, 20)
                     .frame(height: 40)
-                    .font(FontUtility.normalFont())
+                    .font(FontUtility.body1())
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(Color.white, lineWidth: 1)
@@ -51,7 +51,7 @@ struct ChangePhoneNumberScreen: View {
                     .foregroundColor(.white)
                 
                 Text("Ooredoo ဖုန်းနံပါတ်များဖြင့်ပြောင်းလို့မရသေးပါ")
-                    .font(FontUtility.regularFont(size: 12))
+                    .font(FontUtility.body2())
                     .foregroundColor(Color("red_Color"))
             }
             
@@ -59,7 +59,7 @@ struct ChangePhoneNumberScreen: View {
                 //didTapOkay?()
             } label: {
                 Text("Continue")
-                    .font(FontUtility.regularFont(size: 13))
+                    .font(FontUtility.body1())
                     .foregroundColor(Color("white_color"))
             }
             .frame(maxWidth: .infinity)
