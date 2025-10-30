@@ -48,4 +48,11 @@ class ViewNavigation : BaseViewController{
         vc.present(controller, animated: true)
     }
     
+    func showMenu(){
+        guard let vc = currentViewController as? SplashViewController else {
+            return
+        }
+        let con = MenuViewController()
+        vc.navigationController?.pushViewController(con, animated: true)
+    }
 }

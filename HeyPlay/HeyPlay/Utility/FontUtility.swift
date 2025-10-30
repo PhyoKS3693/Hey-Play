@@ -42,40 +42,6 @@ struct FontUtility {
         let font = UIFont(name: font.rawValue, size: UIFont.preferredFont(forTextStyle: textStyle).pointSize)
         return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font ?? UIFont.systemFont(ofSize: 17))
     }
-
-    
-//    static func largeTitle() -> UIFont {
-//        return font(.medium, size: 17)
-//    }
-//    
-//    static func normal() -> UIFont {
-//        return font(.medium, size: 13)
-//    }
-//    
-//    static func medium() -> UIFont {
-//        return font(.medium, size: 17)
-//    }
-//    
-//    static func regular(size : Int) -> UIFont {
-//        return font(.regular, size: CGFloat(size))
-//    }
-//
-//    
-//    static func largeTitleFont() -> Font {
-//        return Font(largeTitle())
-//    }
-//    
-//    static func normalFont() -> Font {
-//        return Font(normal())
-//    }
-//    
-//    static func mediumFont() -> Font {
-//        return Font(medium())
-//    }
-//    
-//    static func regularFont(size : Int) -> Font {
-//        return Font(regular(size: size))
-//    }
     
     
     //MARK: - FontStyleGuideLine

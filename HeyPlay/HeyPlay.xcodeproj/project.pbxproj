@@ -7,7 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D9CC2E2BA7524BFCB2CF6C71 /* Pods_HeyPlay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */; };
+		294087026BD41056BEF300D2 /* Pods_HeyPlay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA2BF1968C18C2A9FBA72D2F /* Pods_HeyPlay.framework */; };
+		AD1E03DA2EA9D253009283FA /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03D92EA9D253009283FA /* MenuViewController.swift */; };
+		AD1E03DC2EA9EC7A009283FA /* MenuScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03DB2EA9EC7A009283FA /* MenuScreen.swift */; };
+		AD1E03DE2EA9F202009283FA /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03DD2EA9F202009283FA /* MenuViewModel.swift */; };
+		AD1E03E02EAA02F6009283FA /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03DF2EAA02F6009283FA /* HostController.swift */; };
+		AD1E03E42EAA1AF1009283FA /* MenuDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E03E32EAA1AF1009283FA /* MenuDataSource.swift */; };
+		AD1E04772EAB77BC009283FA /* AboutUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04762EAB77BC009283FA /* AboutUsViewController.swift */; };
+		AD1E04792EAB77D1009283FA /* PoliciesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04782EAB77D1009283FA /* PoliciesViewController.swift */; };
+		AD1E047B2EAB782D009283FA /* AboutUsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E047A2EAB782D009283FA /* AboutUsScreen.swift */; };
+		AD1E047D2EAB783D009283FA /* PoliciesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E047C2EAB783D009283FA /* PoliciesScreen.swift */; };
+		AD1E047F2EAB7850009283FA /* AboutUsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E047E2EAB7850009283FA /* AboutUsViewModel.swift */; };
+		AD1E04812EAB785E009283FA /* PoliciesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04802EAB785E009283FA /* PoliciesViewModel.swift */; };
+		AD1E04832EAB7B39009283FA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04822EAB7B39009283FA /* ProfileViewController.swift */; };
+		AD1E04852EAB7B49009283FA /* ChangePhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04842EAB7B49009283FA /* ChangePhoneViewController.swift */; };
+		AD1E04872EAB7B55009283FA /* WatchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04862EAB7B55009283FA /* WatchListViewController.swift */; };
+		AD1E04892EAB7B65009283FA /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04882EAB7B65009283FA /* SubscriptionViewController.swift */; };
+		AD1E048B2EAB7B75009283FA /* VIPHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E048A2EAB7B75009283FA /* VIPHistoryViewController.swift */; };
+		AD1E048D2EAB7B8A009283FA /* RedemptionCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E048C2EAB7B8A009283FA /* RedemptionCodeViewController.swift */; };
+		AD1E048F2EAB7BA2009283FA /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E048E2EAB7BA2009283FA /* ProfileScreen.swift */; };
+		AD1E04912EAB7BBE009283FA /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04902EAB7BBE009283FA /* ProfileViewModel.swift */; };
+		AD1E04932EAB7BCF009283FA /* ChangePhoneNumberScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04922EAB7BCF009283FA /* ChangePhoneNumberScreen.swift */; };
+		AD1E04952EAB7BDE009283FA /* ChangePhoneNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04942EAB7BDE009283FA /* ChangePhoneNumberViewModel.swift */; };
+		AD1E04972EAB7BF8009283FA /* WatchListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04962EAB7BF8009283FA /* WatchListScreen.swift */; };
+		AD1E04992EAB7C04009283FA /* WatchListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04982EAB7C04009283FA /* WatchListViewModel.swift */; };
+		AD1E049B2EAB7C18009283FA /* SubscriptionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E049A2EAB7C18009283FA /* SubscriptionScreen.swift */; };
+		AD1E049D2EAB7C29009283FA /* SubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E049C2EAB7C29009283FA /* SubscriptionViewModel.swift */; };
+		AD1E049F2EAB7C40009283FA /* VIPHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E049E2EAB7C40009283FA /* VIPHistoryScreen.swift */; };
+		AD1E04A12EAB7C50009283FA /* VIPHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04A02EAB7C50009283FA /* VIPHistoryViewModel.swift */; };
+		AD1E04A32EAB7C63009283FA /* RedemptionCodeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04A22EAB7C63009283FA /* RedemptionCodeScreen.swift */; };
+		AD1E04A52EAB7C73009283FA /* RedemptionCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04A42EAB7C73009283FA /* RedemptionCodeViewModel.swift */; };
+		AD1E04A72EAB8A37009283FA /* CommonWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04A62EAB8A37009283FA /* CommonWebView.swift */; };
+		AD1E04E52EB0B698009283FA /* SubscriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E04E42EB0B698009283FA /* SubscriptionDataSource.swift */; };
 		F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */; };
 		F0003A7F2E45138000C7984D /* SeriesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0003A7E2E45138000C7984D /* SeriesTableViewCell.xib */; };
 		F0003A802E45138000C7984D /* SeriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A7D2E45138000C7984D /* SeriesTableViewCell.swift */; };
@@ -106,9 +137,40 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeyPlay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4E100A9832C8E15C7079DFEF /* Pods-HeyPlay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.release.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.release.xcconfig"; sourceTree = "<group>"; };
-		DAAFCF8DF016EC327AD13549 /* Pods-HeyPlay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.debug.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.debug.xcconfig"; sourceTree = "<group>"; };
+		0AA3FC8DD705150A676E38D0 /* Pods-HeyPlay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.debug.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.debug.xcconfig"; sourceTree = "<group>"; };
+		AD1E03D92EA9D253009283FA /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		AD1E03DB2EA9EC7A009283FA /* MenuScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreen.swift; sourceTree = "<group>"; };
+		AD1E03DD2EA9F202009283FA /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
+		AD1E03DF2EAA02F6009283FA /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
+		AD1E03E32EAA1AF1009283FA /* MenuDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDataSource.swift; sourceTree = "<group>"; };
+		AD1E04762EAB77BC009283FA /* AboutUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsViewController.swift; sourceTree = "<group>"; };
+		AD1E04782EAB77D1009283FA /* PoliciesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoliciesViewController.swift; sourceTree = "<group>"; };
+		AD1E047A2EAB782D009283FA /* AboutUsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsScreen.swift; sourceTree = "<group>"; };
+		AD1E047C2EAB783D009283FA /* PoliciesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoliciesScreen.swift; sourceTree = "<group>"; };
+		AD1E047E2EAB7850009283FA /* AboutUsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsViewModel.swift; sourceTree = "<group>"; };
+		AD1E04802EAB785E009283FA /* PoliciesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoliciesViewModel.swift; sourceTree = "<group>"; };
+		AD1E04822EAB7B39009283FA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		AD1E04842EAB7B49009283FA /* ChangePhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneViewController.swift; sourceTree = "<group>"; };
+		AD1E04862EAB7B55009283FA /* WatchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListViewController.swift; sourceTree = "<group>"; };
+		AD1E04882EAB7B65009283FA /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
+		AD1E048A2EAB7B75009283FA /* VIPHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPHistoryViewController.swift; sourceTree = "<group>"; };
+		AD1E048C2EAB7B8A009283FA /* RedemptionCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionCodeViewController.swift; sourceTree = "<group>"; };
+		AD1E048E2EAB7BA2009283FA /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
+		AD1E04902EAB7BBE009283FA /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		AD1E04922EAB7BCF009283FA /* ChangePhoneNumberScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneNumberScreen.swift; sourceTree = "<group>"; };
+		AD1E04942EAB7BDE009283FA /* ChangePhoneNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneNumberViewModel.swift; sourceTree = "<group>"; };
+		AD1E04962EAB7BF8009283FA /* WatchListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListScreen.swift; sourceTree = "<group>"; };
+		AD1E04982EAB7C04009283FA /* WatchListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListViewModel.swift; sourceTree = "<group>"; };
+		AD1E049A2EAB7C18009283FA /* SubscriptionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionScreen.swift; sourceTree = "<group>"; };
+		AD1E049C2EAB7C29009283FA /* SubscriptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewModel.swift; sourceTree = "<group>"; };
+		AD1E049E2EAB7C40009283FA /* VIPHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPHistoryScreen.swift; sourceTree = "<group>"; };
+		AD1E04A02EAB7C50009283FA /* VIPHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPHistoryViewModel.swift; sourceTree = "<group>"; };
+		AD1E04A22EAB7C63009283FA /* RedemptionCodeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionCodeScreen.swift; sourceTree = "<group>"; };
+		AD1E04A42EAB7C73009283FA /* RedemptionCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionCodeViewModel.swift; sourceTree = "<group>"; };
+		AD1E04A62EAB8A37009283FA /* CommonWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWebView.swift; sourceTree = "<group>"; };
+		AD1E04E42EB0B698009283FA /* SubscriptionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDataSource.swift; sourceTree = "<group>"; };
+		BA2BF1968C18C2A9FBA72D2F /* Pods_HeyPlay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeyPlay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9FA913A77C20952C92AB4F7 /* Pods-HeyPlay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.release.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.release.xcconfig"; sourceTree = "<group>"; };
 		F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
 		F0003A7D2E45138000C7984D /* SeriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesTableViewCell.swift; sourceTree = "<group>"; };
 		F0003A7E2E45138000C7984D /* SeriesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeriesTableViewCell.xib; sourceTree = "<group>"; };
@@ -216,20 +278,134 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9CC2E2BA7524BFCB2CF6C71 /* Pods_HeyPlay.framework in Frameworks */,
+				294087026BD41056BEF300D2 /* Pods_HeyPlay.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0FB03CC3F340D2B344421B8B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BA2BF1968C18C2A9FBA72D2F /* Pods_HeyPlay.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9CD814E44C98F9E1FE4103FB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DAAFCF8DF016EC327AD13549 /* Pods-HeyPlay.debug.xcconfig */,
-				4E100A9832C8E15C7079DFEF /* Pods-HeyPlay.release.xcconfig */,
+				0AA3FC8DD705150A676E38D0 /* Pods-HeyPlay.debug.xcconfig */,
+				C9FA913A77C20952C92AB4F7 /* Pods-HeyPlay.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		AD1E03D82EA9D230009283FA /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E03D92EA9D253009283FA /* MenuViewController.swift */,
+				AD1E03DB2EA9EC7A009283FA /* MenuScreen.swift */,
+				AD1E03DD2EA9F202009283FA /* MenuViewModel.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		AD1E03E12EAA0F32009283FA /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		AD1E03E22EAA101E009283FA /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E03E32EAA1AF1009283FA /* MenuDataSource.swift */,
+				AD1E04E42EB0B698009283FA /* SubscriptionDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		AD1E04692EAB7350009283FA /* ProfileSetting */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E04822EAB7B39009283FA /* ProfileViewController.swift */,
+				AD1E048E2EAB7BA2009283FA /* ProfileScreen.swift */,
+				AD1E04902EAB7BBE009283FA /* ProfileViewModel.swift */,
+			);
+			path = ProfileSetting;
+			sourceTree = "<group>";
+		};
+		AD1E046A2EAB735E009283FA /* ChangePhoneNumber */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E04842EAB7B49009283FA /* ChangePhoneViewController.swift */,
+				AD1E04922EAB7BCF009283FA /* ChangePhoneNumberScreen.swift */,
+				AD1E04942EAB7BDE009283FA /* ChangePhoneNumberViewModel.swift */,
+			);
+			path = ChangePhoneNumber;
+			sourceTree = "<group>";
+		};
+		AD1E046C2EAB736D009283FA /* WatchList */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E04862EAB7B55009283FA /* WatchListViewController.swift */,
+				AD1E04962EAB7BF8009283FA /* WatchListScreen.swift */,
+				AD1E04982EAB7C04009283FA /* WatchListViewModel.swift */,
+			);
+			path = WatchList;
+			sourceTree = "<group>";
+		};
+		AD1E04712EAB7380009283FA /* SubscriptionPlan */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E04882EAB7B65009283FA /* SubscriptionViewController.swift */,
+				AD1E049A2EAB7C18009283FA /* SubscriptionScreen.swift */,
+				AD1E049C2EAB7C29009283FA /* SubscriptionViewModel.swift */,
+			);
+			path = SubscriptionPlan;
+			sourceTree = "<group>";
+		};
+		AD1E04722EAB7383009283FA /* VIPHistory */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E048A2EAB7B75009283FA /* VIPHistoryViewController.swift */,
+				AD1E049E2EAB7C40009283FA /* VIPHistoryScreen.swift */,
+				AD1E04A02EAB7C50009283FA /* VIPHistoryViewModel.swift */,
+			);
+			path = VIPHistory;
+			sourceTree = "<group>";
+		};
+		AD1E04732EAB7384009283FA /* RedemptionCode */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E048C2EAB7B8A009283FA /* RedemptionCodeViewController.swift */,
+				AD1E04A22EAB7C63009283FA /* RedemptionCodeScreen.swift */,
+				AD1E04A42EAB7C73009283FA /* RedemptionCodeViewModel.swift */,
+			);
+			path = RedemptionCode;
+			sourceTree = "<group>";
+		};
+		AD1E04742EAB73BD009283FA /* Policies */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E04782EAB77D1009283FA /* PoliciesViewController.swift */,
+				AD1E047C2EAB783D009283FA /* PoliciesScreen.swift */,
+				AD1E04802EAB785E009283FA /* PoliciesViewModel.swift */,
+			);
+			path = Policies;
+			sourceTree = "<group>";
+		};
+		AD1E04752EAB73CE009283FA /* AboutUs */ = {
+			isa = PBXGroup;
+			children = (
+				AD1E04762EAB77BC009283FA /* AboutUsViewController.swift */,
+				AD1E047A2EAB782D009283FA /* AboutUsScreen.swift */,
+				AD1E047E2EAB7850009283FA /* AboutUsViewModel.swift */,
+			);
+			path = AboutUs;
 			sourceTree = "<group>";
 		};
 		F0232FA22E9DFC7C00C90769 /* Extension */ = {
@@ -337,7 +513,7 @@
 				F07608992E44C11800E2402E /* HeyPlay */,
 				F07608582E44BFCF00E2402E /* Products */,
 				9CD814E44C98F9E1FE4103FB /* Pods */,
-				FCFD9369A7C39FF624A0690D /* Frameworks */,
+				0FB03CC3F340D2B344421B8B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -352,6 +528,7 @@
 		F076088C2E44C11800E2402E /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				AD1E03DF2EAA02F6009283FA /* HostController.swift */,
 				F076088B2E44C11800E2402E /* BaseViewController.swift */,
 				F0D17AB32E44CEC700BA21FB /* BaseView.swift */,
 			);
@@ -368,6 +545,7 @@
 				F0D9CAAB2E9F7D6600BC6F68 /* BlurView.swift */,
 				F0BC715B2EA8BA6900D2CF55 /* LimitedScrollView.swift */,
 				F0641B082EAB7A5C003FC69A /* FlowLayout.swift */,
+				AD1E04A62EAB8A37009283FA /* CommonWebView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -385,6 +563,15 @@
 			isa = PBXGroup;
 			children = (
 				F0641B032EAB5574003FC69A /* Search  */,
+				AD1E03D82EA9D230009283FA /* Menu */,
+				AD1E04692EAB7350009283FA /* ProfileSetting */,
+				AD1E046A2EAB735E009283FA /* ChangePhoneNumber */,
+				AD1E046C2EAB736D009283FA /* WatchList */,
+				AD1E04712EAB7380009283FA /* SubscriptionPlan */,
+				AD1E04722EAB7383009283FA /* VIPHistory */,
+				AD1E04732EAB7384009283FA /* RedemptionCode */,
+				AD1E04752EAB73CE009283FA /* AboutUs */,
+				AD1E04742EAB73BD009283FA /* Policies */,
 				F0D9CAA52E9F767A00BC6F68 /* MovieDetail */,
 				F0232FE92E9E4B1B00C90769 /* OTP */,
 				F0232FA62E9E090400C90769 /* Login */,
@@ -399,6 +586,8 @@
 		F07608992E44C11800E2402E /* HeyPlay */ = {
 			isa = PBXGroup;
 			children = (
+				AD1E03E22EAA101E009283FA /* DataSource */,
+				AD1E03E12EAA0F32009283FA /* Networking */,
 				F0232FBA2E9E0EB200C90769 /* Utility */,
 				F0232FA22E9DFC7C00C90769 /* Extension */,
 				F0D17AB12E44CE4E00BA21FB /* Custom */,
@@ -561,14 +750,6 @@
 			path = Splash;
 			sourceTree = "<group>";
 		};
-		FCFD9369A7C39FF624A0690D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				2B67B30FC6718F886539E549 /* Pods_HeyPlay.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -576,11 +757,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F076086A2E44BFD200E2402E /* Build configuration list for PBXNativeTarget "HeyPlay" */;
 			buildPhases = (
-				2C57985BFCCC631792DE8701 /* [CP] Check Pods Manifest.lock */,
+				54D6116B94911AE57CC8EACF /* [CP] Check Pods Manifest.lock */,
 				F07608532E44BFCF00E2402E /* Sources */,
 				F07608542E44BFCF00E2402E /* Frameworks */,
 				F07608552E44BFCF00E2402E /* Resources */,
-				C6321905FCC9189633719764 /* [CP] Embed Pods Frameworks */,
+				AFCF58F86D8792431345C9A3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -676,7 +857,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2C57985BFCCC631792DE8701 /* [CP] Check Pods Manifest.lock */ = {
+		54D6116B94911AE57CC8EACF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -698,7 +879,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C6321905FCC9189633719764 /* [CP] Embed Pods Frameworks */ = {
+		AFCF58F86D8792431345C9A3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -725,17 +906,23 @@
 				F0C3B9B02E485EB000ACE9EF /* HotActionView.swift in Sources */,
 				F0C3B9DC2E48931700ACE9EF /* ViewPagerViewController.swift in Sources */,
 				F0232FB92E9E0E8500C90769 /* String + Extension.swift in Sources */,
+				AD1E03DA2EA9D253009283FA /* MenuViewController.swift in Sources */,
 				F076089E2E44C11800E2402E /* BaseViewController.swift in Sources */,
 				F0F836CF2E4521D4008F3635 /* HomeUserInfoTableViewCell.swift in Sources */,
 				F076089F2E44C11800E2402E /* AppDelegate.swift in Sources */,
+				AD1E04A32EAB7C63009283FA /* RedemptionCodeScreen.swift in Sources */,
+				AD1E04912EAB7BBE009283FA /* ProfileViewModel.swift in Sources */,
 				F0D9CAAE2E9F838800BC6F68 /* MovieDetailTopView.swift in Sources */,
 				F0641B072EAB7273003FC69A /* RecentView.swift in Sources */,
 				F0232FEB2E9E4B2700C90769 /* OTPView.swift in Sources */,
 				F0C3B9E22E48939500ACE9EF /* ViewPagerViewController + Extension.swift in Sources */,
+				AD1E047F2EAB7850009283FA /* AboutUsViewModel.swift in Sources */,
+				AD1E04E52EB0B698009283FA /* SubscriptionDataSource.swift in Sources */,
 				F0232FBE2E9E100600C90769 /* FontUtility.swift in Sources */,
 				F0F836D92E4534AE008F3635 /* BannerCollectionViewCell.swift in Sources */,
 				F0003A842E4514A000C7984D /* SeriesCollectionViewCell.swift in Sources */,
 				F0D9CAAA2E9F7A1800BC6F68 /* CustomNavigationBarView.swift in Sources */,
+				AD1E047D2EAB783D009283FA /* PoliciesScreen.swift in Sources */,
 				F0232FBC2E9E0EC000C90769 /* LocalStorage.swift in Sources */,
 				F0A61BA42E45091300513A60 /* FullMovieCollectionViewCell.swift in Sources */,
 				F0D9CAB22E9F91F700BC6F68 /* CastView.swift in Sources */,
@@ -749,33 +936,58 @@
 				F0D17AB22E44CE4E00BA21FB /* CustomTabView.swift in Sources */,
 				F0BC71302EA2146C00D2CF55 /* EpisodesListView.swift in Sources */,
 				F0D17ACF2E44D9E800BA21FB /* UITableView + Extension.swift in Sources */,
+				AD1E04A72EAB8A37009283FA /* CommonWebView.swift in Sources */,
 				F0A61B9F2E45051C00513A60 /* MovieTableViewCell.swift in Sources */,
+				AD1E048B2EAB7B75009283FA /* VIPHistoryViewController.swift in Sources */,
 				F0D17AB42E44CEC700BA21FB /* BaseView.swift in Sources */,
 				F0C3B9CC2E4885BB00ACE9EF /* MovieAndSeariesViewController + Extension.swift in Sources */,
 				F0C3B9BB2E4875EC00ACE9EF /* HomeViewController.swift in Sources */,
 				F0C3B9B72E48747600ACE9EF /* HotViewController.swift in Sources */,
 				F0D17AC62E44D89C00BA21FB /* BannerTableViewCell.swift in Sources */,
+				AD1E049F2EAB7C40009283FA /* VIPHistoryScreen.swift in Sources */,
+				AD1E04772EAB77BC009283FA /* AboutUsViewController.swift in Sources */,
+				AD1E04992EAB7C04009283FA /* WatchListViewModel.swift in Sources */,
 				F0D17AB82E44D03200BA21FB /* Enums.swift in Sources */,
 				F0D9CAB02E9F83D800BC6F68 /* MovieDetailBottomView.swift in Sources */,
+				AD1E03DC2EA9EC7A009283FA /* MenuScreen.swift in Sources */,
 				F0003A802E45138000C7984D /* SeriesTableViewCell.swift in Sources */,
 				F0BC715C2EA8BA6900D2CF55 /* LimitedScrollView.swift in Sources */,
 				F0C3B9C92E48851000ACE9EF /* MovieAndSeariesViewController.swift in Sources */,
+				AD1E048F2EAB7BA2009283FA /* ProfileScreen.swift in Sources */,
+				AD1E04892EAB7B65009283FA /* SubscriptionViewController.swift in Sources */,
 				F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */,
+				AD1E04A52EAB7C73009283FA /* RedemptionCodeViewModel.swift in Sources */,
 				F0C3B9E02E48936100ACE9EF /* PageContainerCollectionViewCell.swift in Sources */,
 				F0A61B972E44FB8B00513A60 /* RecentTableViewCell.swift in Sources */,
+				AD1E04972EAB7BF8009283FA /* WatchListScreen.swift in Sources */,
 				F0D17ACD2E44D96400BA21FB /* HomeViewController + Extension .swift in Sources */,
+				AD1E048D2EAB7B8A009283FA /* RedemptionCodeViewController.swift in Sources */,
 				F0D9CAAC2E9F7D6600BC6F68 /* BlurView.swift in Sources */,
 				F0232FE62E9E221B00C90769 /* TextWithTitleView.swift in Sources */,
+				AD1E04952EAB7BDE009283FA /* ChangePhoneNumberViewModel.swift in Sources */,
+				AD1E04832EAB7B39009283FA /* ProfileViewController.swift in Sources */,
 				F0D17ABB2E44D15300BA21FB /* UIView + Extension .swift in Sources */,
 				F0232FA52E9DFED900C90769 /* ViewNavigation.swift in Sources */,
+				AD1E04852EAB7B49009283FA /* ChangePhoneViewController.swift in Sources */,
+				AD1E03E02EAA02F6009283FA /* HostController.swift in Sources */,
+				AD1E04792EAB77D1009283FA /* PoliciesViewController.swift in Sources */,
+				AD1E04872EAB7B55009283FA /* WatchListViewController.swift in Sources */,
 				F0232F9B2E9DFAE900C90769 /* SplashViewController.swift in Sources */,
+				AD1E04812EAB785E009283FA /* PoliciesViewModel.swift in Sources */,
 				F0232FEF2E9E5B6900C90769 /* WrongOTPAlertView.swift in Sources */,
 				F0BC712B2EA0DDCA00D2CF55 /* RecommendView.swift in Sources */,
+				AD1E04932EAB7BCF009283FA /* ChangePhoneNumberScreen.swift in Sources */,
 				F0A61B9C2E44FC7100513A60 /* RecentCollectionViewCell.swift in Sources */,
+				AD1E03E42EAA1AF1009283FA /* MenuDataSource.swift in Sources */,
 				F0C3B9AE2E45D47000ACE9EF /* HotTableViewCell.swift in Sources */,
+				AD1E049B2EAB7C18009283FA /* SubscriptionScreen.swift in Sources */,
+				AD1E047B2EAB782D009283FA /* AboutUsScreen.swift in Sources */,
+				AD1E049D2EAB7C29009283FA /* SubscriptionViewModel.swift in Sources */,
 				F0D9CAA82E9F797700BC6F68 /* MovieDetailView.swift in Sources */,
+				AD1E04A12EAB7C50009283FA /* VIPHistoryViewModel.swift in Sources */,
 				F0232FB12E9E0A4300C90769 /* LoginViewController.swift in Sources */,
 				F0232FAF2E9E09E500C90769 /* LoginView.swift in Sources */,
+				AD1E03DE2EA9F202009283FA /* MenuViewModel.swift in Sources */,
 				F0C3B9B42E48679800ACE9EF /* HotViewController + Extension.swift in Sources */,
 				F07608A12E44C11800E2402E /* ViewController.swift in Sources */,
 			);
@@ -816,7 +1028,7 @@
 /* Begin XCBuildConfiguration section */
 		F076086B2E44BFD200E2402E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DAAFCF8DF016EC327AD13549 /* Pods-HeyPlay.debug.xcconfig */;
+			baseConfigurationReference = 0AA3FC8DD705150A676E38D0 /* Pods-HeyPlay.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -845,7 +1057,7 @@
 		};
 		F076086C2E44BFD200E2402E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E100A9832C8E15C7079DFEF /* Pods-HeyPlay.release.xcconfig */;
+			baseConfigurationReference = C9FA913A77C20952C92AB4F7 /* Pods-HeyPlay.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
