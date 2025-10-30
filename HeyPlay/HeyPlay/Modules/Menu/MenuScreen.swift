@@ -22,6 +22,9 @@ struct MenuScreen: View {
     
     @ObservedObject private var viewModel: MenuViewModel
     
+    @State private var showRedeemAlert = false
+    @State var redeemCode: String = ""
+    
     init(_ viewModel: MenuViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -56,6 +59,9 @@ struct MenuScreen: View {
                     }
                     .padding(.horizontal, 12)
                 }
+            }
+            .customDialog(isPresented: $showRedeemAlert) {
+                showRedeemCodeDialog()
             }
         }
         
@@ -331,11 +337,46 @@ struct MenuScreen: View {
         case .vipHistory:
             didSelectVIPHistory?()
         case .redemption:
-            didSelectRedemptionCode?()
+            showRedeemAlert = true
+            //didSelectRedemptionCode?()
         case .policies:
             didSelectPolicies?()
         case .about:
             didSelectAboutUs?()
+        }
+    }
+    
+    private func showRedeemCodeDialog() -> some View {
+        CustomDialogView(
+            iconName: "redeem_dialog_icon",
+            title: "Redeem",
+            message: "Please enter redemption code",
+            primaryButtonTitle: "Confirm",
+            primaryAction: {
+                showRedeemAlert = false
+                didSelectRedemptionCode?()
+                print("Resend tapped")
+            },
+            secondaryButtonTitle: nil,
+            secondaryAction: {
+                print("Cancel tapped")
+            }
+        ) {
+            VStack(alignment: .leading) {
+                Text("Redemption Code")
+                    .font(FontUtility.regularFont(size: 11))
+                    .foregroundColor(Color("white_color"))
+                
+                TextField("", text: $redeemCode)
+                    .padding(.horizontal, 20)
+                    .frame(height: 40)
+                    .font(FontUtility.normalFont())
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.white, lineWidth: 1)
+                    )
+                    .foregroundColor(.white)
+            }
         }
     }
 }
