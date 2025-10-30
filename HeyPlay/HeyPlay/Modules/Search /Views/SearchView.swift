@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SearchView : View {
+   
     var body: some View {
         VStack {
             Spacer()
@@ -16,6 +17,7 @@ struct SearchView : View {
             SearchTopView()
             SearchTextView()
             RecentView()
+            MostSearchView()
             Spacer()
         }
         .padding()
@@ -25,13 +27,17 @@ struct SearchView : View {
 }
 
 struct SearchTopView : View {
+    @Environment(\.presentationMode) var presentationMode
+   
     var body: some View {
         HStack {
             Text("Search")
                 .foregroundColor(Color.white)
                 .font(FontUtility.heading2())
             Spacer()
-            Button(action: {}) {
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }) {
                 Image("ic.cross")
                     .resizable()
                     .frame(width: 30 , height: 30)

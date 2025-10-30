@@ -98,11 +98,11 @@ extension HomeViewController {
     }
     
     func setRightBarItems() {
-        let searchImgView = UIImageView(
-            image: UIImage(named: "ic-search")
-        )
         let searchItem = UIBarButtonItem(
-            customView: searchImgView
+            image:  UIImage(named: "ic-search")?.withRenderingMode(.alwaysOriginal),
+            style: .done,
+            target: self,
+            action: #selector(presentSearch)
         )
         
         let notiImgView = UIImageView(
@@ -113,5 +113,9 @@ extension HomeViewController {
         )
         
         navigationItem.rightBarButtonItems = [searchItem , notiItem]
+    }
+    
+    @objc func presentSearch() {
+        ViewNavigation.shared.showSearchView()
     }
 }

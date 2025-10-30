@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class ViewNavigation : BaseViewController{
     static let shared = ViewNavigation()
@@ -35,6 +36,16 @@ class ViewNavigation : BaseViewController{
         let controller = MovieDetailViewController()
         controller.detailType = detailType
         vc.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func showSearchView() {
+        guard let vc = currentViewController as? HomeViewController else {
+            return
+        }
+        let searchView = SearchView()
+        let controller = UIHostingController(rootView: searchView)
+        controller.modalPresentationStyle = .fullScreen
+        vc.present(controller, animated: true)
     }
     
 }

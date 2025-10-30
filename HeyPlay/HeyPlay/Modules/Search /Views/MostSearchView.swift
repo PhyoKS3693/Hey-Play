@@ -1,27 +1,25 @@
 //
-//  RecentView.swift
+//  MostSearchView.swift
 //  HeyPlay
 //
-//  Created by Phyo Kyaw Swar on 24/10/2025.
+//  Created by Phyo Kyaw Swar on 30/10/2025.
 //
 
 import Foundation
 import SwiftUI
 
-struct RecentView : View {
+struct MostSearchView : View {
     var body: some View {
         VStack {
-            RecentTopView()
-            RecentTagCollectionView()
-            Spacer()
+            MostSearchTopView()
+            MostSearchTagCollectionView()
         }
     }
 }
-
-struct RecentTopView : View {
+struct MostSearchTopView : View {
     var body: some View {
         HStack {
-            Text("Recent".localized())
+            Text("Most Search".localized())
                 .foregroundColor(.white)
                 .font(FontUtility.heading2())
             
@@ -38,12 +36,11 @@ struct RecentTopView : View {
         .frame(height: 40)
         .padding(.horizontal , 10)
         .background(Color.black)
-        
     }
 }
 
 
-struct RecentTagCollectionView: View {
+struct MostSearchTagCollectionView: View {
     let tags = [
         "Aung Ye Lin", "Nay Toe", "Mg",
         "Kyaw Ye Aung", "Thet Mon Myint",
@@ -68,14 +65,8 @@ struct RecentTagCollectionView: View {
                     .clipShape(Capsule())
                 }
             }
-            .fixedSize(horizontal: false, vertical: true) // 👈 prevents GeometryReader from expanding
-            .padding(.horizontal)
+            .padding()
         }
         .background(Color.black)
     }
-}
-
-
-#Preview {
-    RecentView()
 }
