@@ -46,3 +46,7 @@
 "Recent" = "Recent";
 "Clear All" = "Clear All";
 "Most Search" = "Most Search";
+
+
+//MARK: - Notification
+"Notification" = "Notification";

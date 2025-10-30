@@ -48,25 +48,15 @@ struct MostSearchTagCollectionView: View {
     ]
     
     var body: some View {
-        ScrollView {
-            FlowLayout(alignment: .leading, spacing: 12) {
-                ForEach(tags, id: \.self) { tag in
-                    HStack(spacing: 6) {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 14))
-                            .foregroundColor(Color.search)
-                        Text(tag)
-                            .font(FontUtility.body1())
-                            .foregroundColor(Color.white)
-                    }
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(Color.recommendBG)
-                    .clipShape(Capsule())
-                }
-            }
-            .padding()
+        VStack(alignment: .leading, spacing: 16) {
+            
+            FlowRowsView(tags: tags)
+                .padding(.horizontal)
+            
+            Spacer(minLength: 0)
         }
-        .background(Color.black)
+        .padding(.top, 16)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
+

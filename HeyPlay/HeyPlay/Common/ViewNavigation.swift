@@ -55,4 +55,13 @@ class ViewNavigation : BaseViewController{
         let con = MenuViewController()
         vc.navigationController?.pushViewController(con, animated: true)
     }
+    
+    func showNotification() {
+        guard let vc = currentViewController as? HomeViewController else {
+            return
+        }
+        let controller = NotificationViewController()
+        controller.modalPresentationStyle = .fullScreen
+        vc.present(controller, animated: true)
+    }
 }
