@@ -27,18 +27,18 @@ struct ChangePhoneNumberScreen: View {
             
             Text("Phone Number")
                 .font(FontUtility.subHeadline())
-                .foregroundColor(Color("white_color"))
+                .foregroundColor(Color.white)
                 .padding(.horizontal, 4)
             
             Text("Your new phone number")
                 .font(FontUtility.body1())
-                .foregroundColor(Color("white_color"))
+                .foregroundColor(Color.white)
                 .padding(.horizontal, 4)
             
             VStack(alignment: .leading) {
                 Text("Phone Number")
                     .font(FontUtility.caption())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                 
                 TextField("", text: $newPhoneNumber)
                     .padding(.horizontal, 20)
@@ -52,7 +52,7 @@ struct ChangePhoneNumberScreen: View {
                 
                 Text("Ooredoo ဖုန်းနံပါတ်များဖြင့်ပြောင်းလို့မရသေးပါ")
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("red_Color"))
+                    .foregroundColor(Color.red)
             }
             
             Button {
@@ -60,11 +60,11 @@ struct ChangePhoneNumberScreen: View {
             } label: {
                 Text("Continue")
                     .font(FontUtility.body1())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color("pink_Color"))
+            .background(Color.pink)
             .cornerRadius(20)
             
             Spacer()

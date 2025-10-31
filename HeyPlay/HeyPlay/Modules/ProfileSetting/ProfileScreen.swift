@@ -39,7 +39,7 @@ struct ProfileScreen: View {
                 
                 Text("Name")
                     .font(FontUtility.caption())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                 
                 TextField("", text: $userName)
                     .padding(.horizontal, 20)
@@ -55,11 +55,11 @@ struct ProfileScreen: View {
                 HStack {
                     Text("Account")
                         .font(FontUtility.caption())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                     
                     Text("(Optional)")
                         .font(FontUtility.caption())
-                        .foregroundColor(Color("grey_color"))
+                        .foregroundColor(Color.grey)
                 }
                 
                 TextField("", text: $userPhone)
@@ -75,7 +75,7 @@ struct ProfileScreen: View {
                 
                 Text("Linked Accounts")
                     .font(FontUtility.headline2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 10)
                 
                 renderLinkedAccount("ic.facebook", "Facebook", "www.facebook.com")

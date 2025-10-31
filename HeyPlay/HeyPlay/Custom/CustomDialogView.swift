@@ -92,12 +92,12 @@ struct CustomDialogView<Content: View>: View {
             
             Text(title)
                 .font(FontUtility.headline2())
-                .foregroundColor(Color("white_color"))
+                .foregroundColor(Color.white)
             
             if let message = message {
                 Text(message)
                     .font(FontUtility.subHeadline())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
             }
             
             content
@@ -109,11 +109,11 @@ struct CustomDialogView<Content: View>: View {
                     } label: {
                         Text(secondaryButtonTitle)
                             .font(FontUtility.body1())
-                            .foregroundColor(Color("white_color"))
+                            .foregroundColor(Color.white)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color("black_Color"))
+                    .background(Color.black)
                     .cornerRadius(20)
                 }
                 
@@ -124,17 +124,17 @@ struct CustomDialogView<Content: View>: View {
                     } label: {
                         Text(primaryButtonTitle)
                             .font(FontUtility.body1())
-                            .foregroundColor(Color("white_color"))
+                            .foregroundColor(Color.white)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color("pink_Color"))
+                    .background(Color.pink)
                     .cornerRadius(20)
                 }
             }
         }
         .padding()
-        .background(Color("grey_Color"))
+        .background(Color.grey)
         .cornerRadius(30)
         .padding(.horizontal, 24)
     }

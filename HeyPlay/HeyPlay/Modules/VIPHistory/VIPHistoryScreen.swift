@@ -22,14 +22,14 @@ struct VIPHistoryScreen: View {
                 VStack(alignment: .leading) {
                     Text("Start Date")
                         .font(FontUtility.caption())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                     
                     Button {
                         print("start tap")
                     } label: {
                         Text("2025-02-07")
                             .font(FontUtility.body1())
-                            .foregroundColor(Color("white_color"))
+                            .foregroundColor(Color.white)
                     }
                     .padding(10)
                     .frame(width: 140, height: 40)
@@ -42,14 +42,14 @@ struct VIPHistoryScreen: View {
                 VStack(alignment: .leading) {
                     Text("End Date")
                         .font(FontUtility.caption())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                     
                     Button {
                         print("end tap")
                     } label: {
                         Text("2025-02-07")
                             .font(FontUtility.body1())
-                            .foregroundColor(Color("white_color"))
+                            .foregroundColor(Color.white)
                     }
                     .frame(width: 140, height: 40)
                     .frame(height: 40)
@@ -84,20 +84,21 @@ struct VIPHistoryScreen: View {
         VStack(alignment: .leading) {
             ZStack {
                 Image(status == 1 ? "bg_active_transaction" : "bg_failed_and_expired_transaction")
+                    .resizable()
                     .scaledToFill()
-                    .frame(height: 40)
+                    .frame(width: .infinity,  height: 40)
                     
                 
                 HStack {
                     VStack(alignment: .leading) {
                         Text(type)
                             .font(FontUtility.headline2())
-                            .foregroundColor(Color("white_color"))
+                            .foregroundColor(Color.white)
                             .padding(.vertical, 4)
                         
                         Text("Billed \(type)")
                             .font(FontUtility.smallText1())
-                            .foregroundColor(Color("white_color"))
+                            .foregroundColor(Color.white)
                             .padding(.vertical, 2)
                     }
                     .padding(.horizontal, 10)
@@ -107,40 +108,40 @@ struct VIPHistoryScreen: View {
                     VStack(alignment: .trailing) {
                         Text("\(amount) MMK")
                             .font(FontUtility.headline2())
-                            .foregroundColor(Color("white_color"))
+                            .foregroundColor(Color.white)
                             .padding(.horizontal, 4)
                 
                         
                         if status == 1 {
                             Text("Active")
                                 .font(FontUtility.smallText3())
-                                .foregroundColor(Color("black_Color"))
+                                .foregroundColor(Color.black)
                                 .padding(.horizontal, 4)
                                 .padding(.vertical, 2)
                                 .background(
                                     RoundedRectangle(cornerRadius: 13)
-                                        .fill(Color("neon_Color"))
+                                        .fill(Color.neon)
                                 )
                             
                         } else if status == 2 {
                             Text("Failed")
                                 .font(FontUtility.smallText3())
-                                .foregroundColor(Color("black_Color"))
+                                .foregroundColor(Color.black)
                                 .padding(.horizontal, 4)
                                 .padding(.vertical, 2)
                                 .background(
                                     RoundedRectangle(cornerRadius: 13)
-                                        .fill(Color("yellow_color"))
+                                        .fill(Color.yellow)
                                 )
                         }else {
                             Text("Expired")
                                 .font(FontUtility.smallText3())
-                                .foregroundColor(Color("black_Color"))
+                                .foregroundColor(Color.black)
                                 .padding(.horizontal, 4)
                                 .padding(.vertical, 2)
                                 .background(
                                     RoundedRectangle(cornerRadius: 13)
-                                        .fill(Color("lightGrey_Color"))
+                                        .fill(Color.lightGrey)
                                 )
                         }
                     }
@@ -151,14 +152,14 @@ struct VIPHistoryScreen: View {
             HStack {
                 Text("Payment ID")
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 4)
                 
                 Spacer()
                 
                 Text(paymentId)
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 4)
             }
             .padding(.horizontal, 10)
@@ -168,14 +169,14 @@ struct VIPHistoryScreen: View {
             HStack {
                 Text("Gateway")
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 4)
                 
                 Spacer()
                 
                 Text(paymentMethod)
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 4)
             }
             .padding(.horizontal, 10)
@@ -185,21 +186,21 @@ struct VIPHistoryScreen: View {
             HStack {
                 Text("Duration")
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 8)
                 
                 Spacer()
                 
                 Text(duration)
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 8)
             }
             .padding(.horizontal, 10)
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color("darkGrey_Color"))
+                .fill(Color.darkGrey)
         )
         .padding(.horizontal, 12)
         .padding(.top, 6)
