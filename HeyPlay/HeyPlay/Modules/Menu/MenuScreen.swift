@@ -243,11 +243,11 @@ struct MenuScreen: View {
                 VStack(alignment: .leading) {
                     Text("VIP Package")
                         .font(FontUtility.subHeadline())
-                        .foregroundColor(Color.primary)
+                        .foregroundColor(Color("pink_Color"))
                     
                     Text("Expire Date : \(expireDate)")
                         .font(FontUtility.caption())
-                        .foregroundColor(Color.white)
+                        .foregroundColor(Color("white_color"))
                 }
                 
                 Spacer()
