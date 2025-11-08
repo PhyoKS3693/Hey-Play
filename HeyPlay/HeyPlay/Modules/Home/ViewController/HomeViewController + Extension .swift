@@ -48,6 +48,9 @@ extension HomeViewController : UITableViewDelegate , UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecentTableViewCell.identifier, for: indexPath) as? RecentTableViewCell else {
                 return UITableViewCell()
             }
+            cell.navigateToMovieDetail = { [weak self]  id in
+                ViewNavigation.shared.showMovieDetail(detailType: .movie)
+            }
             return cell
         case .movie:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else {

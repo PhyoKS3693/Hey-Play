@@ -27,12 +27,12 @@ struct RedemptionCodeScreen: View {
             
             Text("Successful")
                 .font(FontUtility.headline2())
-                .foregroundColor(Color("white_color"))
+                .foregroundColor(Color.white)
                 .padding(.horizontal, 4)
             
             Text("Your redemption code is success")
                 .font(FontUtility.body1())
-                .foregroundColor(Color("white_color"))
+                .foregroundColor(Color.white)
                 .padding(.horizontal, 4)
             
             Button {
@@ -40,11 +40,11 @@ struct RedemptionCodeScreen: View {
             } label: {
                 Text("Okay")
                     .font(FontUtility.body1())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color("pink_Color"))
+            .background(Color.pink)
             .cornerRadius(20)
         }
     }

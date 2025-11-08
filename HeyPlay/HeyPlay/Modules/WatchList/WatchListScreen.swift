@@ -28,12 +28,12 @@ struct WatchListScreen: View {
                 } label: {
                     Text("Recent")
                         .font(FontUtility.body1())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                         .padding(6)
                 }
                 .background(
                     RoundedRectangle(cornerRadius: 15)
-                        .fill(isShowRecent ? Color("pink_Color") : Color("darkGrey_Color"))
+                        .fill(isShowRecent ? Color.pink : Color.darkGrey)
                 )
                 
                 
@@ -42,12 +42,12 @@ struct WatchListScreen: View {
                 } label: {
                     Text("Watchlist")
                         .font(FontUtility.body1())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                         .padding(6)
                 }
                 .background(
                     RoundedRectangle(cornerRadius: 15)
-                        .fill(isShowRecent ? Color("darkGrey_Color") : Color("pink_Color"))
+                        .fill(isShowRecent ? Color.darkGrey : Color.pink)
                 )
                 
                 Spacer()
@@ -57,7 +57,7 @@ struct WatchListScreen: View {
                 } label: {
                     Text("Clear All")
                         .font(FontUtility.body2())
-                        .foregroundColor(Color("red_Color"))
+                        .foregroundColor(Color.red)
                         .padding(.horizontal, 8)
                 }
             }
@@ -97,7 +97,7 @@ struct WatchListScreen: View {
             VStack(alignment: .leading) {
                 Text(videoTitle)
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 4)
                 
                 HStack {
@@ -107,11 +107,11 @@ struct WatchListScreen: View {
                     
                     Text("Last watch on:")
                         .font(FontUtility.smallText1())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                     
                     Text(lastWatchTime)
                         .font(FontUtility.smallText1())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                     
                     Spacer()
                     
@@ -123,7 +123,7 @@ struct WatchListScreen: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color("darkGrey_Color"))
+                .fill(Color.darkGrey)
         )
         .frame(maxWidth: .infinity)
         .padding(.vertical, 5)
@@ -149,7 +149,7 @@ struct WatchListScreen: View {
             VStack(alignment: .leading) {
                 Text(videoTitle)
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
+                    .foregroundColor(Color.white)
                     .padding(.vertical, 4)
                 
                 HStack {
@@ -159,11 +159,11 @@ struct WatchListScreen: View {
                     
                     Text("Watchlist on:")
                         .font(FontUtility.smallText1())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                     
                     Text(lastWatchTime)
                         .font(FontUtility.smallText1())
-                        .foregroundColor(Color("white_color"))
+                        .foregroundColor(Color.white)
                     
                     Spacer()
                     
@@ -175,7 +175,7 @@ struct WatchListScreen: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color("darkGrey_Color"))
+                .fill(Color.darkGrey)
         )
         .padding(.vertical, 5)
         .padding(.horizontal, 10)

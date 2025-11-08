@@ -13,6 +13,9 @@ class RecentTableViewCell: UITableViewCell {
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var btnSeeAll: UIButton!
+    
+    var navigateToMovieDetail: ((Int) -> Void)?
+   
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -57,6 +60,10 @@ extension RecentTableViewCell : UICollectionViewDelegate , UICollectionViewDataS
         }
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigateToMovieDetail?(indexPath.item)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
