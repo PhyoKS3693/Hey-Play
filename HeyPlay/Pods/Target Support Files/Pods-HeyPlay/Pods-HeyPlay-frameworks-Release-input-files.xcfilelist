@@ -1,5 +1,7 @@
 ${PODS_ROOT}/Target Support Files/Pods-HeyPlay/Pods-HeyPlay-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework
 ${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework
+${BUILT_PRODUCTS_DIR}/ShimmerSwift/ShimmerSwift.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
+${BUILT_PRODUCTS_DIR}/SwiftUI-Shimmer/SwiftUI_Shimmer.framework
 ${BUILT_PRODUCTS_DIR}/ViewPager-Swift/ViewPager_Swift.framework

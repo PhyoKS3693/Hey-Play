@@ -67,6 +67,8 @@ enum HomeSection : Int{
     case recent = 2
     case movie = 3
     case series = 4
+    case collection = 5
+    case popular = 6
 }
 
 

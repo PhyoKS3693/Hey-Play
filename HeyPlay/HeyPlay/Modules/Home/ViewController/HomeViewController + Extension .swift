@@ -17,6 +17,8 @@ extension HomeViewController {
         tblHome.registerForCell(strID: RecentTableViewCell.identifier)
         tblHome.registerForCell(strID: MovieTableViewCell.identifier)
         tblHome.registerForCell(strID: SeriesTableViewCell.identifier)
+        tblHome.registerForCell(strID: MovieCollectionTableViewCell.identifier)
+        tblHome.registerForCell(strID: PopularTableViewCell.identifier)
         tblHome.showsVerticalScrollIndicator = false
         tblHome.reloadData()
     }
@@ -68,9 +70,30 @@ extension HomeViewController : UITableViewDelegate , UITableViewDataSource {
             cell.navigateToSeriesDetail = { [weak self]  id in
                 ViewNavigation.shared.showMovieDetail(detailType: .series)
             }
+        case .collection:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCollectionTableViewCell.identifier, for: indexPath ) as? MovieCollectionTableViewCell else {
+                return UITableViewCell()
+            }
+        
+            cell.navigateToDetail = { [weak self]  id in
+                ViewNavigation.shared.showMovieDetail(detailType: .series)
+            }
+            
+            return cell
+            
+        case .popular:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PopularTableViewCell.identifier, for: indexPath ) as? MovieCollectionTableViewCell else {
+                return UITableViewCell()
+            }
+        
+            cell.navigateToDetail = { [weak self]  id in
+                ViewNavigation.shared.showMovieDetail(detailType: .series)
+            }
             
             return cell
         }
+        
+        return UITableViewCell()
        
     }
     

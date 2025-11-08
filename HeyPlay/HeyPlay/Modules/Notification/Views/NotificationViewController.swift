@@ -15,8 +15,11 @@ class NotificationViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let hostingController = UIHostingController(rootView: NotificationView(viewModel))
+        var notiView = NotificationView(viewModel)
+        notiView.onDismiss = { [weak self] in
+            self?.dismiss(animated: true)
+        }
+        let hostingController = UIHostingController(rootView: notiView)
         addChild(hostingController)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(hostingController.view)
@@ -29,5 +32,7 @@ class NotificationViewController: BaseViewController {
         ])
         
         hostingController.didMove(toParent: self)
+        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
 }

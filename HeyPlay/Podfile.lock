@@ -1,28 +1,44 @@
 PODS:
   - FSPagerView (0.8.3)
   - Kingfisher (8.3.2)
+  - ShimmerSwift (2.1.1)
   - SnapKit (5.7.1)
+  - SwiftUI-Shimmer (1.4.0)
   - ViewPager-Swift (2.0.2)
 
 DEPENDENCIES:
   - FSPagerView
   - Kingfisher
+  - ShimmerSwift
   - SnapKit
+  - SwiftUI-Shimmer (from `https://github.com/markiv/SwiftUI-Shimmer.git`)
   - ViewPager-Swift
 
 SPEC REPOS:
   trunk:
     - FSPagerView
     - Kingfisher
+    - ShimmerSwift
     - SnapKit
     - ViewPager-Swift
+
+EXTERNAL SOURCES:
+  SwiftUI-Shimmer:
+    :git: https://github.com/markiv/SwiftUI-Shimmer.git
+
+CHECKOUT OPTIONS:
+  SwiftUI-Shimmer:
+    :commit: 0226e21f9bf355d40e07e5f5e1c33679d50e167f
+    :git: https://github.com/markiv/SwiftUI-Shimmer.git
 
 SPEC CHECKSUMS:
   FSPagerView: 670405b2f18e2a87fa37f20b00de783e562c25a8
   Kingfisher: 0621d0ac0c78fecb19f6dc5303bde2b52abaf2f5
+  ShimmerSwift: f7ed2daf9c246de8299dfd9e12c6ab465cba9842
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  SwiftUI-Shimmer: 26954ba07da310a50e24a3e54ce5684951ebbc17
   ViewPager-Swift: 92fa2a54d56998c85526eaaafc4b7b3f4830ca36
 
-PODFILE CHECKSUM: a8f0c40727ac12a55048cd49bea5847dd52b5026
+PODFILE CHECKSUM: ff014251167a87c1c110745ff8a8bfec2435fd6d
 
 COCOAPODS: 1.16.2

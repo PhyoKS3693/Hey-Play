@@ -10,7 +10,7 @@ import Combine
 
 struct NotificationView : View {
     @ObservedObject private var viewModel: NotificationViewModel
-    
+    var onDismiss: (() -> Void)?
     init(_ viewModel: NotificationViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -19,7 +19,9 @@ struct NotificationView : View {
         VStack {
             Spacer()
                 .frame(height: 40)
-            NotifictaionTopView()
+            NotifictaionTopView {
+                onDismiss?()
+            }
             NotificationListView(viewModel)
             Spacer()
                 .frame(height: 40)

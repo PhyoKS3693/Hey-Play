@@ -30,6 +30,9 @@ struct NotificationListView : View {
                     NotificationItemView(
                         notification: notification
                     )
+                    .onTapGesture {
+                        ViewNavigation.shared.showNotificationDetailView(notificaiton: notification)
+                    }
                 }
             }
         }
@@ -62,6 +65,10 @@ struct NotificationItemView : View {
         .background(Color.grey)
         .cornerRadius(10)
        
+    }
+    
+    func navigateToDetails() {
+        
     }
 }
 

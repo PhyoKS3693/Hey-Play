@@ -15,6 +15,7 @@ struct MovieDetailView : View {
     @State var detailType : DetailType = .series
     @State private var isSticky = false
     @State private var scrollOffset: CGFloat = 0
+    @State private var showingShare = false
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -22,9 +23,11 @@ struct MovieDetailView : View {
         VStack {
             Spacer()
                 .frame(height: 50)
-            CustomNavBar(onBack: {
+            CustomNavBar {
                 presentationMode.wrappedValue.dismiss()
-            })
+            } onShare: {
+                showingShare = true
+            }
             
             if isSticky {
                 SeriesAndTrailerAndRecommendView(
@@ -34,54 +37,70 @@ struct MovieDetailView : View {
                     detailType: $detailType
                 )
             }
-                ScrollView {
-                    ZStack(alignment: .bottom, content: {
-                        MovieDetailTopView()
-                        MovieDetailInfoView(
-                            detailType: $detailType
+            ScrollView {
+                ZStack(alignment: .bottom, content: {
+                    MovieDetailTopView()
+                    MovieDetailInfoView(
+                        detailType: $detailType
+                    )
+                    .padding(.bottom , 15)
+                })
+                
+                SeriesAndTrailerAndRecommendView(
+                    tapTrailer: $tapTrailer,
+                    tapRecommend: $tapRecommend,
+                    tapEpisodes: $tapEpisodes,
+                    detailType: $detailType
+                )
+                MovieDetailBottomView(
+                    tapTrailer: $tapTrailer,
+                    tapRecommend: $tapRecommend,
+                    tapEpisodes: $tapEpisodes,
+                    detailType: $detailType
+                )
+                
+                
+                GeometryReader { geo in
+                    Color.clear
+                        .preference(
+                            key: ScrollOffsetPreferenceKey.self,
+                            value: geo.frame(in: .global).minY
                         )
-                        .padding(.bottom , 15)
-                    })
-                    
-                    SeriesAndTrailerAndRecommendView(
-                        tapTrailer: $tapTrailer,
-                        tapRecommend: $tapRecommend,
-                        tapEpisodes: $tapEpisodes,
-                        detailType: $detailType
-                    )
-                    MovieDetailBottomView(
-                        tapTrailer: $tapTrailer,
-                        tapRecommend: $tapRecommend,
-                        tapEpisodes: $tapEpisodes,
-                        detailType: $detailType
-                    )
-                    
-                    
-                    GeometryReader { geo in
-                        Color.clear
-                            .preference(
-                                key: ScrollOffsetPreferenceKey.self,
-                                value: geo.frame(in: .global).minY
-                            )
-                    }
-                    .frame(height: 0)
-                    
                 }
-                .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                    scrollOffset = value
-                    print("Scroll offset: \(scrollOffset)")
-                    if tapRecommend {
-                        self.isSticky = scrollOffset <= 1590
-                    }
-                    else if tapTrailer || tapEpisodes {
-                        self.isSticky = false
-                    }
-                   
+                .frame(height: 0)
+                
+            }
+            .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+                scrollOffset = value
+                print("Scroll offset: \(scrollOffset)")
+                if tapRecommend {
+                    self.isSticky = scrollOffset <= 1590
                 }
+                else if tapTrailer || tapEpisodes {
+                    self.isSticky = false
+                }
+                
+            }
             
         }
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
+        .sheet(isPresented: $showingShare) {
+            // Items to share:
+            let text = "Check out this great link!"
+            let url = URL(string: "https://example.com")!
+            ActivityView(activityItems: [text, url],
+                         excludedActivityTypes: [.assignToContact, .addToReadingList]) { activity, completed, items, error in
+                if completed {
+                    print("Shared via:", activity?.rawValue ?? "unknown")
+                } else {
+                    print("Share cancelled")
+                }
+                if let err = error {
+                    print("Share error:", err)
+                }
+            }
+        }
     }
     
 }
