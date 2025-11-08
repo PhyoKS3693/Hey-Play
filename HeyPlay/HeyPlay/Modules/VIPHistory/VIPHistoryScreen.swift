@@ -84,6 +84,7 @@ struct VIPHistoryScreen: View {
         VStack(alignment: .leading) {
             ZStack {
                 Image(status == 1 ? "bg_active_transaction" : "bg_failed_and_expired_transaction")
+                    .resizable()
                     .scaledToFill()
                     .frame(height: 40)
                     
