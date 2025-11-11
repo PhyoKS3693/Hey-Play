@@ -1,17 +1,17 @@
 //
-//  SubscriptionViewController.swift
+//  PackageViewController.swift
 //  HeyPlay
 //
-//  Created by Aye Myat Minn on 10/24/25.
+//  Created by Aye Myat Minn on 11/6/25.
 //
 
 import Foundation
 import UIKit
 import SwiftUI
 
-final class SubscriptionViewController: UIHostingController<SubscriptionScreen> {
+final class PackageViewController: UIHostingController<PackageScreen> {
     
-    let viewModel = SubscriptionViewModel()
+    let viewModel = PackageViewModel()
     
     init() {
         super.init(rootView: .init(viewModel))
@@ -26,10 +26,9 @@ final class SubscriptionViewController: UIHostingController<SubscriptionScreen> 
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
         
-        rootView.didTapUpgradeToVIP = { [weak self] in
-            let controller = PackageViewController()
+        rootView.didSelectPaymentPlan = { [weak self] name, type, amount in
+            let controller = PlanViewController(name: name, type: type, amount: amount)
             self?.navigationController?.pushViewController(controller, animated: true)
-            
         }
     }
     
