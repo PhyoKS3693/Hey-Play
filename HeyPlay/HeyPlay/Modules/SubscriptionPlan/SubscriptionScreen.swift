@@ -17,7 +17,9 @@ struct SubscriptionScreen: View {
     }
     
     var body: some View {
-        Text("Subscription")
+        Text("Coming Soon")
+            .font(FontUtility.heading1())
+            .foregroundColor(Color("white_color"))
     }
 }
 
