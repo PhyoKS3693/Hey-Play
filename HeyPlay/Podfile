@@ -12,4 +12,6 @@ target 'HeyPlay' do
   pod 'ViewPager-Swift'
   pod 'SwiftUI-Shimmer', :git => 'https://github.com/markiv/SwiftUI-Shimmer.git'
   pod 'ShimmerSwift'
+  pod 'Alamofire'
+  pod 'netfox'
 end

@@ -56,6 +56,11 @@
 		AD1E06062EBF2433009283FA /* BuyPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E06052EBF2433009283FA /* BuyPlanViewController.swift */; };
 		AD1E06082EBF2455009283FA /* BuyPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E06072EBF2455009283FA /* BuyPlanViewModel.swift */; };
 		AD1E060A2EBF2487009283FA /* BuyPlanViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E06092EBF2487009283FA /* BuyPlanViewScreen.swift */; };
+		AD9091A02EC4695400091129 /* GeneralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD90919F2EC4695400091129 /* GeneralResponse.swift */; };
+		AD9091A22EC4697700091129 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9091A12EC4697700091129 /* ErrorResponse.swift */; };
+		AD9091A42EC469A700091129 /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9091A32EC469A700091129 /* PaginatedResponse.swift */; };
+		AD9091A62EC469D600091129 /* BasicResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9091A52EC469D600091129 /* BasicResponse.swift */; };
+		AD9091A82EC47C6000091129 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9091A72EC47C6000091129 /* APIClient.swift */; };
 		F0003A7C2E450F4600C7984D /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */; };
 		F0003A7F2E45138000C7984D /* SeriesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0003A7E2E45138000C7984D /* SeriesTableViewCell.xib */; };
 		F0003A802E45138000C7984D /* SeriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0003A7D2E45138000C7984D /* SeriesTableViewCell.swift */; };
@@ -218,6 +223,11 @@
 		AD1E06052EBF2433009283FA /* BuyPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyPlanViewController.swift; sourceTree = "<group>"; };
 		AD1E06072EBF2455009283FA /* BuyPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyPlanViewModel.swift; sourceTree = "<group>"; };
 		AD1E06092EBF2487009283FA /* BuyPlanViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyPlanViewScreen.swift; sourceTree = "<group>"; };
+		AD90919F2EC4695400091129 /* GeneralResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralResponse.swift; sourceTree = "<group>"; };
+		AD9091A12EC4697700091129 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		AD9091A32EC469A700091129 /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
+		AD9091A52EC469D600091129 /* BasicResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicResponse.swift; sourceTree = "<group>"; };
+		AD9091A72EC47C6000091129 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		BA2BF1968C18C2A9FBA72D2F /* Pods_HeyPlay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeyPlay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FA913A77C20952C92AB4F7 /* Pods-HeyPlay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeyPlay.release.xcconfig"; path = "Target Support Files/Pods-HeyPlay/Pods-HeyPlay.release.xcconfig"; sourceTree = "<group>"; };
 		F0003A7B2E450F4600C7984D /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
@@ -379,6 +389,8 @@
 		AD1E03E12EAA0F32009283FA /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				AD90919D2EC468F400091129 /* response */,
+				AD9091A72EC47C6000091129 /* APIClient.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -510,6 +522,25 @@
 				AD1E06092EBF2487009283FA /* BuyPlanViewScreen.swift */,
 			);
 			path = BuyPlan;
+			sourceTree = "<group>";
+		};
+		AD90919D2EC468F400091129 /* response */ = {
+			isa = PBXGroup;
+			children = (
+				AD90919E2EC4691900091129 /* general */,
+			);
+			path = response;
+			sourceTree = "<group>";
+		};
+		AD90919E2EC4691900091129 /* general */ = {
+			isa = PBXGroup;
+			children = (
+				AD90919F2EC4695400091129 /* GeneralResponse.swift */,
+				AD9091A12EC4697700091129 /* ErrorResponse.swift */,
+				AD9091A32EC469A700091129 /* PaginatedResponse.swift */,
+				AD9091A52EC469D600091129 /* BasicResponse.swift */,
+			);
+			path = general;
 			sourceTree = "<group>";
 		};
 		F0232FA22E9DFC7C00C90769 /* Extension */ = {
@@ -1071,6 +1102,7 @@
 				AD1E04A32EAB7C63009283FA /* RedemptionCodeScreen.swift in Sources */,
 				AD1E04912EAB7BBE009283FA /* ProfileViewModel.swift in Sources */,
 				AD1E06062EBF2433009283FA /* BuyPlanViewController.swift in Sources */,
+				AD9091A42EC469A700091129 /* PaginatedResponse.swift in Sources */,
 				F0D9CAAE2E9F838800BC6F68 /* MovieDetailTopView.swift in Sources */,
 				AD1E055D2EB368C0009283FA /* SuccessfullyChangePhoneNumberViewController.swift in Sources */,
 				F0DA1A1E2EBAF4910078A7BA /* CustomNavigationBar.swift in Sources */,
@@ -1098,6 +1130,7 @@
 				F03A62632EB32CD700AAA570 /* NotifictaionTopView.swift in Sources */,
 				F0232FE82E9E298800C90769 /* RoundedButtonView.swift in Sources */,
 				F03A62682EB3306900AAA570 /* NotificationItem.swift in Sources */,
+				AD9091A22EC4697700091129 /* ErrorResponse.swift in Sources */,
 				F0C3B9CF2E4888EF00ACE9EF /* SeriesTypeCollectionViewCell.swift in Sources */,
 				F0232FED2E9E563100C90769 /* OTPTextView.swift in Sources */,
 				F0641B092EAB7A5C003FC69A /* FlowLayout.swift in Sources */,
@@ -1106,9 +1139,11 @@
 				F0D17ACF2E44D9E800BA21FB /* UITableView + Extension.swift in Sources */,
 				AD1E04A72EAB8A37009283FA /* CommonWebView.swift in Sources */,
 				AD1E05EF2EBC649B009283FA /* SubscriptionPlanDataSource.swift in Sources */,
+				AD9091A02EC4695400091129 /* GeneralResponse.swift in Sources */,
 				F0A61B9F2E45051C00513A60 /* MovieTableViewCell.swift in Sources */,
 				AD1E048B2EAB7B75009283FA /* VIPHistoryViewController.swift in Sources */,
 				F0D17AB42E44CEC700BA21FB /* BaseView.swift in Sources */,
+				AD9091A62EC469D600091129 /* BasicResponse.swift in Sources */,
 				F0C3B9CC2E4885BB00ACE9EF /* MovieAndSeariesViewController + Extension.swift in Sources */,
 				F0C3B9BB2E4875EC00ACE9EF /* HomeViewController.swift in Sources */,
 				AD1E05592EB36876009283FA /* VerifyOtpViewModel.swift in Sources */,
@@ -1148,6 +1183,7 @@
 				AD1E04832EAB7B39009283FA /* ProfileViewController.swift in Sources */,
 				F0D17ABB2E44D15300BA21FB /* UIView + Extension .swift in Sources */,
 				AD1E05FD2EBCCFA2009283FA /* PlanViewModel.swift in Sources */,
+				AD9091A82EC47C6000091129 /* APIClient.swift in Sources */,
 				F0232FA52E9DFED900C90769 /* ViewNavigation.swift in Sources */,
 				AD1E04852EAB7B49009283FA /* ChangePhoneViewController.swift in Sources */,
 				AD1E03E02EAA02F6009283FA /* HostController.swift in Sources */,

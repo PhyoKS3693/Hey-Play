@@ -25,6 +25,12 @@ final class VIPHistoryViewController: UIHostingController<VIPHistoryScreen> {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
+        navigationItem.title = "VIP History"
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "ic.backBtn"),
+            style: .plain,
+            target: nil,
+            action: nil)
     }
     
 }

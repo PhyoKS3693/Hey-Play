@@ -192,7 +192,6 @@ class BaseViewController: UIViewController {
             let initialViewController = MenuViewController()
             let nav = UINavigationController(rootViewController: initialViewController)
             nav.isNavigationBarHidden = false
-            delegate.window?.isHidden = false
             delegate.window?.rootViewController = nav
             delegate.window?.makeKeyAndVisible()
         }

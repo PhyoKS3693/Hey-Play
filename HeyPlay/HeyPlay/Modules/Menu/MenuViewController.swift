@@ -94,4 +94,32 @@ final class MenuViewController: BaseViewController {
         setupBottomBar()
         setTabBarItem()
     }
+    
+    func setNavTitle() {
+        let titleItem = UIBarButtonItem(
+            title: "Menu",
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        navigationItem.leftBarButtonItem = titleItem
+    }
+    
+    func setRightBarItems() {
+        let searchImgView = UIImageView(
+            image: UIImage(named: "ic-search")
+        )
+        let searchItem = UIBarButtonItem(
+            customView: searchImgView
+        )
+        
+        let notiImgView = UIImageView(
+            image: UIImage(named: "ic-noti")
+        )
+        let notiItem = UIBarButtonItem(
+            customView: notiImgView
+        )
+        
+        navigationItem.rightBarButtonItems = [searchItem , notiItem]
+    }
 }

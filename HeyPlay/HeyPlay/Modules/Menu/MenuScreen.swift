@@ -33,6 +33,8 @@ struct MenuScreen: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
+                navView()
+                
                 guestSection()
                 
                 loginNormalUser("Cho Nwe", "09777777777", "HPUCCFVZ1")
@@ -67,6 +69,32 @@ struct MenuScreen: View {
         }
         
         
+    }
+    
+    private func navView() -> some View {
+        HStack {
+            Text("Menu")
+                .font(FontUtility.heading2())
+                .foregroundColor(Color("white_color"))
+            
+            Spacer()
+            
+            Button {
+                //
+            } label: {
+                Image("ic-noti")
+            }
+            .frame(width: 32, height: 32)
+            
+            Button {
+                //
+            } label: {
+                Image("ic-search")
+            }
+            .frame(width: 32, height: 32)
+
+        }
+        .padding(.horizontal, 12)
     }
     
     private func guestSection() -> some View {
