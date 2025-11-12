@@ -12,7 +12,7 @@ class HomeViewController: BaseViewController {
     @IBOutlet weak var tblHome: UITableView! 
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
-    var sectionList : [HomeSection] = [.user, .banner , .recent , .movie , .series]
+    var sectionList : [HomeSection] = [.user, .banner , .recent , .movie , .series , .collection , .collection , .popular]
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black

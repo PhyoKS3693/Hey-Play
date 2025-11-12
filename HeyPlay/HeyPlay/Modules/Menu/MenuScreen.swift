@@ -63,6 +63,7 @@ struct MenuScreen: View {
             .customDialog(isPresented: $showRedeemAlert) {
                 showRedeemCodeDialog()
             }
+            .padding(.bottom , 100)
         }
         
         

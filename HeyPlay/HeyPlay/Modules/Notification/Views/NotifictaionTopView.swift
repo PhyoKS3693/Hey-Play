@@ -10,8 +10,8 @@ import SwiftUI
 import Combine
 
 struct NotifictaionTopView : View {
-    @Environment(\.presentationMode) var presentationMode
    
+    var onDismiss : (() -> Void)?
     var body: some View {
         HStack {
             Text("Notifictaion".localized())
@@ -21,7 +21,7 @@ struct NotifictaionTopView : View {
             Spacer()
             
             Button {
-                presentationMode.wrappedValue.dismiss()
+                onDismiss?()
             } label: {
                 Image("ic.cross")
                     .resizable()

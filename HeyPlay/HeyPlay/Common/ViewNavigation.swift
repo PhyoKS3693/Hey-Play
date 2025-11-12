@@ -61,7 +61,16 @@ class ViewNavigation : BaseViewController{
             return
         }
         let controller = NotificationViewController()
-        controller.modalPresentationStyle = .fullScreen
-        vc.present(controller, animated: true)
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        vc.present(nav, animated: true)
+    }
+    
+    func showNotificationDetailView(notificaiton : NotificationItem) {
+        guard let vc = currentViewController as? NotificationViewController else {
+            return
+        }
+        let notiDetailVC = NotificationDetailViewController()
+        vc.navigationController?.pushViewController(notiDetailVC, animated: true)
     }
 }

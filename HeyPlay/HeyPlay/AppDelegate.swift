@@ -15,13 +15,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
         if let window = self.window {
-//            let controller = HomeViewController()
+            let controller = HomeViewController()
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             guard let controller = storyBoard.instantiateViewController(identifier: String(describing: SplashViewController.self)) as? SplashViewController else {return false}
             let navVC = UINavigationController(rootViewController: controller)
             navVC.navigationBar.isHidden = false
             window.rootViewController = navVC
             window.makeKeyAndVisible()
+            
+            //            let initialViewController = HomeViewController()
+            //            let nav = UINavigationController(rootViewController: initialViewController)
+            //            self.window?.rootViewController = nav
+            //            self.window?.makeKeyAndVisible()
+            
         }
         return true
     }
