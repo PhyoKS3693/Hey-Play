@@ -12,6 +12,8 @@ struct BuyPlanViewScreen: View {
     
     @State var phone: String = ""
     
+    var didTapBack: (() -> Void)?
+    
     @ObservedObject private var viewModel: BuyPlanViewModel
     
     init(_ viewModel: BuyPlanViewModel) {
@@ -20,6 +22,8 @@ struct BuyPlanViewScreen: View {
     
     var body: some View {
         VStack (alignment: .leading) {
+            navView()
+            
             ZStack {
                 Image("package_bg")
                     .resizable()
@@ -102,6 +106,32 @@ struct BuyPlanViewScreen: View {
             .background(Color("pink_Color"))
             .cornerRadius(20)
         }
+    }
+    
+    private func navView() -> some View {
+        ZStack (alignment: .leading){
+            Button{
+                didTapBack?()
+            } label: {
+                Image("ic.backBtn")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
+            
+            HStack {
+                
+                
+                Spacer()
+                
+                Text("Plan")
+                    .font(FontUtility.heading1())
+                    .foregroundColor(Color("white_color"))
+                
+                Spacer()
+            }
+        }
+        .padding(10)
     }
 }
 

@@ -10,6 +10,9 @@ import SwiftUI
 struct ChangePhoneNumberScreen: View {
     var host: HostController?
     
+    var didTapBack: (() -> Void)?
+    var didTapContinue: (() -> Void)?
+    
     @ObservedObject private var viewModel: ChangePhoneNumberViewModel
     
     @State var newPhoneNumber: String = ""
@@ -20,6 +23,8 @@ struct ChangePhoneNumberScreen: View {
     
     var body: some View {
         VStack(spacing: 20){
+            navView()
+            
             Image("change_phone_image")
                 .resizable()
                 .scaledToFit()
@@ -56,7 +61,7 @@ struct ChangePhoneNumberScreen: View {
             }
             
             Button {
-                //didTapOkay?()
+                didTapContinue?()
             } label: {
                 Text("Continue")
                     .font(FontUtility.body1())
@@ -64,11 +69,38 @@ struct ChangePhoneNumberScreen: View {
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color.pink)
+            .background(Color("pink_Color"))
             .cornerRadius(20)
             
             Spacer()
         }
+    }
+    
+    private func navView() -> some View {
+        ZStack (alignment: .leading){
+            Button{
+                didTapBack?()
+            } label: {
+                Image("ic.backBtn")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
+            
+            HStack {
+                
+                
+                Spacer()
+                
+                Text("Change Phone Number")
+                    .font(FontUtility.heading1())
+                    .foregroundColor(Color("white_color"))
+                
+                Spacer()
+            }
+        }
+        .padding(10)
+        
     }
 }
 

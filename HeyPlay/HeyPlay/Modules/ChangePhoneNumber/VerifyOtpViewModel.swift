@@ -6,3 +6,9 @@
 //
 
 import Foundation
+import Combine
+import UIKit
+
+final class VerifyOtpViewModel: ObservableObject {
+    
+}

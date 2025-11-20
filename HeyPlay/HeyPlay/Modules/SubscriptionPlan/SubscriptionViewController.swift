@@ -31,6 +31,10 @@ final class SubscriptionViewController: UIHostingController<SubscriptionScreen> 
             self?.navigationController?.pushViewController(controller, animated: true)
             
         }
+        
+        rootView.didTapBack = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
 }

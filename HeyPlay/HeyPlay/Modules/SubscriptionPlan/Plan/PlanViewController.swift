@@ -49,6 +49,10 @@ final class PlanViewController: UIHostingController<PlanViewScreen> {
             let controller = BuyPlanViewController(name: name, type: type, amount: amount, icon: icon)
             self?.navigationController?.pushViewController(controller, animated: true)
         }
+        
+        rootView.didTapBack = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
 }

@@ -7,7 +7,6 @@
 
 import Foundation
 import Alamofire
-import netfox
 
 class APIClient {
     static let shared = APIClient()
@@ -18,7 +17,6 @@ class APIClient {
     
     private func setupSession() {
         let config = URLSessionConfiguration.af.default
-        config.protocolClasses = [NFXProtocol.self] + (config.protocolClasses ?? [])
         session = Session(
             configuration: config,
             interceptor: Interceptor(

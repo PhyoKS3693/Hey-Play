@@ -10,6 +10,8 @@ import SwiftUI
 struct PlanViewScreen: View {
     var host: HostController?
     
+    var didTapBack: (() -> Void)?
+    
     @ObservedObject private var viewModel: PlanViewModel
     
     var didSelectPaymentMethod: ((_ name: String,_ type: String,_ amount: String,_ icon: String) -> Void)?
@@ -20,6 +22,8 @@ struct PlanViewScreen: View {
     
     var body: some View {
         VStack(alignment: .leading){
+            navView()
+            
             ZStack {
                 Image("package_bg")
                     .resizable()
@@ -71,6 +75,32 @@ struct PlanViewScreen: View {
             
             Spacer()
         }
+    }
+    
+    private func navView() -> some View {
+        ZStack (alignment: .leading){
+            Button{
+                didTapBack?()
+            } label: {
+                Image("ic.backBtn")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
+            
+            HStack {
+                
+                
+                Spacer()
+                
+                Text("Plan")
+                    .font(FontUtility.heading1())
+                    .foregroundColor(Color("white_color"))
+                
+                Spacer()
+            }
+        }
+        .padding(10)
     }
     
     private func renderPaymentMethod(_ paymentMethod: String) -> some View {

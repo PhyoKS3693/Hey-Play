@@ -25,6 +25,15 @@ final class ChangePhoneViewController: UIHostingController<ChangePhoneNumberScre
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
+        
+        rootView.didTapBack = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        
+        rootView.didTapContinue = { [weak self] in
+            let controller = VerifyOtpViewController()
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
     }
     
 }

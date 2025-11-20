@@ -11,6 +11,7 @@ struct PackageScreen: View {
     var host: HostController?
     
     var didSelectPaymentPlan: ((_ name: String,_ type: String,_ amount: String) -> Void)?
+    var didTapBack: (() -> Void)?
     
     @ObservedObject private var viewModel: PackageViewModel
     
@@ -20,6 +21,8 @@ struct PackageScreen: View {
     
     var body: some View {
         VStack(spacing: 12) {
+            navView()
+            
             Text("The best plan for you")
                 .font(FontUtility.heading1())
                 .foregroundColor(Color("white_color"))
@@ -48,6 +51,32 @@ struct PackageScreen: View {
             .background(Color("pink_Color"))
             .cornerRadius(20)
         }
+    }
+    
+    private func navView() -> some View {
+        ZStack (alignment: .leading){
+            Button{
+                didTapBack?()
+            } label: {
+                Image("ic.backBtn")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
+            
+            HStack {
+                
+                
+                Spacer()
+                
+                Text("Package")
+                    .font(FontUtility.heading1())
+                    .foregroundColor(Color("white_color"))
+                
+                Spacer()
+            }
+        }
+        .padding(10)
     }
     
     private func renderPackage(_ package: PackagePlan) -> some View {

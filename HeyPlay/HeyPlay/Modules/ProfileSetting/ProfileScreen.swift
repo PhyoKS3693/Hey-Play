@@ -13,6 +13,8 @@ struct ProfileScreen: View {
     @State var userName: String = ""
     @State var userPhone: String = ""
     
+    var didTapBack: (() -> Void)?
+    
     @ObservedObject private var viewModel: ProfileViewModel
     
     init(_ viewModel: ProfileViewModel) {
@@ -23,11 +25,15 @@ struct ProfileScreen: View {
         ScrollView {
             VStack(alignment: .leading) {
                 
+                navView()
+                
                 HStack {
                     Spacer()
                     
                     ZStack {
                         Image("ic-user")
+                            .resizable()
+                            .scaledToFit()
                             .frame(width: 80, height: 80)
                         
                         Image("ic_camera")
@@ -37,41 +43,47 @@ struct ProfileScreen: View {
                     Spacer()
                 }
                 
-                Text("Name")
-                    .font(FontUtility.caption())
-                    .foregroundColor(Color.white)
-                
-                TextField("", text: $userName)
-                    .padding(.horizontal, 20)
-                    .frame(height: 40)
-                    .background(Color.black)
-                    .font(FontUtility.body1())
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.white, lineWidth: 1)
-                    )
-                    .foregroundColor(.white)
-                
-                HStack {
-                    Text("Account")
+                VStack(alignment: .leading) {
+                    Text("Name")
                         .font(FontUtility.caption())
                         .foregroundColor(Color.white)
                     
-                    Text("(Optional)")
-                        .font(FontUtility.caption())
-                        .foregroundColor(Color.grey)
+                    TextField("", text: $userName)
+                        .padding(.horizontal, 20)
+                        .frame(height: 40)
+                        .background(Color.black)
+                        .font(FontUtility.body1())
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.white, lineWidth: 1)
+                        )
+                        .foregroundColor(.white)
                 }
+                .padding(10)
                 
-                TextField("", text: $userPhone)
-                    .padding(.horizontal, 20)
-                    .frame(height: 40)
-                    .background(Color.black)
-                    .font(FontUtility.body1())
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.white, lineWidth: 1)
-                    )
-                    .foregroundColor(.white)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Account")
+                            .font(FontUtility.caption())
+                            .foregroundColor(Color("white_color"))
+                        
+                        Text("(Optional)")
+                            .font(FontUtility.caption())
+                            .foregroundColor(Color("castType"))
+                    }
+                    
+                    TextField("", text: $userPhone)
+                        .padding(.horizontal, 20)
+                        .frame(height: 40)
+                        .background(Color.black)
+                        .font(FontUtility.body1())
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.white, lineWidth: 1)
+                        )
+                        .foregroundColor(.white)
+                }
+                .padding(10)
                 
                 Text("Linked Accounts")
                     .font(FontUtility.headline2())
@@ -88,6 +100,32 @@ struct ProfileScreen: View {
                 
             }
         }
+    }
+    
+    private func navView() -> some View {
+        ZStack (alignment: .leading){
+            Button{
+                didTapBack?()
+            } label: {
+                Image("ic.backBtn")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
+            
+            HStack {
+                
+                
+                Spacer()
+                
+                Text("Profile")
+                    .font(FontUtility.heading1())
+                    .foregroundColor(Color("white_color"))
+                
+                Spacer()
+            }
+        }
+        .padding(10)
     }
     
     private func renderLinkedAccount(_ icon: String,_ name: String,_ url :String?) -> some View {

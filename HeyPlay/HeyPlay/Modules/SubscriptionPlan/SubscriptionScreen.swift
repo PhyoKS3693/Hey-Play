@@ -11,6 +11,7 @@ struct SubscriptionScreen: View {
     var host: HostController?
     
     var didTapUpgradeToVIP: (() -> Void)?
+    var didTapBack: (() -> Void)?
     
     @ObservedObject private var viewModel: SubscriptionViewModel
     
@@ -20,6 +21,8 @@ struct SubscriptionScreen: View {
     
     var body: some View {
         VStack(spacing: 10) {
+            navView()
+            
             ScrollView {
                 ForEach(viewModel.subscriptionPlans) { subscription in
                     
@@ -40,6 +43,32 @@ struct SubscriptionScreen: View {
             .background(Color("pink_Color"))
             .cornerRadius(20)
         }
+    }
+    
+    private func navView() -> some View {
+        ZStack (alignment: .leading){
+            Button{
+                didTapBack?()
+            } label: {
+                Image("ic.backBtn")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
+            
+            HStack {
+                
+                
+                Spacer()
+                
+                Text("Subscription Plan")
+                    .font(FontUtility.heading1())
+                    .foregroundColor(Color("white_color"))
+                
+                Spacer()
+            }
+        }
+        .padding(10)
     }
     
     private func renderPlan(_ plan: SubscriptionPlan) -> some View {

@@ -25,6 +25,10 @@ final class ProfileViewController: UIHostingController<ProfileScreen> {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
+        
+        rootView.didTapBack = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
 }

@@ -11,6 +11,7 @@ struct WatchListScreen: View {
     var host: HostController?
     
     var didTapClearAll: (() -> Void)?
+    var didTapBack: (() -> Void)?
     
     @ObservedObject private var viewModel: WatchListViewModel
     
@@ -22,6 +23,8 @@ struct WatchListScreen: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            navView()
+            
             HStack {
                 Button {
                     self.isShowRecent = true
@@ -180,6 +183,33 @@ struct WatchListScreen: View {
         .padding(.vertical, 5)
         .padding(.horizontal, 10)
     }
+    
+    private func navView() -> some View {
+        ZStack (alignment: .leading){
+            Button{
+                didTapBack?()
+            } label: {
+                Image("ic.backBtn")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
+            
+            HStack {
+                
+                
+                Spacer()
+                
+                Text("Watchlist")
+                    .font(FontUtility.heading1())
+                    .foregroundColor(Color("white_color"))
+                
+                Spacer()
+            }
+        }
+        .padding(10)
+    }
+
 }
 
 #Preview {

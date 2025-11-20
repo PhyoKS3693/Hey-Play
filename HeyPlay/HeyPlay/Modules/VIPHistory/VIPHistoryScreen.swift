@@ -10,6 +10,8 @@ import SwiftUI
 struct VIPHistoryScreen: View {
     var host: HostController?
     
+    var didTapBack: (() -> Void)?
+    
     @ObservedObject private var viewModel: VIPHistoryViewModel
     
     init(_ viewModel: VIPHistoryViewModel) {
@@ -18,6 +20,8 @@ struct VIPHistoryScreen: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            navView()
+            
             HStack {
                 VStack(alignment: .leading) {
                     Text("Start Date")
@@ -78,6 +82,32 @@ struct VIPHistoryScreen: View {
                 renderTransactionHistory("Daily", "300", "hnCnOALmtn24", "ATOM", "1 Day", 3)
             }
         }
+    }
+    
+    private func navView() -> some View {
+        ZStack (alignment: .leading){
+            Button{
+                didTapBack?()
+            } label: {
+                Image("ic.backBtn")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
+            
+            HStack {
+                
+                
+                Spacer()
+                
+                Text("VIP History")
+                    .font(FontUtility.heading1())
+                    .foregroundColor(Color("white_color"))
+                
+                Spacer()
+            }
+        }
+        .padding(10)
     }
     
     private func renderTransactionHistory(_ type: String,_ amount: String,_ paymentId: String,_ paymentMethod: String,_ duration: String,_ status: Int) -> some View {

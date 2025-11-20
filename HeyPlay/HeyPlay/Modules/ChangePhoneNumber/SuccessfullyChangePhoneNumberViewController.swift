@@ -6,3 +6,26 @@
 //
 
 import Foundation
+import UIKit
+import SwiftUI
+
+final class SuccessfullyChangePhoneNumberViewController: UIHostingController<SuccessfullyChangePhoneNumberScreen> {
+    
+    init() {
+        super.init(rootView: .init())
+        rootView.host = .init(self)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "black_Color")
+        
+        rootView.didTapOK = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+}

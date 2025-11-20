@@ -30,6 +30,10 @@ final class PackageViewController: UIHostingController<PackageScreen> {
             let controller = PlanViewController(name: name, type: type, amount: amount)
             self?.navigationController?.pushViewController(controller, animated: true)
         }
+        
+        rootView.didTapBack = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
 }

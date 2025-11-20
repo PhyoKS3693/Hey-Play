@@ -73,4 +73,5 @@ class ViewNavigation : BaseViewController{
         let notiDetailVC = NotificationDetailViewController()
         vc.navigationController?.pushViewController(notiDetailVC, animated: true)
     }
+    
 }
