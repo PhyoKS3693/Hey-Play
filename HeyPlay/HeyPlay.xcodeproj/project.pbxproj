@@ -56,6 +56,8 @@
 		AD1E06062EBF2433009283FA /* BuyPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E06052EBF2433009283FA /* BuyPlanViewController.swift */; };
 		AD1E06082EBF2455009283FA /* BuyPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E06072EBF2455009283FA /* BuyPlanViewModel.swift */; };
 		AD1E060A2EBF2487009283FA /* BuyPlanViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E06092EBF2487009283FA /* BuyPlanViewScreen.swift */; };
+		AD2941A32ECF22F100C7ED4B /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2941A22ECF22F100C7ED4B /* KeychainManager.swift */; };
+		AD2941A52ECF234B00C7ED4B /* AppDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2941A42ECF234B00C7ED4B /* AppDefaultsManager.swift */; };
 		AD9091A02EC4695400091129 /* GeneralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD90919F2EC4695400091129 /* GeneralResponse.swift */; };
 		AD9091A22EC4697700091129 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9091A12EC4697700091129 /* ErrorResponse.swift */; };
 		AD9091A42EC469A700091129 /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9091A32EC469A700091129 /* PaginatedResponse.swift */; };
@@ -223,6 +225,8 @@
 		AD1E06052EBF2433009283FA /* BuyPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyPlanViewController.swift; sourceTree = "<group>"; };
 		AD1E06072EBF2455009283FA /* BuyPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyPlanViewModel.swift; sourceTree = "<group>"; };
 		AD1E06092EBF2487009283FA /* BuyPlanViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyPlanViewScreen.swift; sourceTree = "<group>"; };
+		AD2941A22ECF22F100C7ED4B /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		AD2941A42ECF234B00C7ED4B /* AppDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDefaultsManager.swift; sourceTree = "<group>"; };
 		AD90919F2EC4695400091129 /* GeneralResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralResponse.swift; sourceTree = "<group>"; };
 		AD9091A12EC4697700091129 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		AD9091A32EC469A700091129 /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
@@ -698,6 +702,8 @@
 				AD1E03DF2EAA02F6009283FA /* HostController.swift */,
 				F076088B2E44C11800E2402E /* BaseViewController.swift */,
 				F0D17AB32E44CEC700BA21FB /* BaseView.swift */,
+				AD2941A22ECF22F100C7ED4B /* KeychainManager.swift */,
+				AD2941A42ECF234B00C7ED4B /* AppDefaultsManager.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1091,6 +1097,7 @@
 				F0C3B9B02E485EB000ACE9EF /* HotActionView.swift in Sources */,
 				F0C3B9DC2E48931700ACE9EF /* ViewPagerViewController.swift in Sources */,
 				F0232FB92E9E0E8500C90769 /* String + Extension.swift in Sources */,
+				AD2941A52ECF234B00C7ED4B /* AppDefaultsManager.swift in Sources */,
 				AD1E05F52EBCAA23009283FA /* PackageScreen.swift in Sources */,
 				F03A62612EB32C7900AAA570 /* NotificationView.swift in Sources */,
 				AD1E03DA2EA9D253009283FA /* MenuViewController.swift in Sources */,
@@ -1200,6 +1207,7 @@
 				AD1E03E42EAA1AF1009283FA /* MenuDataSource.swift in Sources */,
 				F0C3B9AE2E45D47000ACE9EF /* HotTableViewCell.swift in Sources */,
 				AD1E049B2EAB7C18009283FA /* SubscriptionScreen.swift in Sources */,
+				AD2941A32ECF22F100C7ED4B /* KeychainManager.swift in Sources */,
 				AD1E047B2EAB782D009283FA /* AboutUsScreen.swift in Sources */,
 				AD1E049D2EAB7C29009283FA /* SubscriptionViewModel.swift in Sources */,
 				F0D9CAA82E9F797700BC6F68 /* MovieDetailView.swift in Sources */,
