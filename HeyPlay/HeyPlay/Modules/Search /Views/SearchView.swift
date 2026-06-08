@@ -9,26 +9,54 @@ import Foundation
 import SwiftUI
 
 struct SearchView : View {
-   
+    @StateObject private var viewModel = SearchViewModel()
+
     var body: some View {
-        VStack {
-            Spacer()
-                .frame(height: 50)
-            SearchTopView()
-            SearchTextView()
-            RecentView()
-            MostSearchView()
-            Spacer()
+        if #available(iOS 15.0, *) {
+            VStack {
+                Spacer()
+                    .frame(height: 50)
+                SearchTopView()
+                SearchTextView(viewModel: viewModel)
+                
+                if viewModel.isLoading {
+                    // Loading state
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
+                    Spacer()
+                } else if viewModel.isShowingResults {
+                    // Search results
+                    SearchResultsView(viewModel: viewModel)
+                } else {
+                    // Preload view (recent/trending searches)
+                    RecentView(viewModel: viewModel)
+                    MostSearchView(viewModel: viewModel)
+                }
+                
+                Spacer()
+            }
+            .padding()
+            .background(Color.black)
+            .edgesIgnoringSafeArea(.all)
+            .task {
+                await viewModel.loadSearchPreload()
+            }
+            .alert("Error", isPresented: .constant(viewModel.errorMessage != nil)) {
+                Button("OK") {
+                    viewModel.errorMessage = nil
+                }
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
+        } else {
+            // Fallback on earlier versions
         }
-        .padding()
-        .background(Color.black)
-        .edgesIgnoringSafeArea(.all)
     }
 }
 
 struct SearchTopView : View {
-    @Environment(\.presentationMode) var presentationMode
-   
     var body: some View {
         HStack {
             Text("Search")
@@ -36,7 +64,15 @@ struct SearchTopView : View {
                 .font(FontUtility.heading2())
             Spacer()
             Button(action: {
-                presentationMode.wrappedValue.dismiss()
+                // Dismiss the entire navigation controller
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let rootViewController = windowScene.windows.first?.rootViewController {
+                    var topController = rootViewController
+                    while let presented = topController.presentedViewController {
+                        topController = presented
+                    }
+                    topController.dismiss(animated: true)
+                }
             }) {
                 Image("ic.cross")
                     .resizable()
@@ -44,30 +80,61 @@ struct SearchTopView : View {
             }
         }
         .padding()
-       
+
     }
 }
 
 struct SearchTextView : View {
-    @State var phoneNumber: String = ""
+    @ObservedObject var viewModel: SearchViewModel
+
     var body: some View {
-        ZStack(alignment: .leading) {
-            if phoneNumber.isEmpty {
-                Text("Search by keywords".localized())
-                    .foregroundColor(.white)
-                    .padding(.leading, 20)
+        HStack {
+            ZStack(alignment: .leading) {
+                if viewModel.searchKey.isEmpty {
+                    Text("Search by keywords".localized())
+                        .foregroundColor(.white.opacity(0.5))
+                        .padding(.leading, 20)
+                }
+
+                if #available(iOS 15.0, *) {
+                    TextField("", text: $viewModel.searchKey)
+                        .padding(.horizontal, 20)
+                        .frame(height: 40)
+                        .background(Color.black)
+                        .font(FontUtility.caption())
+                        .foregroundColor(.white)
+                        .onSubmit {
+                            Task {
+                                await viewModel.performSearch()
+                            }
+                        }
+                } else {
+                    // Fallback on earlier versions
+                }
+            }
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.white, lineWidth: 1)
+            )
+
+            if !viewModel.searchKey.isEmpty {
+                Button(action: {
+                    viewModel.clearSearch()
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.white)
+                }
             }
 
-            TextField("", text: $phoneNumber)
-                .padding(.horizontal, 20)
-                .frame(height: 40)
-                .background(Color.black)
-                .font(FontUtility.caption())
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.white, lineWidth: 1)
-                )
-                .foregroundColor(.white)
+            Button(action: {
+                Task {
+                    await viewModel.performSearch()
+                }
+            }) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 10)
+            }
         }
     }
 }

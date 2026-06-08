@@ -12,11 +12,11 @@ import SwiftUI
 final class PlanViewController: UIHostingController<PlanViewScreen> {
     
     let viewModel = PlanViewModel()
-    
+
     var packageName: String
     var packageType: String
     var chargedAmount: String
-    
+
     init() {
         self.packageName = ""
         self.packageType = ""
@@ -24,17 +24,24 @@ final class PlanViewController: UIHostingController<PlanViewScreen> {
         super.init(rootView: .init(viewModel))
         rootView.host = .init(self)
     }
-    
-    init(name: String, type: String, amount: String) {
+
+    init(name: String, type: String, amount: String, packageId: Int? = nil, paymentMethods: [PaymentMethod] = []) {
         self.packageName = name
         self.packageType = type
         self.chargedAmount = amount
         super.init(rootView: .init(viewModel))
         rootView.host = .init(self)
-        
+
         viewModel.packageName = packageName
         viewModel.packageType = packageType
         viewModel.chargedAmount = chargedAmount
+        viewModel.packageId = packageId
+
+        // Use payment methods from previous screen or fetch if not provided
+        if !paymentMethods.isEmpty {
+            viewModel.paymentMethods = paymentMethods
+            print("✅ Using \(paymentMethods.count) payment methods from previous screen")
+        }
     }
  
     required init?(coder aDecoder: NSCoder) {
@@ -45,9 +52,17 @@ final class PlanViewController: UIHostingController<PlanViewScreen> {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
         
-        rootView.didSelectPaymentMethod = { [weak self] name, type, amount, icon in
-            let controller = BuyPlanViewController(name: name, type: type, amount: amount, icon: icon)
-            self?.navigationController?.pushViewController(controller, animated: true)
+        rootView.didSelectPaymentMethod = { [weak self] paymentMethodId, paymentMethodName in
+            guard let self = self else { return }
+            let controller = BuyPlanViewController(
+                packageId: self.viewModel.packageId,
+                packageName: self.packageName,
+                packageType: self.packageType,
+                chargedAmount: self.chargedAmount,
+                paymentMethodId: paymentMethodId,
+                paymentMethodName: paymentMethodName
+            )
+            self.navigationController?.pushViewController(controller, animated: true)
         }
         
         rootView.didTapBack = { [weak self] in

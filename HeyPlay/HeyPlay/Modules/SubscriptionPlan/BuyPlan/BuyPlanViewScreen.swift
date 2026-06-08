@@ -9,13 +9,12 @@ import SwiftUI
 
 struct BuyPlanViewScreen: View {
     var host: HostController?
-    
-    @State var phone: String = ""
-    
+
     var didTapBack: (() -> Void)?
-    
+    var didCompletePurchase: ((_ paymentUrl: String?) -> Void)?
+
     @ObservedObject private var viewModel: BuyPlanViewModel
-    
+
     init(_ viewModel: BuyPlanViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -55,17 +54,26 @@ struct BuyPlanViewScreen: View {
             Text("Phone Number")
                 .font(FontUtility.caption())
                 .foregroundColor(Color("white_color"))
-            
-            TextField("", text: $phone)
-                .padding(.horizontal, 20)
-                .frame(height: 40)
-                .background(Color.black)
-                .font(FontUtility.body1())
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.white, lineWidth: 1)
-                )
-                .foregroundColor(.white)
+                .padding(.top, 10)
+
+            HStack {
+                Text(viewModel.phoneNumber)
+                    .font(FontUtility.body1())
+                    .foregroundColor(.white)
+                    .padding(.leading, 20)
+
+                Spacer()
+
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(.green)
+                    .padding(.trailing, 20)
+            }
+            .frame(height: 40)
+            .background(Color.black)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.white, lineWidth: 1)
+            )
             
             Text("Payment Method")
                 .font(FontUtility.heading2())
@@ -73,17 +81,18 @@ struct BuyPlanViewScreen: View {
                 .padding(10)
             
             HStack(spacing: 10) {
-                Image(viewModel.paymentIcon)
+                Image(systemName: "creditcard.fill")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 18, height: 18)
-                
-                Text("ATOM")
+                    .foregroundColor(.white)
+
+                Text(viewModel.paymentMethodName)
                     .font(FontUtility.body2())
                     .foregroundColor(Color("white_color"))
-                
+
                 Spacer()
-                    
+
             }
             .frame(maxWidth: .infinity)
             .padding(14)
@@ -93,18 +102,42 @@ struct BuyPlanViewScreen: View {
             )
             
             Spacer()
-            
+
             Button {
-                
+                Task {
+                    await viewModel.buyPackage()
+                }
             } label: {
-                Text("Continue")
-                    .font(FontUtility.body1())
-                    .foregroundColor(Color("white_color"))
+                if viewModel.isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                } else {
+                    Text("Continue")
+                        .font(FontUtility.body1())
+                        .foregroundColor(Color("white_color"))
+                }
             }
             .frame(maxWidth: .infinity)
-            .padding()
+            .frame(height: 50)
             .background(Color("pink_Color"))
             .cornerRadius(20)
+            .disabled(viewModel.isLoading)
+        }
+        .padding(.horizontal, 16)
+        .onChange(of: viewModel.purchaseSuccess) { success in
+            if success {
+                didCompletePurchase?(viewModel.paymentUrl)
+            }
+        }
+        .alert(isPresented: Binding<Bool>(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Alert(
+                title: Text("Error"),
+                message: Text(viewModel.errorMessage ?? ""),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     

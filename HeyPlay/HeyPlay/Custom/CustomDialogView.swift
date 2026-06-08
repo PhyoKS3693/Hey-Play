@@ -43,19 +43,23 @@ struct CustomDialogView<Content: View>: View {
     let title: String
     let message: String?
     let showCloseButton: Bool
+    let closeAction: (() -> Void)?
     let content: Content
     let primaryButtonTitle: String?
     let primaryAction: (() -> Void)?
+    let primaryButtonDisabled: Bool
     let secondaryButtonTitle: String?
     let secondaryAction: (() -> Void)?
-    
+
     init(
         iconName: String,
         title: String,
         message: String? = nil,
         showCloseButton: Bool = true,
+        closeAction: (() -> Void)? = nil,
         primaryButtonTitle: String? = nil,
         primaryAction: (() -> Void)? = nil,
+        primaryButtonDisabled: Bool = false,
         secondaryButtonTitle: String? = nil,
         secondaryAction: (() -> Void)? = nil,
         @ViewBuilder content: () -> Content
@@ -64,8 +68,10 @@ struct CustomDialogView<Content: View>: View {
         self.title = title
         self.message = message
         self.showCloseButton = showCloseButton
+        self.closeAction = closeAction
         self.primaryButtonTitle = primaryButtonTitle
         self.primaryAction = primaryAction
+        self.primaryButtonDisabled = primaryButtonDisabled
         self.secondaryButtonTitle = secondaryButtonTitle
         self.secondaryAction = secondaryAction
         self.content = content()
@@ -76,7 +82,9 @@ struct CustomDialogView<Content: View>: View {
             if showCloseButton {
                 HStack {
                     Spacer()
-                    Button(action: {}) {
+                    Button(action: {
+                        closeAction?()
+                    }) {
                         Image(systemName: "xmark")
                             .foregroundColor(.white.opacity(0.7))
                             .padding(8)
@@ -118,7 +126,7 @@ struct CustomDialogView<Content: View>: View {
                 }
                 
                 if let primaryButtonTitle = primaryButtonTitle {
-                    
+
                     Button {
                         primaryAction?()
                     } label: {
@@ -128,8 +136,9 @@ struct CustomDialogView<Content: View>: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.pink)
+                    .background(primaryButtonDisabled ? Color.gray : Color("primaryBgColor"))
                     .cornerRadius(20)
+                    .disabled(primaryButtonDisabled)
                 }
             }
         }

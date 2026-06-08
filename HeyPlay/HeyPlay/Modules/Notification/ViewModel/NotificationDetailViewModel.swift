@@ -10,5 +10,9 @@ import SwiftUI
 import Combine
 
 final class NotificationDetailViewModel: ObservableObject {
-    
+
+    @Published var notificationDetail: APINotificationDetail?
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: String?
+
 }

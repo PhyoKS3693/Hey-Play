@@ -22,12 +22,40 @@ struct NotificationView : View {
             NotifictaionTopView {
                 onDismiss?()
             }
-            NotificationListView(viewModel)
+
+            if viewModel.isLoading && viewModel.notifications.isEmpty {
+                // Initial loading
+                Spacer()
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(1.5)
+                Spacer()
+            } else if viewModel.notifications.isEmpty {
+                // Empty state
+                Spacer()
+                VStack(spacing: 16) {
+                    Image(systemName: "bell.slash")
+                        .font(.system(size: 50))
+                        .foregroundColor(.gray)
+                    Text("No notifications")
+                        .foregroundColor(.gray)
+                        .font(.system(size: 18, weight: .medium))
+                }
+                Spacer()
+            } else {
+                NotificationListView(viewModel)
+            }
+
             Spacer()
                 .frame(height: 40)
         }
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
+        .onAppear {
+            if viewModel.notifications.isEmpty {
+                viewModel.fetchNotifications()
+            }
+        }
     }
 }
 

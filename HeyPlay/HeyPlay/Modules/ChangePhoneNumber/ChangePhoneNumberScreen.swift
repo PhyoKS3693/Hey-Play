@@ -9,71 +9,109 @@ import SwiftUI
 
 struct ChangePhoneNumberScreen: View {
     var host: HostController?
-    
+
     var didTapBack: (() -> Void)?
     var didTapContinue: (() -> Void)?
-    
+
     @ObservedObject private var viewModel: ChangePhoneNumberViewModel
-    
-    @State var newPhoneNumber: String = ""
-    
+
     init(_ viewModel: ChangePhoneNumberViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {
-        VStack(spacing: 20){
-            navView()
-            
-            Image("change_phone_image")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 228, height: 234)
-            
-            Text("Phone Number")
-                .font(FontUtility.subHeadline())
-                .foregroundColor(Color.white)
-                .padding(.horizontal, 4)
-            
-            Text("Your new phone number")
-                .font(FontUtility.body1())
-                .foregroundColor(Color.white)
-                .padding(.horizontal, 4)
-            
+        ZStack {
+            VStack(spacing: 20){
+                navView()
+
+                Image("change_phone_image")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 228, height: 234)
+
+                Text("Phone Number")
+                    .font(FontUtility.subHeadline())
+                    .foregroundColor(Color.white)
+                    .padding(.horizontal, 4)
+
+                Text("Your new phone number")
+                    .font(FontUtility.body1())
+                    .foregroundColor(Color.white)
+                    .padding(.horizontal, 4)
+
             VStack(alignment: .leading) {
                 Text("Phone Number")
                     .font(FontUtility.caption())
                     .foregroundColor(Color.white)
-                
-                TextField("", text: $newPhoneNumber)
+
+                TextField("", text: $viewModel.newPhoneNumber)
                     .padding(.horizontal, 20)
                     .frame(height: 40)
                     .font(FontUtility.body1())
+                    .keyboardType(.numberPad)
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(Color.white, lineWidth: 1)
                     )
                     .foregroundColor(.white)
-                
-                Text("Ooredoo ဖုန်းနံပါတ်များဖြင့်ပြောင်းလို့မရသေးပါ")
-                    .font(FontUtility.body2())
-                    .foregroundColor(Color.red)
+                    .onChange(of: viewModel.newPhoneNumber) { newValue in
+                        // Limit to 11 characters
+                        if newValue.count > 11 {
+                            viewModel.newPhoneNumber = String(newValue.prefix(11))
+                        }
+                    }
+
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .font(FontUtility.body2())
+                        .foregroundColor(Color.red)
+                        .padding(.top, 4)
+                }
             }
-            
-            Button {
-                didTapContinue?()
-            } label: {
-                Text("Continue")
-                    .font(FontUtility.body1())
-                    .foregroundColor(Color.white)
+            .padding(.horizontal, 30)
+
+                Button {
+                    print("🔘 [ChangePhoneNumberScreen] Continue button action triggered")
+                    hideKeyboard()
+                    print("⌨️ [ChangePhoneNumberScreen] Keyboard hidden, calling didTapContinue")
+                    didTapContinue?()
+                    print("📞 [ChangePhoneNumberScreen] didTapContinue called")
+                } label: {
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    } else {
+                        Text("Continue")
+                            .font(FontUtility.body1())
+                            .foregroundColor(Color.white)
+                    }
+                }
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .background(Color("pink_Color"))
+                .cornerRadius(20)
+                .padding(.horizontal, 30)
+                .disabled(viewModel.isLoading)
+
+                Spacer()
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color("pink_Color"))
-            .cornerRadius(20)
-            
-            Spacer()
+            .background(
+                Color.black
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        hideKeyboard()
+                    }
+            )
+
+            // Loading Overlay
+            if viewModel.isLoading {
+                Color.black.opacity(0.3)
+                    .edgesIgnoringSafeArea(.all)
+            }
         }
+    }
+
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     private func navView() -> some View {

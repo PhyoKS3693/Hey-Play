@@ -86,6 +86,7 @@
                 <outlet property="bgView" destination="wed-lD-G4G" id="vQC-6e-3Qw"/>
                 <outlet property="btnSeeAll" destination="YTW-P4-byw" id="i2L-nL-nZL"/>
                 <outlet property="collectionView" destination="51A-uH-jqw" id="j94-AF-eJ6"/>
+                <outlet property="collectionViewHeightConstraint" destination="Hkm-2h-fcN" id="Wqr-5J-nFp"/>
                 <outlet property="lblTitle" destination="FpU-QU-A04" id="8uI-9V-Rba"/>
             </connections>
             <point key="canvasLocation" x="0.0" y="19.718309859154932"/>

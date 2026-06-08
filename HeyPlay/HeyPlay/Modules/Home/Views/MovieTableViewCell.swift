@@ -13,18 +13,33 @@ class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var btnViewAll: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
-    
+
     var navigateToMovieDetail: ((Int) -> Void)?
+    var navigateToViewAll: (() -> Void)?
+
+    // Movie data
+    var movies: [Movie] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+
+    var sectionTitle: String? {
+        didSet {
+            lblName.text = sectionTitle
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         self.selectionStyle = .none
-        
+
         bgView.backgroundColor = .darkGrey
-        
+
         setupCollectionView()
     }
-    
+
     func setupCollectionView() {
         // Initialize the custom layout.
         let layout = HorizontalTwoRowLayout()
@@ -32,7 +47,7 @@ class MovieTableViewCell: UITableViewCell {
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 8
         layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        
+
         // Initialize the collection view with the custom layout.
         collectionView.setCollectionViewLayout(layout, animated: false)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -41,33 +56,47 @@ class MovieTableViewCell: UITableViewCell {
         collectionView.delegate = self
         collectionView.registerForCell(strID: FullMovieCollectionViewCell.identifier)
         collectionView.reloadData()
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
+
     @IBAction func onClickViewAll(_ sender: Any) {
+        navigateToViewAll?()
     }
-    
+
+    // MARK: - Configure with Data
+    func configure(title: String, movies: [Movie]) {
+        self.sectionTitle = title
+        self.movies = movies
+    }
 }
 
-extension MovieTableViewCell : UICollectionViewDelegate , UICollectionViewDataSource {
+extension MovieTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return movies.isEmpty ? 5 : movies.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullMovieCollectionViewCell.identifier, for: indexPath) as? FullMovieCollectionViewCell else {
             return UICollectionViewCell()
         }
+
+        if !movies.isEmpty && indexPath.item < movies.count {
+            cell.configure(with: movies[indexPath.item])
+        }
+
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigateToMovieDetail?(indexPath.item)
+        if !movies.isEmpty && indexPath.item < movies.count {
+            navigateToMovieDetail?(movies[indexPath.item].id)
+        } else {
+            navigateToMovieDetail?(indexPath.item)
+        }
     }
-    
 }

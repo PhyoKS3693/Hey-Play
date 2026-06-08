@@ -25,7 +25,8 @@ final class SuccessfullyChangePhoneNumberViewController: UIHostingController<Suc
         view.backgroundColor = UIColor(named: "black_Color")
         
         rootView.didTapOK = { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
+            // Pop to root (back to profile/menu screen)
+            self?.navigationController?.popToRootViewController(animated: true)
         }
     }
 }

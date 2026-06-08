@@ -25,15 +25,22 @@ final class VerifyOtpViewController: UIHostingController<VerifyOtpScreen> {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
-        
+
         rootView.didTapBack = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
-        
+
         rootView.didTapVerifyOTP = { [weak self] in
-            let controller = SuccessfullyChangePhoneNumberViewController()
-            self?.navigationController?.pushViewController(controller, animated: true)
-            
+            guard let self = self else { return }
+
+            Task { @MainActor in
+                let isSuccess = await self.viewModel.verifyOTP()
+
+                if isSuccess {
+                    let controller = SuccessfullyChangePhoneNumberViewController()
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }
+            }
         }
     }
 }

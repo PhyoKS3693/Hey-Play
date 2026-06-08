@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class ViewPagerViewController: BaseViewController {
 
@@ -35,6 +36,7 @@ class ViewPagerViewController: BaseViewController {
     
     override func setupUI() {
         super.setupUI()
+        configureChildViewControllers()
         if movieSeriesType == .series {
             setupTabs()
         }
@@ -42,6 +44,16 @@ class ViewPagerViewController: BaseViewController {
         setupCollectionView()
         setNavTitle()
         setRightBarItems()
+    }
+
+    private func configureChildViewControllers() {
+        // Configure local VC
+        localVC.movieType = movieSeriesType == .movie ? "1" : "2"
+        localVC.movieOrigin = "1" // Local
+
+        // Configure international VC
+        internationalVC.movieType = movieSeriesType == .movie ? "1" : "2"
+        internationalVC.movieOrigin = "2" // International
     }
     
     func setBottomTabBar() {
@@ -55,13 +67,13 @@ class ViewPagerViewController: BaseViewController {
         tabStackView.spacing = 16
         tabStackView.distribution = .fillProportionally
         tabStackView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         for (index, title) in tabTitles.enumerated() {
             let button = UIButton(type: .system)
             button.setTitle(title, for: .normal)
             button.tag = index
             button.setTitleColor(.white, for: .normal)
-            button.backgroundColor = index == 0 ? .systemPink : .darkGray
+            button.backgroundColor = index == 0 ? UIColor(named: "primaryBgColor") : .darkGrey
             button.layer.cornerRadius = 22
             button.addTarget(self, action: #selector(tabTapped(_:)), for: .touchUpInside)
             buttons.append(button)
@@ -86,7 +98,7 @@ class ViewPagerViewController: BaseViewController {
 
     func updateTabUI() {
         for (index, button) in buttons.enumerated() {
-            button.backgroundColor = index == selectedIndex ? .systemPink : .darkGray
+            button.backgroundColor = index == selectedIndex ? UIColor(named: "primaryBgColor") : .darkGray
         }
     }
 

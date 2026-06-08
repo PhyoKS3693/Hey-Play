@@ -16,6 +16,31 @@ final class AppDefaultsManager {
 
     enum Key: String {
         case language
+        case customerId
+        case sessionId
+        case phoneNumber
+        case isLoggedIn
+    }
+
+    // MARK: - Auth Properties
+    var customerId: String? {
+        get { string(for: .customerId) }
+        set { if let value = newValue { set(value, for: .customerId) } }
+    }
+
+    var sessionId: String? {
+        get { string(for: .sessionId) }
+        set { if let value = newValue { set(value, for: .sessionId) } }
+    }
+
+    var phoneNumber: String? {
+        get { string(for: .phoneNumber) }
+        set { if let value = newValue { set(value, for: .phoneNumber) } }
+    }
+
+    var isLoggedIn: Bool {
+        get { bool(for: .isLoggedIn) }
+        set { set(newValue, for: .isLoggedIn) }
     }
 
     // Save Boolean
@@ -50,8 +75,33 @@ final class AppDefaultsManager {
         defaults.set(value, forKey: key.rawValue)
     }
 
-    func int(for key: Key) -> Double {
+    func double(for key: Key) -> Double {
         defaults.double(forKey: key.rawValue)
+    }
+
+    // MARK: - Session Management
+    var hasValidSession: Bool {
+        guard let sessionId = sessionId, !sessionId.isEmpty,
+              let customerId = customerId, !customerId.isEmpty else {
+            return false
+        }
+        return true
+    }
+
+    func saveLoginCredentials(customerId: String, sessionId: String, phoneNumber: String? = nil) {
+        self.customerId = customerId
+        self.sessionId = sessionId
+        if let phone = phoneNumber {
+            self.phoneNumber = phone
+        }
+        self.isLoggedIn = true
+    }
+
+    func logout() {
+        defaults.removeObject(forKey: Key.customerId.rawValue)
+        defaults.removeObject(forKey: Key.sessionId.rawValue)
+        defaults.removeObject(forKey: Key.phoneNumber.rawValue)
+        defaults.removeObject(forKey: Key.isLoggedIn.rawValue)
     }
 }
 

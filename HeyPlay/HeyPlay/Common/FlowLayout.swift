@@ -48,29 +48,46 @@ import SwiftUI
 
 struct TagView: View {
     let text: String
-    
+    let onTap: (() -> Void)?
+
+    init(text: String, onTap: (() -> Void)? = nil) {
+        self.text = text
+        self.onTap = onTap
+    }
+
     var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 14))
-            Text(text)
-                .font(.system(size: 15, weight: .medium))
+        Button(action: {
+            onTap?()
+        }) {
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 14))
+                Text(text)
+                    .font(.system(size: 15, weight: .medium))
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(Color.gray.opacity(0.3))
+            .foregroundColor(.white)
+            .clipShape(Capsule())
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(Color.gray.opacity(0.3))
-        .foregroundColor(.white)
-        .clipShape(Capsule())
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
 
 struct FlowRowsView: View {
     let tags: [String]
+    let onTap: ((String) -> Void)?
     let horizontalSpacing: CGFloat = 12
     let verticalSpacing: CGFloat = 12
-    
+
     @State private var totalHeight = CGFloat.zero
+
+    init(tags: [String], onTap: ((String) -> Void)? = nil) {
+        self.tags = tags
+        self.onTap = onTap
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: verticalSpacing) {
@@ -78,7 +95,9 @@ struct FlowRowsView: View {
             ForEach(generateRows(), id: \.self) { row in
                 HStack(spacing: horizontalSpacing) {
                     ForEach(row, id: \.self) { tag in
-                        TagView(text: tag)
+                        TagView(text: tag, onTap: {
+                            onTap?(tag)
+                        })
                     }
                 }
             }

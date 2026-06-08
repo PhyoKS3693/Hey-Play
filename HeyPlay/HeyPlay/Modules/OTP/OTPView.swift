@@ -10,108 +10,159 @@ import SwiftUI
 import Combine
 
 struct OTPView : View {
-    @State var tapVerify : Bool = false
-    @State var timeCount : Int = 10
-    @State var isCancel : Bool = false
-    @State var isResend : Bool = false
-    @State var isShowAlert : Bool = false
-    @State var title : String = "Wrong OTP"
-    @State var message : String = "Please try again later"
-    var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    OTPTopView(phoneNumber: "12*****483")
-                    OTPTextView()
-                    
-                    
-                    Button {
-                        showMainTabBar()
-                    } label: {
-                        Text("Verify")
-                            .font(FontUtility.body1())
-                    }
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, maxHeight: 40)
-                    .background(Color.primaryBg)
-                    .cornerRadius(20)
-                    .padding(.horizontal, 20)
+    @ObservedObject var viewModel: LoginViewModel
+    @State var timeCount : Int = 60
+    @State var canResend : Bool = false
+    @State private var timer: Timer?
+    @Environment(\.presentationMode) var presentationMode
 
-                        
-                    
-                    TimerView(timeCount: $timeCount)
+    var body: some View {
+        ZStack {
+            VStack {
+                // Back Button
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                            .font(.system(size: 20))
+                            .padding()
+                    }
                     Spacer()
                 }
-                
-                
-                if isShowAlert {
-                    showAlert()
+
+                OTPTopView(phoneNumber: maskPhoneNumber(viewModel.phoneNumber))
+                OTPTextView(otpText: $viewModel.otpCode)
+
+                Button {
+                    hideKeyboard()
+                    viewModel.verifyOTPAndLogin()
+                } label: {
+                    Text("Verify".localized())
+                        .font(FontUtility.body1())
+                        .foregroundColor(.white)
                 }
-                
-                
-            }
-            .onReceive(Just(tapVerify)) { newValue in
-                if newValue {
-                    presentHomeVC()
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black)
-            .edgesIgnoringSafeArea(.all)
-        }
-        .navigationBarHidden(true)
-        .navigationBarBackButtonHidden(true)
-    }
-    
-    @ViewBuilder
-    func showAlert() -> some View {
-        if isShowAlert {
-            Color.black.opacity(0.4) // dim background
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    withAnimation {
-                        isShowAlert = false
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .background(viewModel.canVerifyOTP ? Color.primaryBg : Color.gray)
+                .cornerRadius(20)
+                .padding(.horizontal, 20)
+                .disabled(!viewModel.canVerifyOTP)
+
+                // Resend OTP
+                HStack {
+                    Text("If you didn't receive a code? ".localized())
+                        .foregroundColor(.white)
+                        .font(FontUtility.body2())
+
+                    if canResend {
+                        Button(action: {
+                            viewModel.resendOTP()
+                            startCountdown()
+                        }) {
+                            Text("Resend OTP".localized())
+                                .foregroundColor(Color.primaryBg)
+                                .font(FontUtility.body2())
+                                .underline()
+                        }
+                    } else {
+                        Text("in \(timeCount)s")
+                            .foregroundColor(.gray)
+                            .font(FontUtility.body2())
                     }
                 }
-            
-            WrongOTPAlertView(
-                isCancel: $isCancel,
-                isResend: $isResend,
-                title: $title,
-                message: $message,
-                showWrongAlert: $isShowAlert
+                .padding()
+
+                Spacer()
+            }
+
+            // Loading Overlay
+            if viewModel.isLoading {
+                Color.black.opacity(0.5)
+                    .edgesIgnoringSafeArea(.all)
+
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(1.5)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(
+            Color.black
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    hideKeyboard()
+                }
+        )
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            startCountdown()
+        }
+        .onDisappear {
+            stopCountdown()
+        }
+        .onChange(of: viewModel.loginSuccess) { success in
+            if success {
+                print("✅ Login success detected in OTPView")
+                // Navigate to Home with a slight delay to ensure UI is updated
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    print("✅ Calling showMainTabBar()")
+                    self.showMainTabBar()
+                }
+            }
+        }
+        .alert(isPresented: Binding<Bool>(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Alert(
+                title: Text("Error"),
+                message: Text(viewModel.errorMessage ?? ""),
+                dismissButton: .default(Text("OK"))
             )
-            .transition(.scale)
-            .zIndex(1)
         }
     }
-    
-    private func presentHomeVC() {
-        guard let window = UIApplication.shared.connectedScenes
-            .compactMap({ ($0 as? UIWindowScene)?.windows.first })
-            .first else { return }
-        
-        //           let vc = HomeViewController()
-        //           rootVC.present(vc, animated: true)
-        let controller = HomeViewController()
-        
-        let navVC = UINavigationController(rootViewController: controller)
-        navVC.navigationBar.isHidden = false
-        window.rootViewController = navVC
-        window.makeKeyAndVisible()
+
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
-    
+
+    private func maskPhoneNumber(_ phone: String) -> String {
+        guard phone.count >= 6 else { return phone }
+        let start = phone.prefix(2)
+        let end = phone.suffix(3)
+        return "\(start)*****\(end)"
+    }
+
+    private func startCountdown() {
+        // Stop any existing timer
+        stopCountdown()
+
+        // Reset countdown
+        timeCount = 60
+        canResend = false
+
+        // Start new timer on main run loop
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] _ in
+            DispatchQueue.main.async {
+                if self.timeCount > 0 {
+                    self.timeCount -= 1
+                } else {
+                    self.canResend = true
+                    self.stopCountdown()
+                }
+            }
+        }
+    }
+
+    private func stopCountdown() {
+        timer?.invalidate()
+        timer = nil
+    }
+
     private func showMainTabBar() {
-        let vc = HomeViewController()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.navigationBar.isHidden = false
-        
-        // Access main window
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = windowScene.windows.first {
-            window.rootViewController = navVC
-            window.makeKeyAndVisible()
-        }
+        ViewNavigation.shared.showMainTabBar()
     }
 }
 
@@ -141,23 +192,6 @@ struct OTPTopView : View {
     }
 }
 
-struct TimerView : View {
-    @Binding var timeCount : Int
-    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
-    var body: some View {
-        Text(String(format: "If you didn’t receive a code? Resend OTP in ".localized(), timeCount))
-            .foregroundColor(.white)
-            .font(FontUtility.body2())
-            .padding()
-            .onReceive(timer) { _ in
-                if timeCount > 0 {
-                    timeCount -= 1
-                }
-            }
-    }
-}
-
 #Preview {
-    OTPView()
+    OTPView(viewModel: LoginViewModel())
 }

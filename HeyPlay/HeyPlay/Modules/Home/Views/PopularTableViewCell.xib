@@ -21,7 +21,7 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yq8-R0-nIE">
                         <rect key="frame" x="10" y="10" width="300" height="658"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movies" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ygB-5R-Ge8">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Popular" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ygB-5R-Ge8">
                                 <rect key="frame" x="10" y="10" width="150" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Ctu-Bh-Kk7"/>
@@ -86,8 +86,10 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="bgView" destination="Yq8-R0-nIE" id="WRJ-U9-acf"/>
                 <outlet property="btnViewAll" destination="Gid-DA-op5" id="c5L-G5-eCL"/>
                 <outlet property="collectionView" destination="kTO-AT-3aw" id="c2V-u7-ehX"/>
+                <outlet property="collectionViewHeightConstraint" destination="0MA-zu-QQ4" id="Zhr-2P-vLn"/>
                 <outlet property="lblCollectionName" destination="ygB-5R-Ge8" id="fRH-Lg-12g"/>
             </connections>
             <point key="canvasLocation" x="114.50381679389312" y="242.95774647887325"/>

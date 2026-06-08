@@ -20,36 +20,68 @@ struct PackageScreen: View {
     }
     
     var body: some View {
-        VStack(spacing: 12) {
-            navView()
-            
-            Text("The best plan for you")
-                .font(FontUtility.heading1())
-                .foregroundColor(Color("white_color"))
-            
-            Text("Choose the payment Plan that suit you")
-                .font(FontUtility.subHeadline())
-                .foregroundColor(Color("white_color"))
-            
-            ScrollView(showsIndicators: false){
-                VStack {
-                    ForEach(viewModel.packagePlans){ package in
-                        renderPackage(package)
+        ZStack {
+            VStack(spacing: 12) {
+                navView()
+
+                if viewModel.isLoading {
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
+                    Spacer()
+                } else if viewModel.packagePlans.isEmpty {
+                    Spacer()
+                    Text("No packages available")
+                        .foregroundColor(.gray)
+                        .font(FontUtility.body1())
+                    Spacer()
+                } else {
+                    Text("The best plan for you")
+                        .font(FontUtility.heading1())
+                        .foregroundColor(Color("white_color"))
+
+                    Text("Choose the payment Plan that suit you")
+                        .font(FontUtility.subHeadline())
+                        .foregroundColor(Color("white_color"))
+
+                    ScrollView(showsIndicators: false){
+                        VStack {
+                            ForEach(viewModel.packagePlans){ package in
+                                renderPackage(package)
+                            }
+                        }
                     }
+
+                    Button {
+                        didSelectPaymentPlan?(viewModel.selectedPackageName, viewModel.selectedPackageType, viewModel.selectedPackageAmount)
+                    } label: {
+                        Text("Continue")
+                            .font(FontUtility.body1())
+                            .foregroundColor(Color("white_color"))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color("pink_Color"))
+                    .cornerRadius(20)
                 }
             }
-            
-            Button {
-                didSelectPaymentPlan?(viewModel.selectedPackageName, viewModel.selectedPackageType, viewModel.selectedPackageAmount)
-            } label: {
-                Text("Continue")
-                    .font(FontUtility.body1())
-                    .foregroundColor(Color("white_color"))
+        }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .onAppear {
+            if viewModel.packagePlans.isEmpty {
+                viewModel.fetchSubscriptionPreload()
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color("pink_Color"))
-            .cornerRadius(20)
+        }
+        .alert(isPresented: Binding<Bool>(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Alert(
+                title: Text("Error"),
+                message: Text(viewModel.errorMessage ?? ""),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -81,31 +113,32 @@ struct PackageScreen: View {
     
     private func renderPackage(_ package: PackagePlan) -> some View {
         Button {
+            viewModel.selectedPackageId = package.packageId
             viewModel.selectedPackageName = package.packageName
             viewModel.selectedPackageType = package.packageBilledType
             viewModel.selectedPackageAmount = package.packageChargedAmount
         } label: {
             HStack(spacing: 10) {
-                radio(selected: package.packageName == viewModel.selectedPackageName)
+                radio(selected: package.packageId == viewModel.selectedPackageId)
                     .frame(width: 20, height: 20)
-                
+
                 Image(package.packageIcon)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 26, height: 26)
-                
+
                 VStack(alignment: .leading) {
                     Text(package.packageName)
                         .font(FontUtility.subHeadline())
                         .foregroundColor(Color("white_color"))
-                    
+
                     Text(package.packageBilledType)
                         .font(FontUtility.smallText1())
                         .foregroundColor(Color("white_color"))
                 }
-                
+
                 Spacer()
-                
+
                 Text(package.packageChargedAmount)
                     .font(FontUtility.subHeadline())
                     .foregroundColor(Color("white_color"))

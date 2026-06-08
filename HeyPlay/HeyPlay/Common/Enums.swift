@@ -66,9 +66,11 @@ enum HomeSection : Int{
     case banner = 1
     case recent = 2
     case movie = 3
-    case series = 4
-    case collection = 5
-    case popular = 6
+    case latest_movie = 4
+    case series = 5
+    case collection = 6
+    case collection_type_1 = 7
+    case popular = 8
 }
 
 
@@ -88,9 +90,9 @@ enum HotActionType {
     func getActiveImage() -> UIImage {
         switch self {
         case .favorite:
-            return UIImage(named: "ic-heart-inactive")!
+            return UIImage(named: "ic-heart-active")!
         case .addToWatchlist:
-            return UIImage(named: "ic-addToWatch-inactive")!
+            return UIImage(named: "ic-addToWatch-active")!
         }
     }
 }

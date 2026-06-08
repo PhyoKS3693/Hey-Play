@@ -73,8 +73,12 @@ final class MenuViewController: BaseViewController {
             let controller = AboutUsViewController()
             self?.navigationController?.pushViewController(controller, animated: true)
         }
-        
-        // to show Top of the subviews 
+
+        controller.rootView.didSelectLogout = { [weak self] in
+            self?.viewModel.logout()
+        }
+
+        // to show Top of the subviews
         setBottomTabBar()
         
     }

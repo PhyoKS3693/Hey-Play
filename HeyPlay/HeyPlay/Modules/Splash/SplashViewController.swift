@@ -38,14 +38,21 @@ class SplashViewController: BaseViewController {
         .sink { _ in
             self.countdownTime -= 1
             if self.countdownTime == 0 {
-                /// show login
-                //ViewNavigation.shared.showLoginView()
-                
-                /// show Home
-                ViewNavigation.shared.showMainTabBar()
+                self.navigateBasedOnSession()
             }
         }
         .store(in: &cancellables)
+    }
+
+    private func navigateBasedOnSession() {
+        // Check if user is logged in
+        if AppDefaultsManager.shared.isLoggedIn {
+            // User is logged in → Go to Home
+            ViewNavigation.shared.showMainTabBar()
+        } else {
+            // User is not logged in → Go to Login
+            ViewNavigation.shared.showLoginView()
+        }
     }
     
 

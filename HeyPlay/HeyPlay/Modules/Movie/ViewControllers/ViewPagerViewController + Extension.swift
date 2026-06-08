@@ -43,20 +43,28 @@ extension ViewPagerViewController {
     }
     
     func setRightBarItems() {
-        let searchImgView = UIImageView(
-            image: UIImage(named: "ic-search")
-        )
         let searchItem = UIBarButtonItem(
-            customView: searchImgView
+            image: UIImage(named: "ic-search")?.withRenderingMode(.alwaysOriginal),
+            style: .done,
+            target: self,
+            action: #selector(presentSearch)
         )
-        
-        let notiImgView = UIImageView(
-            image: UIImage(named: "ic-noti")
-        )
+
         let notiItem = UIBarButtonItem(
-            customView: notiImgView
+            image: UIImage(named: "ic-noti")?.withRenderingMode(.alwaysOriginal),
+            style: .done,
+            target: self,
+            action: #selector(presentNoti)
         )
-        
-        navigationItem.rightBarButtonItems = [searchItem , notiItem]
+
+        navigationItem.rightBarButtonItems = [notiItem, searchItem]
+    }
+
+    @objc func presentSearch() {
+        ViewNavigation.shared.showSearchView()
+    }
+
+    @objc func presentNoti() {
+        ViewNavigation.shared.showNotification()
     }
 }

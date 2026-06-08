@@ -10,10 +10,8 @@ import SwiftUI
 import Combine
 
 struct NotificationListView : View {
-    var notificationList : [NotificationItem] = []
-    
     @ObservedObject var viewModel : NotificationViewModel
-    
+
     init(_ viewmodel : NotificationViewModel) {
         // Remove default separators and background
         viewModel = viewmodel
@@ -21,54 +19,120 @@ struct NotificationListView : View {
         UITableView.appearance().backgroundColor = UIColor.black
         UITableViewCell.appearance().backgroundColor = UIColor.black
     }
-    
+
     var body: some View {
-        
         ScrollView {
-            VStack {
-                ForEach(viewModel.notificationItems) { notification in
-                    NotificationItemView(
-                        notification: notification
-                    )
-                    .onTapGesture {
-                        ViewNavigation.shared.showNotificationDetailView(notificaiton: notification)
+            LazyVStack(spacing: 16) {
+                ForEach(viewModel.notifications) { notification in
+                    NotificationItemCard(notification: notification)
+                        .onTapGesture {
+                            // Navigate to detail
+                            Task {
+                                if let detail = await viewModel.getNotificationDetail(notiId: notification.id) {
+                                    await MainActor.run {
+                                        ViewNavigation.shared.showNotificationDetail(notificationDetail: detail)
+                                    }
+                                }
+                            }
+                        }
+                        .onAppear {
+                            // Load more when reaching last item
+                            if notification.id == viewModel.notifications.last?.id {
+                                viewModel.loadMoreData()
+                            }
+                        }
+                }
+
+                if viewModel.isLoadingMore {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .padding()
+                        Spacer()
                     }
                 }
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
         }
-        .padding()
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
     }
 }
 
-struct NotificationItemView : View {
-    var notification : NotificationItem?
+// MARK: - Notification Item Card (Matches Design)
+struct NotificationItemCard: View {
+    let notification: APINotification
+
     var body: some View {
-        HStack(alignment: .center, spacing: 15, content: {
-            Image("ic.notification")
-                .resizable()
-                .frame(width: 40 , height: 40)
-            
-            VStack (alignment: .leading, content: {
-                Text(notification?.title ?? "")
-                    .font(FontUtility.body2())
-                    .foregroundColor(Color.white)
-                
-                Text(notification?.message ?? "")
-                    .font(FontUtility.smallText1())
-                    .foregroundColor(Color.lightGrey)
-            })
-            Spacer()
-        })
-        .padding(.all)
-        .background(Color.grey)
-        .cornerRadius(10)
-       
+        HStack(alignment: .top, spacing: 16) {
+            // Category Icon
+            notificationIcon
+                .font(.system(size: 28))
+                .foregroundColor(.white)
+                .frame(width: 48, height: 48)
+
+            // Content
+            VStack(alignment: .leading, spacing: 8) {
+                // Title and Date Row
+                HStack(alignment: .top) {
+                    Text(notification.categoryName ?? notification.notificationTypeDesc ?? "Notification")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+
+                    Spacer()
+
+                    // Date and Time
+                    if let createdTime = notification.createdTime {
+                        Text(createdTime)
+                            .font(.system(size: 12))
+                            .foregroundColor(.white.opacity(0.7))
+                            .lineLimit(1)
+                    }
+                }
+
+                // Message Preview
+                Text(notification.plainMessage)
+                    .font(.system(size: 14))
+                    .foregroundColor(.white.opacity(0.8))
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(red: 0.2, green: 0.2, blue: 0.2))
+        )
     }
-    
-    func navigateToDetails() {
-        
+
+    // Icon based on notification type
+    @ViewBuilder
+    private var notificationIcon: some View {
+        let category = notification.categoryName?.lowercased() ?? ""
+        let type = notification.notificationTypeDesc?.lowercased() ?? ""
+
+        if category.contains("account") || category.contains("updated") {
+            Image(systemName: "bell")
+        } else if category.contains("announcement") || type.contains("announcement") {
+            Image(systemName: "tag")
+        } else if category.contains("expired") || type.contains("expired") {
+            Image(systemName: "clock.badge.exclamationmark")
+        } else if category.contains("success") || type.contains("success") {
+            Image(systemName: "checkmark.circle")
+        } else if category.contains("error") || type.contains("error") {
+            Image(systemName: "exclamationmark.circle")
+        } else if category.contains("movie") || type.contains("movie") {
+            Image(systemName: "play.rectangle")
+        } else if category.contains("series") || type.contains("series") {
+            Image(systemName: "play.rectangle")
+        } else if category.contains("version") || category.contains("update") {
+            Image(systemName: "arrow.triangle.2.circlepath")
+        } else {
+            Image(systemName: "bell")
+        }
     }
 }
 

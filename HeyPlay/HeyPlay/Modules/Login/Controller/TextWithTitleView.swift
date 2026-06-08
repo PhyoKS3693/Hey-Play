@@ -25,6 +25,7 @@ struct TextWithTitleView : View {
                 }
 
                 TextField("", text: $phoneNumber)
+                    .keyboardType(.numberPad)
                     .padding(.horizontal, 20)
                     .frame(height: 40)
                     .background(Color.black)
@@ -34,6 +35,12 @@ struct TextWithTitleView : View {
                             .stroke(Color.white, lineWidth: 1)
                     )
                     .foregroundColor(.white)
+                    .onChange(of: phoneNumber) { newValue in
+                        // Limit to 11 characters
+                        if newValue.count > 11 {
+                            phoneNumber = String(newValue.prefix(11))
+                        }
+                    }
             }
         })
         .padding()

@@ -9,22 +9,19 @@ import SwiftUI
 
 struct ProfileScreen: View {
     var host: HostController?
-    
-    @State var userName: String = ""
-    @State var userPhone: String = ""
-    
+
     var didTapBack: (() -> Void)?
-    
+
     @ObservedObject private var viewModel: ProfileViewModel
-    
+
     init(_ viewModel: ProfileViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                
+
                 navView()
                 
                 HStack {
@@ -47,10 +44,11 @@ struct ProfileScreen: View {
                     Text("Name")
                         .font(FontUtility.caption())
                         .foregroundColor(Color.white)
-                    
-                    TextField("", text: $userName)
+
+                    Text(viewModel.profile?.name ?? "")
                         .padding(.horizontal, 20)
                         .frame(height: 40)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .background(Color.black)
                         .font(FontUtility.body1())
                         .overlay(
@@ -66,15 +64,16 @@ struct ProfileScreen: View {
                         Text("Account")
                             .font(FontUtility.caption())
                             .foregroundColor(Color("white_color"))
-                        
+
                         Text("(Optional)")
                             .font(FontUtility.caption())
                             .foregroundColor(Color("castType"))
                     }
-                    
-                    TextField("", text: $userPhone)
+
+                    Text(viewModel.profile?.account ?? "")
                         .padding(.horizontal, 20)
                         .frame(height: 40)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .background(Color.black)
                         .font(FontUtility.body1())
                         .overlay(
@@ -97,8 +96,11 @@ struct ProfileScreen: View {
                 renderLinkedAccount("ic.google", "Google", "www.google.com")
                 
                 renderLinkedAccount("ic.line", "Line", nil)
-                
+
             }
+        }
+        .onAppear {
+            viewModel.fetchProfile()
         }
     }
     

@@ -23,10 +23,40 @@ struct AboutUsScreen: View {
     var body: some View {
         VStack{
             navView()
-            
-            ZStack {
-                CommonWebView(source: .url("https://www.apple.com/newsroom/"), isLoading: $isLoading)
+
+            if viewModel.isLoading && viewModel.aboutUsURL.isEmpty {
+                Spacer()
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(1.5)
+                Spacer()
+            } else if !viewModel.aboutUsURL.isEmpty {
+                ZStack {
+                    CommonWebView(source: .url(viewModel.aboutUsURL), isLoading: $isLoading)
+                }
+            } else {
+                Spacer()
+                Text("Failed to load content")
+                    .foregroundColor(.gray)
+                    .font(FontUtility.body1())
+                Spacer()
             }
+        }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .onAppear {
+            if viewModel.aboutUsURL.isEmpty {
+                viewModel.fetchSupportLinks()
+            }
+        }
+        .alert(isPresented: Binding<Bool>(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Alert(
+                title: Text("Error"),
+                message: Text(viewModel.errorMessage ?? ""),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     

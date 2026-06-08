@@ -25,10 +25,20 @@ final class WatchListViewController: UIHostingController<WatchListScreen> {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
-        
+
         rootView.didTapBack = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ViewNavigation.shared.currentViewController = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        ViewNavigation.shared.currentViewController = self
+    }
+
 }

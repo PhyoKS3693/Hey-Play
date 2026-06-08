@@ -10,8 +10,13 @@ import SwiftUI
 
 struct CustomNavBar: View {
     var onBack: (() -> Void)?
+    var onFavorite: (() -> Void)?
     var onShare: (() -> Void)?
-    
+    var subscriptionType: String = "VIP"
+    var isFree: Bool = false
+    var isFavorite: Bool = false
+    var isLoggedIn: Bool = false
+
     var body: some View {
         HStack {
             // Back button
@@ -24,31 +29,44 @@ struct CustomNavBar: View {
                     .background(Color.grey)
                     .clipShape(Circle())
             }
-            
+
             Spacer()
-            
-            // Center VIP badge
-            HStack(spacing: 6) {
-                Image("ic.vip")
-                    .foregroundColor(.white)
-                    .background(
-                        Circle()
-                            .fill(Color.pink)
-                            .frame(width: 20, height: 20)
-                    )
-                    .frame(width: 20, height: 20)
-                
-                Text("VIP".localized())
-                    .font(FontUtility.heading2())
-                    .foregroundColor(.white)
+
+            // Center subscription badge (VIP or Free)
+            if !subscriptionType.isEmpty {
+                HStack(spacing: 6) {
+                    Image(isFree ? "ic-free" : "ic.vip")
+                        .resizable()
+                        .renderingMode(.original)
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.white)
+
+                    Text(subscriptionType)
+                        .font(FontUtility.heading2())
+                        .foregroundColor(.white)
+                }
+                .padding(.horizontal, 15)
+                .padding(.vertical, 8)
+                .background(Color.grey)
+                .cornerRadius(20)
             }
-            .padding(.horizontal, 15)
-            .padding(.vertical, 8)
-            .background(Color.grey)
-            .cornerRadius(20)
-            
+
             Spacer()
-            
+
+            // Favorite button - only show when logged in
+            if isLoggedIn {
+                Button(action: {
+                    onFavorite?()
+                }) {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundColor(.white)
+                        .frame(width: 32, height: 32)
+                        .background(Color.grey)
+                        .clipShape(Circle())
+                }
+            }
+
             // Share button
             Button(action: {
                 onShare?()
@@ -67,5 +85,13 @@ struct CustomNavBar: View {
 }
 
 #Preview {
-    CustomNavBar(onBack: nil, onShare: nil)
+    CustomNavBar(
+        onBack: nil,
+        onFavorite: nil,
+        onShare: nil,
+        subscriptionType: "VIP",
+        isFree: false,
+        isFavorite: false,
+        isLoggedIn: true
+    )
 }

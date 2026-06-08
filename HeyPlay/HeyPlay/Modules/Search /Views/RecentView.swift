@@ -9,11 +9,18 @@ import Foundation
 import SwiftUI
 
 struct RecentView : View {
+    @ObservedObject var viewModel: SearchViewModel
+
     var body: some View {
-        VStack {
-            RecentTopView()
-            RecentTagCollectionView()
-            Spacer()
+        if !viewModel.recentSearches.isEmpty {
+            VStack(spacing: 0) {
+                RecentTopView()
+                RecentTagCollectionView(searches: viewModel.recentSearches, onTap: { query in
+                    Task {
+                        await viewModel.quickSearch(query: query)
+                    }
+                })
+            }
         }
     }
 }
@@ -43,26 +50,16 @@ struct RecentTopView : View {
 }
 
 struct RecentTagCollectionView: View {
-    let tags = [
-        "Aung Ye Lin", "Nay Toe", "Mg",
-        "Kyaw Ye Aung", "Thet Mon Myint",
-        "Pyay Ti Oo", "Yan Aung"
-    ]
-    
+    let searches: [String]
+    let onTap: (String) -> Void
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            FlowRowsView(tags: tags)
-                .padding(.horizontal)
-            
-            Spacer(minLength: 0)
-        }
-        .padding(.top, 16)
-        .background(Color.black.edgesIgnoringSafeArea(.all))
+        FlowRowsView(tags: searches, onTap: onTap)
+            .padding(.horizontal)
+            .padding(.top, 16)
+            .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 
 
 
-#Preview {
-    RecentView()
-}

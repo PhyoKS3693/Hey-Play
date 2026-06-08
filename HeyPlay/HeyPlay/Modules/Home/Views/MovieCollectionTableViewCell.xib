@@ -19,13 +19,12 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WzB-SJ-gtN">
-                        <rect key="frame" x="10" y="10" width="300" height="260"/>
+                        <rect key="frame" x="10" y="10" width="300" height="266"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movies" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLU-3g-7N4">
-                                <rect key="frame" x="10" y="10" width="150" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movies Collection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLU-3g-7N4">
+                                <rect key="frame" x="10" y="10" width="144" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="lSZ-Ls-SH9"/>
-                                    <constraint firstAttribute="width" constant="150" id="mXw-Cy-O8o"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" name="white_Color"/>
@@ -45,10 +44,10 @@
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="fO6-EZ-zZv">
-                                <rect key="frame" x="10" y="50" width="280" height="200"/>
+                                <rect key="frame" x="10" y="50" width="280" height="206"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="G6V-4X-sqe"/>
+                                    <constraint firstAttribute="height" constant="206" id="G6V-4X-sqe"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Wrv-2L-J91">
                                     <size key="itemSize" width="128" height="128"/>
@@ -89,8 +88,10 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="bgView" destination="WzB-SJ-gtN" id="1RU-Jx-w7b"/>
                 <outlet property="btnViewAll" destination="iZP-7J-1Hw" id="VK7-4X-sWD"/>
                 <outlet property="collectionView" destination="fO6-EZ-zZv" id="7Ti-I6-t5R"/>
+                <outlet property="collectionViewHeightConstraint" destination="G6V-4X-sqe" id="Xbw-9K-hGf"/>
                 <outlet property="lblCollectionName" destination="YLU-3g-7N4" id="INq-c5-woa"/>
             </connections>
             <point key="canvasLocation" x="114.50381679389312" y="102.46478873239437"/>

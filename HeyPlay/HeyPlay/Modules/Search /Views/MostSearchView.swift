@@ -9,29 +9,31 @@ import Foundation
 import SwiftUI
 
 struct MostSearchView : View {
+    @ObservedObject var viewModel: SearchViewModel
+
     var body: some View {
-        VStack {
-            MostSearchTopView()
-            MostSearchTagCollectionView()
+        if !viewModel.trendingSearches.isEmpty {
+            VStack {
+                MostSearchTopView(title: viewModel.trendingTitle)
+                MostSearchTagCollectionView(searches: viewModel.trendingSearches, onTap: { query in
+                    Task {
+                        await viewModel.quickSearch(query: query)
+                    }
+                })
+            }
         }
     }
 }
 struct MostSearchTopView : View {
+    var title: String = ""
+
     var body: some View {
         HStack {
-            Text("Most Search".localized())
+            Text(title.isEmpty ? "Most Search".localized() : title)
                 .foregroundColor(.white)
                 .font(FontUtility.heading2())
-            
+
             Spacer()
-            
-            Button {
-                
-            } label: {
-                Text("Clear All".localized())
-                    .foregroundColor(.red)
-                    .font(FontUtility.body2())
-            }
         }
         .frame(height: 40)
         .padding(.horizontal , 10)
@@ -41,18 +43,14 @@ struct MostSearchTopView : View {
 
 
 struct MostSearchTagCollectionView: View {
-    let tags = [
-        "Aung Ye Lin", "Nay Toe", "Mg",
-        "Kyaw Ye Aung", "Thet Mon Myint",
-        "Pyay Ti Oo", "Yan Aung"
-    ]
-    
+    let searches: [String]
+    let onTap: (String) -> Void
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            
-            FlowRowsView(tags: tags)
+            FlowRowsView(tags: searches, onTap: onTap)
                 .padding(.horizontal)
-            
+
             Spacer(minLength: 0)
         }
         .padding(.top, 16)

@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Kingfisher
 
 class BannerCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imgView: UIImageView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -18,4 +20,25 @@ class BannerCollectionViewCell: UICollectionViewCell {
         imgView.contentMode = .scaleAspectFill
     }
 
+    // MARK: - Configure with Banner Data
+    func configure(with banner: Banner) {
+        if let url = URL(string: banner.fullImageURL) {
+            imgView.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "image1"),
+                options: [
+                    .transition(.fade(0.3)),
+                    .cacheOriginalImage
+                ]
+            )
+        } else {
+            imgView.image = UIImage(named: "image1")
+        }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imgView.kf.cancelDownloadTask()
+        imgView.image = nil
+    }
 }

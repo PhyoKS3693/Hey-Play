@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Kingfisher
 
 enum PackType : String {
     case vip
@@ -30,18 +31,43 @@ enum PackType : String {
         }
     }
 }
+@available(iOS 14.0, *)
 struct RecommendView : View {
-    let items = Array(1...20)
+    var movies: [Movie] = []
     let columns = 3
-    
+
+    private var items: [Movie] {
+        movies.isEmpty ? [] : movies
+    }
+
     var body: some View {
         ZStack {
             ScrollView {
                 VStack(spacing: 10) {
-                    ForEach(0..<rowsCount(), id: \.self) { row in
-                        HStack(spacing: 10) {
-                            ForEach(0..<columns, id: \.self) { column in
-                                RecommendItemView()
+                    if movies.isEmpty {
+                        // Placeholder items
+                        ForEach(0..<7, id: \.self) { row in
+                            HStack(spacing: 10) {
+                                ForEach(0..<columns, id: \.self) { _ in
+                                    RecommendItemView()
+                                }
+                            }
+                        }
+                    } else {
+                        ForEach(0..<rowsCount(), id: \.self) { row in
+                            HStack(spacing: 10) {
+                                ForEach(0..<columns, id: \.self) { column in
+                                    if let movie = movieAt(row: row, column: column) {
+                                        RecommendItemView(
+                                            imageURL: movie.fullImageURL,
+                                            movieTitle: movie.name ?? "Untitled",
+                                            packType: movie.isVIP ? .vip : .free
+                                        )
+                                    } else {
+                                        Color.clear
+                                            .frame(width: (UIScreen.main.bounds.width - 20) / 3, height: 190)
+                                    }
+                                }
                             }
                         }
                     }
@@ -49,50 +75,70 @@ struct RecommendView : View {
             }
         }
         .background(Color.black)
-        
     }
-    
+
     func rowsCount() -> Int {
-        (items.count + columns - 1) / columns
+        (movies.count + columns - 1) / columns
     }
-    
-    func itemAt(row: Int, column: Int) -> Int? {
+
+    func movieAt(row: Int, column: Int) -> Movie? {
         let index = row * columns + column
-        return index < items.count ? items[index] : nil
+        return index < movies.count ? movies[index] : nil
     }
 }
 
-#Preview {
-    RecommendView()
+#if DEBUG
+@available(iOS 14.0, *)
+struct RecommendView_Previews: PreviewProvider {
+    static var previews: some View {
+        RecommendView()
+    }
 }
+#endif
 
 
+@available(iOS 14.0, *)
 struct RecommendItemView : View {
-    var imageStr : String = "image3"
-    var movieTile : String = "Movie Title"
+    var imageURL: String = ""
+    var movieTitle: String = "Movie Title"
+    var packType: PackType = .free
+
     var body: some View {
         VStack(spacing: 10) {
             ZStack {
-                Image(imageStr)
-                    .resizable()
-                    .frame(height: 150)
-                    .cornerRadius(10)
+                if let url = URL(string: imageURL), !imageURL.isEmpty {
+                    KFImage(url)
+                        .placeholder {
+                            Image("image3")
+                                .resizable()
+                                .frame(height: 150)
+                                .cornerRadius(10)
+                        }
+                        .resizable()
+                        .frame(height: 150)
+                        .cornerRadius(10)
+                } else {
+                    Image("image3")
+                        .resizable()
+                        .frame(height: 150)
+                        .cornerRadius(10)
+                }
                 VStack {
                     Spacer()
                     HStack {
-                        PackageType(type: .vip)
+                        PackageType(type: packType)
                         Spacer()
                     }
                 }
                 .padding(.leading , 10)
                 .padding(.bottom , 20)
-                
             }
-            
+
             HStack {
-                Text(movieTile)
+                Text(movieTitle)
                     .font(FontUtility.subHeadline())
                     .foregroundColor(.white)
+                    .lineLimit(1)
                 Spacer()
             }
             .padding(.all, 3)
@@ -102,6 +148,7 @@ struct RecommendItemView : View {
     }
 }
 
+@available(iOS 14.0, *)
 struct PackageType : View {
     var type : PackType = .free
     var body: some View {
@@ -126,6 +173,11 @@ struct PackageType : View {
     }
 }
 
-#Preview {
-    RecommendItemView()
+#if DEBUG
+@available(iOS 14.0, *)
+struct RecommendItemView_Previews: PreviewProvider {
+    static var previews: some View {
+        RecommendItemView()
+    }
 }
+#endif

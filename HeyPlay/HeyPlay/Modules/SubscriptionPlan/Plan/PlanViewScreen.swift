@@ -14,7 +14,7 @@ struct PlanViewScreen: View {
     
     @ObservedObject private var viewModel: PlanViewModel
     
-    var didSelectPaymentMethod: ((_ name: String,_ type: String,_ amount: String,_ icon: String) -> Void)?
+    var didSelectPaymentMethod: ((_ paymentMethodId: Int,_ paymentMethodName: String) -> Void)?
     
     init(_ viewModel: PlanViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -23,27 +23,28 @@ struct PlanViewScreen: View {
     var body: some View {
         VStack(alignment: .leading){
             navView()
-            
+
+            // Selected Package Display
             ZStack {
                 Image("package_bg")
                     .resizable()
                     .scaledToFill()
                     .frame(height: 60)
-                
+
                 HStack {
                     VStack(alignment: .leading) {
                         Text(viewModel.packageName)
                             .font(FontUtility.subHeadline())
                             .foregroundColor(Color("white_color"))
-                        
+
                         Text(viewModel.packageType)
                             .font(FontUtility.smallText1())
                             .foregroundColor(Color("white_color"))
                     }
                     .padding(10)
-                    
+
                     Spacer()
-                                        
+
                     Text(viewModel.chargedAmount)
                         .font(FontUtility.subHeadline())
                         .foregroundColor(Color("white_color"))
@@ -51,29 +52,64 @@ struct PlanViewScreen: View {
                 }
             }
             .padding(10)
-            
+
             Text("Choose Payment Method")
                 .font(FontUtility.heading2())
                 .foregroundColor(Color("white_color"))
                 .padding(10)
-            
-            HStack {
-                renderPaymentMethod("ATOM")
-                
-                renderPaymentMethod("Ooredoo")
-                
-                renderPaymentMethod("MPT")
+
+            if viewModel.isLoading {
+                Spacer()
+                HStack {
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
+                    Spacer()
+                }
+                Spacer()
+            } else if viewModel.paymentMethods.isEmpty {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Text("No payment methods available")
+                        .foregroundColor(.gray)
+                        .font(FontUtility.body1())
+                    Spacer()
+                }
+                Spacer()
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 16) {
+                        ForEach(viewModel.paymentMethods) { paymentMethod in
+                            renderPaymentMethod(paymentMethod)
+                        }
+                    }
+                    .padding(.horizontal, 10)
+                }
             }
-            
-            HStack {
-                renderPaymentMethod("MyTel")
-                
-                renderPaymentMethod("KBZ_Pay")
-                
-                renderPaymentMethod("Wave_Pay")
-            }
-            
+
             Spacer()
+        }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .onAppear {
+            if viewModel.paymentMethods.isEmpty {
+                viewModel.fetchPaymentMethods()
+            }
+        }
+        .alert(isPresented: Binding<Bool>(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Alert(
+                title: Text("Error"),
+                message: Text(viewModel.errorMessage ?? ""),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -103,15 +139,43 @@ struct PlanViewScreen: View {
         .padding(10)
     }
     
-    private func renderPaymentMethod(_ paymentMethod: String) -> some View {
+    private func renderPaymentMethod(_ paymentMethod: PaymentMethod) -> some View {
         Button {
-            didSelectPaymentMethod?(viewModel.packageName, viewModel.packageType, viewModel.chargedAmount, paymentMethod)
+            didSelectPaymentMethod?(
+                paymentMethod.id,
+                paymentMethod.name ?? ""
+            )
         } label: {
-            Image(paymentMethod)
-                .frame(width: 76, height: 76)
+            if #available(iOS 15.0, *) {
+                AsyncImage(url: URL(string: paymentMethod.fullImageURL ?? "")) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                            .frame(width: 76, height: 76)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 76, height: 76)
+                    case .failure:
+                        Image(systemName: "photo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.gray)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+            } else {
+                Image(systemName: "creditcard")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(.white)
+            }
         }
         .frame(width: 111, height: 111)
-        .padding()
         .background (
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color("darkGrey_Color"))

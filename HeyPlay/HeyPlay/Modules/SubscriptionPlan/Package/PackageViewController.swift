@@ -27,8 +27,15 @@ final class PackageViewController: UIHostingController<PackageScreen> {
         view.backgroundColor = UIColor(named: "black_Color")
         
         rootView.didSelectPaymentPlan = { [weak self] name, type, amount in
-            let controller = PlanViewController(name: name, type: type, amount: amount)
-            self?.navigationController?.pushViewController(controller, animated: true)
+            guard let self = self else { return }
+            let controller = PlanViewController(
+                name: name,
+                type: type,
+                amount: amount,
+                packageId: self.viewModel.selectedPackageId,
+                paymentMethods: self.viewModel.paymentMethods
+            )
+            self.navigationController?.pushViewController(controller, animated: true)
         }
         
         rootView.didTapBack = { [weak self] in

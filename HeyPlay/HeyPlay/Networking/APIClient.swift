@@ -10,11 +10,11 @@ import Alamofire
 
 class APIClient {
     static let shared = APIClient()
-    
+
     private init() {
         setupSession()
     }
-    
+
     private func setupSession() {
         let config = URLSessionConfiguration.af.default
         session = Session(
@@ -25,8 +25,25 @@ class APIClient {
             )
         )
     }
-    
+
     private var session: Session!
+
+    // MARK: - Default Headers
+    private func mergeHeaders(_ headers: HTTPHeaders?) -> HTTPHeaders {
+        var defaultHeaders: [String: String] = [
+            "deviceType": "2",  // iOS device type
+            "Content-Type": "application/json"
+        ]
+
+        // Merge with passed headers (passed headers override defaults)
+        if let headers = headers {
+            for header in headers {
+                defaultHeaders[header.name] = header.value
+            }
+        }
+
+        return HTTPHeaders(defaultHeaders)
+    }
     
     func request<T: Decodable>(
         urlConvertible: URLConvertible,
@@ -38,10 +55,11 @@ class APIClient {
         responseType: T.Type,
         decoder: DataDecoder = JSONDecoder()
     ) async -> DataResponse<T, AFError> {
-        await withCheckedContinuation { cont in
+        let mergedHeaders = mergeHeaders(headers)
+        return await withCheckedContinuation { cont in
             request(
                 urlConvertible: urlConvertible, method: method,
-                parameters: parameters, encoding: encoding, headers: headers,
+                parameters: parameters, encoding: encoding, headers: mergedHeaders,
                 emptyResponseCodes: emptyResponseCodes,
                 responseType: responseType,
                 decoder: decoder,

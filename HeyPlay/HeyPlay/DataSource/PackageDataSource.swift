@@ -9,6 +9,7 @@ import Foundation
 
 struct PackagePlan: Identifiable {
     let id = UUID()
+    let packageId: Int // API package ID
     let packageName: String
     let packageBilledType: String
     let packageChargedAmount: String

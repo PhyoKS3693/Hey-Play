@@ -7,29 +7,44 @@
 
 import Foundation
 import SwiftUI
+import Kingfisher
+import AVKit
 
-struct MovieDetailBottomView : View {
-    @Binding var tapTrailer : Bool
-    @Binding var tapRecommend : Bool
-    @Binding var tapEpisodes : Bool
-    @Binding var detailType : DetailType
-    
+@available(iOS 14.0, *)
+struct MovieDetailBottomView: View {
+    @ObservedObject var viewModel: MovieDetailViewModel
+    @Binding var tapTrailer: Bool
+    @Binding var tapRecommend: Bool
+    @Binding var tapEpisodes: Bool
+    @Binding var detailType: DetailType
+    @Binding var showUpgradeDialog: Bool
+
     var body: some View {
         ScrollView {
             VStack(content: {
                 if tapEpisodes {
-                    EpisodesListView()
+                    EpisodesListView(
+                        episodes: viewModel.episodes,
+                        movieTitle: viewModel.title,
+                        movieId: viewModel.contentDetail?.id ?? 0,
+                        showUpgradeDialog: $showUpgradeDialog
+                    )
                 }
-                
+
                 if tapRecommend {
-                    RecommendView()
+                    RecommendView(movies: viewModel.recommendMovies)
                 }
-                
+
                 if tapTrailer {
                     ZStack {
                         VStack {
-                            MovieDetailDescriptionView()
-                            CastView()
+                            MovieDetailDescriptionView(
+                                description: viewModel.description,
+                                imageURL: viewModel.imageURL,
+                                trailerUrl: viewModel.contentDetail?.safeTrailerUrl ?? ""
+                            )
+
+                            CastView(cast: viewModel.cast)
                         }
                     }
                     .background(Color.grey)
@@ -39,10 +54,10 @@ struct MovieDetailBottomView : View {
             })
         }
         .background(Color.black)
-        
     }
 }
 
+@available(iOS 14.0, *)
 struct SeriesAndTrailerAndRecommendView : View {
     @Binding var tapTrailer : Bool
     @Binding var tapRecommend : Bool
@@ -101,35 +116,108 @@ struct SeriesAndTrailerAndRecommendView : View {
     }
 }
 
-struct MovieDetailDescriptionView : View {
+@available(iOS 14.0, *)
+struct MovieDetailDescriptionView: View {
+    var description: String = ""
+    var imageURL: String = ""
+    var trailerUrl: String = ""
+
     var body: some View {
-        
-        VStack {
-            Image("image2")
-                .resizable()
-                .frame(height: 300)
-                .cornerRadius(20)
+        VStack(spacing: 12) {
+            // Show video player if trailer URL is available, otherwise show poster image
+            if !trailerUrl.isEmpty, let url = URL(string: trailerUrl) {
+                TrailerVideoPlayer(videoURL: url)
+                    .frame(height: 300)
+                    .cornerRadius(20)
+                    .padding(.top, 12)
+                    .padding(.horizontal, 12)
+            } else {
+                ZStack {
+                    if let url = URL(string: imageURL), !imageURL.isEmpty {
+                        KFImage(url)
+                            .placeholder {
+                                Image("image2")
+                                    .resizable()
+                                    .frame(height: 300)
+                                    .cornerRadius(20)
+                            }
+                            .resizable()
+                            .frame(height: 300)
+                            .cornerRadius(20)
+                    } else {
+                        Image("image2")
+                            .resizable()
+                            .frame(height: 300)
+                            .cornerRadius(20)
+                    }
+
+                    Image("ic-play")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                }
+                .padding(.top, 12)
+                .padding(.horizontal, 12)
+            }
+
             HStack {
                 Text("Description".localized())
                     .font(FontUtility.headline2())
                     .foregroundColor(.white)
+
                 Spacer()
             }
-            .padding(.top , 10)
-            
-            Text("Watch live and new program every monthsWatch live and new program every monthsWatch live and new program every monthsWatch live and new program every monthsWatch live and new program every monthsWatch live and new program every months")
-                .foregroundColor(.white)
+            .padding(.horizontal, 12)
+
+            Text(description.isEmpty ? "No description available." : description)
                 .font(FontUtility.body2())
+                .foregroundColor(.white)
+                .padding(.horizontal, 8)
         }
-        .padding()
     }
 }
 
-#Preview {
-    MovieDetailBottomView(
-        tapTrailer: .constant(true),
-        tapRecommend: .constant(false),
-        tapEpisodes: .constant(false),
-        detailType: .constant(.series)
-    )
+@available(iOS 14.0, *)
+struct TrailerVideoPlayer: UIViewControllerRepresentable {
+    let videoURL: URL
+
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let player = AVPlayer(url: videoURL)
+        let controller = AVPlayerViewController()
+        controller.player = player
+        controller.showsPlaybackControls = true
+
+        // Auto-play trailer
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            player.play()
+        }
+
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
+        // Update player if URL changes
+        if let currentURL = (uiViewController.player?.currentItem?.asset as? AVURLAsset)?.url,
+           currentURL != videoURL {
+            let newPlayer = AVPlayer(url: videoURL)
+            uiViewController.player = newPlayer
+            newPlayer.play()
+        }
+    }
 }
+
+#if DEBUG
+@available(iOS 14.0, *)
+struct MovieDetailBottomView_Previews: PreviewProvider {
+    static var previews: some View {
+        MovieDetailBottomView(
+            viewModel: MovieDetailViewModel(movieId: 1),
+            tapTrailer: .constant(true),
+            tapRecommend: .constant(false),
+            tapEpisodes: .constant(false),
+            detailType: .constant(.series),
+            showUpgradeDialog: .constant(false)
+        )
+    }
+}
+#endif

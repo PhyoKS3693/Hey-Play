@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import SnapKit
 import Combine
 
@@ -30,9 +31,42 @@ class BaseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setCurrentVC()
+
+        // Ensure portrait orientation for all base screens
+        if AppDelegate.orientationLock == .landscape {
+            AppDelegate.orientationLock = .portrait
+
+            // Force rotation to portrait
+            if #available(iOS 16.0, *) {
+                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+            } else {
+                let value = UIInterfaceOrientation.portrait.rawValue
+                UIDevice.current.setValue(value, forKey: "orientation")
+                UIViewController.attemptRotationToDeviceOrientation()
+            }
+
+            // After rotation, unlock all orientations (but most screens will stay portrait)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                AppDelegate.orientationLock = .all
+            }
+        }
     }
+
     func setCurrentVC() {
         ViewNavigation.shared.currentViewController = self
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
+    }
+
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portrait
     }
     
     func setupUI() {
@@ -178,7 +212,6 @@ class BaseViewController: UIViewController {
         if let delegate = self.delegate {
             let initialViewController = ViewPagerViewController()
             initialViewController.movieSeriesType = type
-//            initialViewController.movieSeriesType = type
             let nav = UINavigationController(rootViewController: initialViewController)
             nav.isNavigationBarHidden = false
             delegate.window?.rootViewController = nav

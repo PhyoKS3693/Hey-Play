@@ -6,58 +6,87 @@
 //
 
 import Foundation
-
-enum Package: String, Hashable {
-    case monthly_usd = "Monthly Subscription"
-    case daily = "Daily"
-    case weekly = "Weekly"
-    case monthly = "Monthly"
-    case threePlusOne = "3 Months + 1 Month Free"
-    case sixPlusTwo = "6 Months + 2 Months Free"
-    case yearly = "Yearly"
-}
+import Combine
 
 final class PackageViewModel: ObservableObject {
-    
-    @Published var packagePlans: [PackagePlan] = [
-        PackagePlan(
-            packageName: "Monthly Subscription",
-            packageBilledType: "Billed monthly",
-            packageChargedAmount: "$2.99 USD",
-            packageIcon: "ic_monthly_package_calender"),
-        PackagePlan(
-            packageName: "Daily",
-            packageBilledType: "Billed daily",
-            packageChargedAmount: "300 MMK",
-            packageIcon: "ic_daily_package_calender"),
-        PackagePlan(
-            packageName: "Weekly",
-            packageBilledType: "Billed weekly",
-            packageChargedAmount: "1,500 MMK",
-            packageIcon: "ic_weekly_package_calender"),
-        PackagePlan(
-            packageName: "Monthly",
-            packageBilledType: "Billed monthly",
-            packageChargedAmount: "3,000 MMK",
-            packageIcon: "ic_monthly_package_calender"),
-        PackagePlan(
-            packageName: "3 Months + 1 Month Free",
-            packageBilledType: "Billed in 3 months",
-            packageChargedAmount: "9,000 MMK",
-            packageIcon: "ic_3+1_package_calender"),
-        PackagePlan(
-            packageName: "6 Months + 2 Months Free",
-            packageBilledType: "Billed in 6 months",
-            packageChargedAmount: "18,000 MMK",
-            packageIcon: "ic_6+2_package_calender"),
-        PackagePlan(
-            packageName: "Yearly",
-            packageBilledType: "Billed in 1 year",
-            packageChargedAmount: "36,000 MMK",
-            packageIcon: "ic_yearly_package_calender")
-    ]
-    
-    @Published var selectedPackageName: String = Package.daily.rawValue
-    @Published var selectedPackageType: String = "Billed daily"
-    @Published var selectedPackageAmount: String = "300 MMK"
+
+    // MARK: - Published Properties
+    @Published var packagePlans: [PackagePlan] = []
+    @Published var paymentMethods: [PaymentMethod] = []
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: String?
+
+    // MARK: - Selected Package
+    @Published var selectedPackageId: Int?
+    @Published var selectedPackageName: String = ""
+    @Published var selectedPackageType: String = ""
+    @Published var selectedPackageAmount: String = ""
+
+    // MARK: - API Call
+    func fetchSubscriptionPreload() {
+        guard !isLoading else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        Task { @MainActor in
+            let result = await SubscriptionPlanService.shared.getSubscriptionPlanPreload()
+
+            isLoading = false
+
+            switch result {
+            case .success(let data):
+                self.convertPackages(data.packageList ?? [])
+                self.paymentMethods = data.paymentMethodList ?? []
+                print("✅ Fetched \(self.packagePlans.count) packages and \(self.paymentMethods.count) payment methods")
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+                print("❌ Failed to fetch preload: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    // MARK: - Convert API Data
+    private func convertPackages(_ packages: [SubscriptionPackage]) {
+        packagePlans = packages.map { package in
+            let icon = getPackageIcon(for: package.name ?? "")
+
+            return PackagePlan(
+                packageId: package.id,
+                packageName: package.name ?? "",
+                packageBilledType: package.description ?? "",
+                packageChargedAmount: package.sellingPriceDesc ?? "\(package.sellingPrice ?? 0) Ks",
+                packageIcon: icon
+            )
+        }
+
+        // Auto-select first package
+        if let firstPackage = packagePlans.first {
+            selectedPackageId = firstPackage.packageId
+            selectedPackageName = firstPackage.packageName
+            selectedPackageType = firstPackage.packageBilledType
+            selectedPackageAmount = firstPackage.packageChargedAmount
+        }
+    }
+
+    // MARK: - Get Package Icon
+    private func getPackageIcon(for name: String) -> String {
+        let lowercased = name.lowercased()
+
+        if lowercased.contains("1 day") || lowercased.contains("daily") {
+            return "ic_daily_package_calender"
+        } else if lowercased.contains("7 day") || lowercased.contains("weekly") {
+            return "ic_weekly_package_calender"
+        } else if lowercased.contains("30 day") || lowercased.contains("month") && !lowercased.contains("+") {
+            return "ic_monthly_package_calender"
+        } else if lowercased.contains("3") && lowercased.contains("+") {
+            return "ic_3+1_package_calender"
+        } else if lowercased.contains("6") && lowercased.contains("+") {
+            return "ic_6+2_package_calender"
+        } else if lowercased.contains("year") {
+            return "ic_yearly_package_calender"
+        } else {
+            return "ic_monthly_package_calender"
+        }
+    }
 }
