@@ -12,7 +12,7 @@ import SwiftUI
 struct MovieDetailView: View {
     @ObservedObject var viewModel: MovieDetailViewModel
 
-    @State var tapTrailer: Bool = true
+    @State var tapTrailer: Bool = false
     @State var tapRecommend: Bool = false
     @State var tapEpisodes: Bool = false
     @State var detailType: DetailType = .series
@@ -20,6 +20,8 @@ struct MovieDetailView: View {
     @State private var scrollOffset: CGFloat = 0
     @State private var showingShare = false
     @State private var showUpgradeDialog = false
+    @State private var showSeasonPicker = false
+    @State private var currentSelectedSeason: String = "Season 1"
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -64,7 +66,9 @@ struct MovieDetailView: View {
                         MovieDetailInfoView(
                             viewModel: viewModel,
                             detailType: $detailType,
-                            showUpgradeDialog: $showUpgradeDialog
+                            showUpgradeDialog: $showUpgradeDialog,
+                            showSeasonPicker: $showSeasonPicker,
+                            currentSelectedSeason: $currentSelectedSeason
                         )
                         .padding(.bottom, 15)
                     })
@@ -120,11 +124,65 @@ struct MovieDetailView: View {
                     }
                 )
             }
+
+            // Season Dropdown Overlay
+            if showSeasonPicker && detailType == .series && viewModel.hasSeasons {
+                ZStack {
+                    // Tap outside to dismiss
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            showSeasonPicker = false
+                        }
+
+                    // Dropdown list positioned below season button
+                    GeometryReader { geometry in
+                        VStack(spacing: 0) {
+                            Spacer()
+                                .frame(height: 445)
+
+                            HStack(spacing: 0) {
+                                SeasonDropdownList(
+                                    viewModel: viewModel,
+                                    isOpen: $showSeasonPicker,
+                                    currentSelectedSeason: $currentSelectedSeason
+                                )
+                                .frame(width: (geometry.size.width - 40 - 16) / 2)
+                                .padding(.leading, 20)
+
+                                Spacer()
+                            }
+
+                            Spacer()
+                        }
+                    }
+                }
+            }
         }
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
         .onAppear {
             viewModel.fetchContentDetail()
+        }
+        .onChange(of: viewModel.contentDetail) { newDetail in
+            // Set default tab based on content type
+            if detailType == .series {
+                tapEpisodes = true
+                tapTrailer = false
+                tapRecommend = false
+            } else {
+                tapEpisodes = false
+                tapTrailer = true
+                tapRecommend = false
+            }
+
+            // Set current selected season
+            if let selectedId = viewModel.selectedSeasonId,
+               let season = viewModel.seasonList.first(where: { $0.seasonId == selectedId }) {
+                currentSelectedSeason = season.safeSeasonName
+            } else if let firstSeason = viewModel.seasonList.first {
+                currentSelectedSeason = firstSeason.safeSeasonName
+            }
         }
         .sheet(isPresented: $showingShare) {
             let text = "Check out \(viewModel.title)!"

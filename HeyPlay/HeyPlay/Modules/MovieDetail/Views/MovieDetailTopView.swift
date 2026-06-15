@@ -39,6 +39,8 @@ struct MovieDetailInfoView: View {
     @ObservedObject var viewModel: MovieDetailViewModel
     @Binding var detailType: DetailType
     @Binding var showUpgradeDialog: Bool
+    @Binding var showSeasonPicker: Bool
+    @Binding var currentSelectedSeason: String
 
     var body: some View {
         VStack(spacing: 16) {
@@ -46,14 +48,17 @@ struct MovieDetailInfoView: View {
             MovieActionButtonsView(
                 viewModel: viewModel,
                 detailType: $detailType,
-                showUpgradeDialog: $showUpgradeDialog
+                showUpgradeDialog: $showUpgradeDialog,
+                showSeasonPicker: $showSeasonPicker,
+                currentSelectedSeason: $currentSelectedSeason
             )
         }
         .background(
-            // MARK: Blurred background card
-            BlurView(style: .systemUltraThinMaterialDark)
-                .cornerRadius(20)
-                .shadow(radius: 8)
+            ZStack {
+                Color(red: 59/255, green: 57/255, blue: 59/255)
+                    .opacity(0.5)
+            }
+            .cornerRadius(20)
         )
         .padding(.horizontal, 10)
     }
@@ -106,24 +111,7 @@ struct MovieTitleInfoView: View {
                 }
             }
 
-            // Subscription Type Badge
-            if !viewModel.subscriptionType.isEmpty {
-                HStack(spacing: 4) {
-                    Image(viewModel.isFree ? "ic-free" : "ic-vip")
-                        .resizable()
-                        .renderingMode(.original)
-                        .frame(width: 16, height: 16)
-                        .foregroundColor(.white)
-
-                    Text(viewModel.subscriptionType)
-                        .font(FontUtility.smallText1())
-                        .foregroundColor(.white)
-                }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(Color.white.opacity(0.3))
-                .cornerRadius(12)
-            }
+            // Subscription Type Badge removed - already shown at top
 
             HStack(spacing: 10) {
                 Image("ic.type")
@@ -144,6 +132,8 @@ struct MovieActionButtonsView: View {
     @ObservedObject var viewModel: MovieDetailViewModel
     @Binding var detailType: DetailType
     @Binding var showUpgradeDialog: Bool
+    @Binding var showSeasonPicker: Bool
+    @Binding var currentSelectedSeason: String
 
     var didTapVideoPlay: (() -> Void)?
 
@@ -164,9 +154,13 @@ struct MovieActionButtonsView: View {
                     .cornerRadius(25)
                 }
             } else {
-                Button(action: {
-                    print("Season tapped")
-                }) {
+                if viewModel.hasSeasons {
+                    SeasonDropdownButton(
+                        selectedSeason: $currentSelectedSeason,
+                        isOpen: $showSeasonPicker
+                    )
+                } else {
+                    // No seasons available - show disabled button
                     HStack {
                         Text("Season 1")
                         Image("ic.downarrow")
@@ -184,18 +178,37 @@ struct MovieActionButtonsView: View {
             Button(action: {
                 viewModel.toggleWatchList()
             }) {
-                HStack {
-                    Image(systemName: viewModel.isInWatchList ? "checkmark" : "plus")
+                HStack(spacing: 8) {
+                    if viewModel.isInWatchList {
+                        Image("ic_watchlist_active")
+                            .resizable()
+                            .renderingMode(.original)
+                            .frame(width: 18, height: 18)
+                    } else {
+                        Image(systemName: "plus")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.white)
+                    }
                     Text("Watchlist")
+                        .font(.headline)
+                        .foregroundColor(viewModel.isInWatchList ? Color("pink_Color") : .white)
                 }
-                .font(.headline)
-                .foregroundColor(.white)
                 .frame(maxWidth: .infinity, maxHeight: 40)
-                .background(viewModel.isInWatchList ? Color.primaryBg : Color.black.opacity(0.7))
+                .background(Color.black.opacity(0.7))
                 .cornerRadius(20)
             }
         }
         .padding(.all, 10)
+    }
+
+    // MARK: - Helper Methods
+    private func getSelectedSeasonName() -> String {
+        if let selectedId = viewModel.selectedSeasonId,
+           let season = viewModel.seasonList.first(where: { $0.seasonId == selectedId }) {
+            return season.safeSeasonName
+        }
+        // Default to first season if none selected
+        return viewModel.seasonList.first?.safeSeasonName ?? "Season 1"
     }
 
     // MARK: - Handle Play Tapped
@@ -222,6 +235,107 @@ struct MovieActionButtonsView: View {
             print("⚠️ [MovieActionButtonsView] Content not playable, showing upgrade dialog")
             showUpgradeDialog = true
         }
+    }
+}
+
+// MARK: - Season Dropdown Button
+@available(iOS 14.0, *)
+struct SeasonDropdownButton: View {
+    @Binding var selectedSeason: String
+    @Binding var isOpen: Bool
+
+    var body: some View {
+        Button(action: {
+            isOpen.toggle()
+        }) {
+            HStack {
+                Text(selectedSeason)
+                Image(isOpen ? "ic.upArrow" : "ic.downarrow")
+                    .resizable()
+                    .frame(width: 25, height: 25)
+            }
+            .font(.headline)
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity, maxHeight: 40)
+            .background(Color.black.opacity(0.7))
+            .cornerRadius(25)
+        }
+    }
+}
+
+// MARK: - Season Dropdown List
+@available(iOS 14.0, *)
+struct SeasonDropdownList: View {
+    @ObservedObject var viewModel: MovieDetailViewModel
+    @Binding var isOpen: Bool
+    @Binding var currentSelectedSeason: String
+
+    private let itemHeight: CGFloat = 50
+    private let maxHeight: CGFloat = 200
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(viewModel.seasonList, id: \.id) { season in
+                // Only show seasons that are not currently selected
+                if season.safeSeasonName != currentSelectedSeason {
+                    Button(action: {
+                        viewModel.selectSeason(season)
+                        currentSelectedSeason = season.safeSeasonName
+                        isOpen = false
+                    }) {
+                        Text(season.safeSeasonName)
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: itemHeight)
+                            .contentShape(Rectangle())
+                    }
+                }
+            }
+        }
+        .background(Color.black)
+        .cornerRadius(20)
+        .frame(maxHeight: maxHeight)
+    }
+}
+
+// MARK: - Custom Season Picker (Legacy - can be removed)
+@available(iOS 14.0, *)
+struct CustomSeasonPicker: View {
+    @ObservedObject var viewModel: MovieDetailViewModel
+    @Binding var isPresented: Bool
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(viewModel.seasonList, id: \.id) { season in
+                // Only show seasons that are not currently selected
+                if viewModel.selectedSeasonId != season.seasonId {
+                    Button(action: {
+                        viewModel.selectSeason(season)
+                        isPresented = false
+                    }) {
+                        Text(season.safeSeasonName)
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
+                            .contentShape(Rectangle())
+                    }
+                }
+            }
+        }
+        .background(Color.black)
+        .cornerRadius(20)
+    }
+}
+
+// MARK: - Dashed Line Shape
+struct DashedLine: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: 0, y: 0))
+        path.addLine(to: CGPoint(x: rect.width, y: 0))
+        return path
     }
 }
 
