@@ -29,6 +29,10 @@ final class WatchListViewController: UIHostingController<WatchListScreen> {
         rootView.didTapBack = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
+
+        rootView.didTapClearAll = { [weak self] in
+            self?.viewModel.deleteAllItems()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -17,30 +17,31 @@ struct WrongOTPAlertView : View {
     
     var body: some View {
         ZStack{
-            VStack{
+            VStack(spacing: 20) {
                 CrossBtnView(
                     isShow: $showWrongAlert
                 )
+
                 Image("ic.otpError")
                     .resizable()
-                    .frame(width: 80, height: 80)
-                Spacer()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+
                 AlertMessageView(
                     title: $title,
                     message: $message
                 )
-                Spacer()
+
                 ButtonsView(
                     isCancel: $isCancel,
                     isResend: $isResend,
                     isShow: $showWrongAlert
                 )
             }
-            .padding(.all , 20)
-
+            .padding(.all, 20)
         }
-        .frame(maxWidth: 360, maxHeight: 300)
-        .background(Color.grey)
+        .frame(maxWidth: 360)
+        .background(Color(red: 28/255, green: 28/255, blue: 30/255))
         .cornerRadius(30)
     }
 }
@@ -53,12 +54,11 @@ struct CrossBtnView : View {
             Button {
                 isShow = false
             } label: {
-                Image("ic.cross")
-                    .resizable()
+                Image(systemName: "xmark")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(.white)
                     .frame(width: 30, height: 30)
-
             }
-
         }
     }
 }
@@ -66,18 +66,19 @@ struct CrossBtnView : View {
 struct AlertMessageView : View {
     @Binding var title : String
     @Binding var message : String
-    
+
     var body: some View {
-        VStack{
+        VStack(spacing: 12) {
             Text(title)
                 .foregroundColor(.white)
-                .font(FontUtility.headline2())
-            Spacer()
+                .font(FontUtility.heading2())
+                .fontWeight(.semibold)
+
             Text(message)
                 .foregroundColor(.white)
-                .font(FontUtility.subHeadline())
+                .font(FontUtility.body1())
+                .multilineTextAlignment(.center)
         }
-        .padding()
     }
 }
 
@@ -85,39 +86,38 @@ struct ButtonsView : View {
     @Binding var isCancel : Bool
     @Binding var isResend : Bool
     @Binding var isShow : Bool
-    
+
     var body: some View {
-        HStack(spacing: 15, content: {
+        HStack(spacing: 12) {
             Button {
-                print("Cancel")
+                print("🚫 [OTP] Cancel tapped")
                 isCancel = true
                 isShow = false
             } label: {
                 Text("Cancel".localized())
                     .font(FontUtility.body1())
+                    .fontWeight(.semibold)
                     .foregroundColor(.white)
-                    
-                    
             }
-            .frame(maxWidth: .infinity , minHeight: 50)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
             .background(Color.black)
-            .cornerRadius(15)
-            
+            .cornerRadius(25)
+
             Button {
-                print("Resend")
+                print("🔄 [OTP] Resend tapped")
                 isResend = true
                 isShow = false
             } label: {
                 Text("Resend".localized())
                     .font(FontUtility.body1())
+                    .fontWeight(.semibold)
                     .foregroundColor(.white)
-                    
-                    
             }
-            .frame(maxWidth: .infinity , minHeight: 50)
-            .background(Color.primaryBg)
-            .cornerRadius(15)
-
-        })
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(Color("pink_Color"))
+            .cornerRadius(25)
+        }
     }
 }

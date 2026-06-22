@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MovieSeriesTabView: View {
     @StateObject private var viewModel = SearchViewModel()
+    @ObservedObject private var errorManager = ErrorManager.shared
     @State private var selectedTab: MovieTypeFilter
     @State private var selectedOrigin: MovieOriginFilter = .all
 
@@ -73,12 +74,12 @@ struct MovieSeriesTabView: View {
                 )
             }
         }
-        .alert("Error", isPresented: .constant(viewModel.errorMessage != nil)) {
-            Button("OK") {
+        .errorDialog($errorManager.currentError)
+        .onChange(of: viewModel.errorMessage) { error in
+            if let errorMsg = error {
+                ErrorManager.shared.showError(title: "Error", message: errorMsg)
                 viewModel.errorMessage = nil
             }
-        } message: {
-            Text(viewModel.errorMessage ?? "")
         }
     }
 }
@@ -270,16 +271,22 @@ struct MovieGridCard: View {
                 HStack(spacing: 3) {
                     Image(movie.isFree ? "ic-free" : "ic-vip")
                         .resizable()
-                        .frame(width: 12, height: 12)
+                        .frame(width: 16, height: 16)
 
                     Text(movie.subscriptionTypeDesc ?? "")
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(FontUtility.smallText4())
                         .foregroundColor(.white)
                 }
-                .padding(.horizontal, 6)
+                .padding(.horizontal, 5)
                 .padding(.vertical, 3)
-                .background(Color.white.opacity(0.4))
-                .cornerRadius(4)
+                .frame(width: 38, height: 22)
+                .background(
+                    ZStack {
+                        BlurView(style: .systemUltraThinMaterialDark)
+                        Color.white.opacity(0.04)
+                    }
+                )
+                .cornerRadius(11)
 
                 Spacer()
             }

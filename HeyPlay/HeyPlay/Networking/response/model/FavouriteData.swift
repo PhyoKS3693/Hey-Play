@@ -13,6 +13,7 @@ typealias FavouriteListResponse = BaseAPIResponse<FavouriteListData>
 // MARK: - Favourite List Data
 struct FavouriteListData: Decodable {
     let favouriteMovieList: [FavouriteItem]?
+    let reelList: [FavouriteReelItem]?
 }
 
 // MARK: - Favourite Item
@@ -28,6 +29,7 @@ struct FavouriteItem: Decodable, Identifiable {
     let subscriptionType: Int?
     let subscriptionTypeDesc: String?
     let favoriteOn: String?
+    let type: Int? // 1 = Movie, 2 = Series, 3 = Reel/Short
 
     // Computed properties for compatibility
     var movieName: String? { name }
@@ -43,11 +45,11 @@ struct FavouriteItem: Decodable, Identifiable {
     }
 
     var isMovie: Bool {
-        return true // All items from favouriteMovieList are movies
+        return type == 1
     }
 
     var isReel: Bool {
-        return false // No reels in favouriteMovieList
+        return type == 3
     }
 
     var isFree: Bool {
@@ -55,11 +57,33 @@ struct FavouriteItem: Decodable, Identifiable {
     }
 
     var isSeries: Bool {
-        // Check if it has episodes - if totalEpisode > 1, it's likely a series
-        return (totalEpisode ?? 0) > 1
+        return type == 2 || (totalEpisode ?? 0) > 1
     }
 
     var reelId: Int? {
-        return nil // No reels in favouriteMovieList
+        return isReel ? movieId : nil
+    }
+}
+
+// MARK: - Favourite Reel Item
+struct FavouriteReelItem: Decodable, Identifiable {
+    let id: Int
+    let reelId: Int?
+    let name: String?
+    let description: String?
+    let listingImage: String?
+    let favoriteOn: String?
+    let totalEpisode: Int?
+    let totalEpisodeText: String?
+    let typeDescription: String?
+    let subscriptionTypeDesc: String?
+    let isFavourite: Bool?
+
+    var fullImageURL: String {
+        guard let listingImage = listingImage, !listingImage.isEmpty else { return "" }
+        if listingImage.hasPrefix("http") {
+            return listingImage
+        }
+        return "http://103.59.163.3/heyplay-api" + listingImage
     }
 }

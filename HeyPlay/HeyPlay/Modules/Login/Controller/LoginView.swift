@@ -109,6 +109,12 @@ struct LoginView: View {
                     tapApple = false
                 }
             }
+            .onChange(of: tapLine) { newValue in
+                if newValue {
+                    handleLineSignIn()
+                    tapLine = false
+                }
+            }
             .onChange(of: viewModel.loginSuccess) { success in
                 if success {
                     // Navigate to home screen
@@ -216,6 +222,42 @@ struct LoginView: View {
                 // Show error for other failures
                 print("❌ Apple Sign-In failed: \(error.localizedDescription)")
                 viewModel.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    // MARK: - LINE Sign In Handler
+    private func handleLineSignIn() {
+        // Trigger LINE Sign-In on main actor
+        Task { @MainActor in
+            LineSignInHelper.shared.signIn { result in
+                switch result {
+                case .success(let userInfo):
+                    print("✅ LINE Sign-In successful")
+                    print("   LINE User ID: \(userInfo.lineUserId)")
+                    print("   Display Name: \(userInfo.displayName)")
+                    print("   Picture URL: \(userInfo.pictureURL ?? "none")")
+
+                    // Call the login API with LINE credentials
+                    self.viewModel.loginWithLine(
+                        lineUserId: userInfo.lineUserId,
+                        name: userInfo.displayName,
+                        deviceToken: nil // Add device token if you have FCM integrated
+                    )
+
+                case .failure(let error):
+                    // Check if user cancelled the sign-in
+                    let nsError = error as NSError
+                    if nsError.code == 2 { // LineSDKError.userCancelled
+                        // User cancelled - don't show error
+                        print("ℹ️ LINE Sign-In cancelled by user")
+                        return
+                    }
+
+                    // Show error for other failures
+                    print("❌ LINE Sign-In failed: \(error.localizedDescription)")
+                    self.viewModel.errorMessage = error.localizedDescription
+                }
             }
         }
     }

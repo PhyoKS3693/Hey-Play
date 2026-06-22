@@ -10,11 +10,9 @@ import Foundation
 // MARK: - Content Detail Request
 struct ContentDetailRequest: Encodable {
     let movieId: Int
-    let seasonId: String?
 
-    init(movieId: Int, seasonId: String? = "") {
+    init(movieId: Int) {
         self.movieId = movieId
-        self.seasonId = seasonId
     }
 }
 

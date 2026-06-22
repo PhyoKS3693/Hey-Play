@@ -23,11 +23,13 @@ final class WatchListViewModel: ObservableObject {
     @Published var isLoadingMore: Bool = false
     @Published var errorMessage: String?
     @Published var listType: WatchListType = .watchLater
+    @Published var isPaginationEnabled: Bool = false
 
     // MARK: - Data Arrays
     @Published var watchLaterItems: [WatchLaterItem] = []
     @Published var lastWatchItems: [LastWatchItem] = []
     @Published var favouriteItems: [FavouriteItem] = []
+    @Published var favouriteReels: [FavouriteReelItem] = []
 
     // MARK: - Pagination
     private var currentPage: Int = 1
@@ -84,6 +86,7 @@ final class WatchListViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         currentPage = 1
+        isPaginationEnabled = false
 
         Task { @MainActor in
             let result = await WatchLaterService.shared.getWatchLaterList(pageNo: currentPage)
@@ -95,6 +98,12 @@ final class WatchListViewModel: ObservableObject {
                 self.watchLaterItems = data.movies ?? []
                 self.hasMoreData = !(data.movies ?? []).isEmpty
                 print("✅ [WatchList] Fetched \(self.watchLaterItems.count) watchLater items")
+
+                // Enable pagination after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.isPaginationEnabled = true
+                    print("✅ [WatchList] Pagination enabled")
+                }
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
                 print("❌ [WatchList] Failed to fetch watchLater: \(error.localizedDescription)")
@@ -109,6 +118,7 @@ final class WatchListViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         currentPage = 1
+        isPaginationEnabled = false
 
         Task { @MainActor in
             let result = await LastWatchService.shared.getLastWatchList(pageNo: currentPage)
@@ -119,8 +129,21 @@ final class WatchListViewModel: ObservableObject {
             case .success(let data):
                 self.lastWatchItems = data.lastWatchList ?? []
                 self.hasMoreData = !(data.lastWatchList ?? []).isEmpty
+                print("✅ [WatchList] Fetched \(self.lastWatchItems.count) lastWatch items")
+
+                // Debug: Print first item details
+                if let firstItem = self.lastWatchItems.first {
+                    print("📝 [WatchList] First item - id(API): \(firstItem.contentIdFromAPI ?? -1), movieId: \(firstItem.movieId ?? -1), seriesId: \(firstItem.seriesId ?? -1), contentId: \(firstItem.contentId), name: \(firstItem.movieName ?? "N/A"), type: \(firstItem.type ?? 0)")
+                }
+
+                // Enable pagination after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.isPaginationEnabled = true
+                    print("✅ [WatchList] Pagination enabled")
+                }
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
+                print("❌ [WatchList] Failed to fetch lastWatch: \(error.localizedDescription)")
             }
         }
     }
@@ -132,6 +155,7 @@ final class WatchListViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         currentPage = 1
+        isPaginationEnabled = false
 
         Task { @MainActor in
             let result = await FavouriteService.shared.getFavouriteList(pageNo: currentPage)
@@ -141,8 +165,15 @@ final class WatchListViewModel: ObservableObject {
             switch result {
             case .success(let data):
                 self.favouriteItems = data.favouriteMovieList ?? []
-                self.hasMoreData = !(data.favouriteMovieList ?? []).isEmpty
-                print("✅ [WatchList] Fetched \(self.favouriteItems.count) favourite items")
+                self.favouriteReels = data.reelList ?? []
+                self.hasMoreData = !(data.favouriteMovieList ?? []).isEmpty || !(data.reelList ?? []).isEmpty
+                print("✅ [WatchList] Fetched \(self.favouriteItems.count) favourite movies and \(self.favouriteReels.count) favourite reels")
+
+                // Enable pagination after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.isPaginationEnabled = true
+                    print("✅ [WatchList] Pagination enabled")
+                }
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
                 print("❌ [WatchList] Failed to fetch favourites: \(error.localizedDescription)")
@@ -159,8 +190,8 @@ final class WatchListViewModel: ObservableObject {
 
     // MARK: - Load More
     func loadMoreData() {
-        guard canLoadMore && !isLoading else {
-            print("⏸️ [WatchList] Cannot load more - canLoadMore: \(canLoadMore), isLoading: \(isLoading)")
+        guard isPaginationEnabled && canLoadMore && !isLoading else {
+            print("⏸️ [WatchList] Cannot load more - isPaginationEnabled: \(isPaginationEnabled), canLoadMore: \(canLoadMore), isLoading: \(isLoading)")
             return
         }
 
@@ -232,10 +263,12 @@ final class WatchListViewModel: ObservableObject {
 
             switch result {
             case .success(let data):
-                let newItems = data.favouriteMovieList ?? []
-                print("✅ [WatchList] Loaded \(newItems.count) more favourite items")
-                self.favouriteItems.append(contentsOf: newItems)
-                self.hasMoreData = !newItems.isEmpty
+                let newMovies = data.favouriteMovieList ?? []
+                let newReels = data.reelList ?? []
+                print("✅ [WatchList] Loaded \(newMovies.count) more favourite movies and \(newReels.count) more reels")
+                self.favouriteItems.append(contentsOf: newMovies)
+                self.favouriteReels.append(contentsOf: newReels)
+                self.hasMoreData = !newMovies.isEmpty || !newReels.isEmpty
                 if !self.hasMoreData {
                     print("🏁 [WatchList] No more favourite data available")
                 }
@@ -264,6 +297,7 @@ final class WatchListViewModel: ObservableObject {
     }
 
     func deleteLastWatchItem(id: String) {
+        print("🗑️ [WatchList] Deleting lastWatch item with id: \(id)")
         Task { @MainActor in
             let result = await LastWatchService.shared.deleteLastWatch(lastWatchId: id)
 

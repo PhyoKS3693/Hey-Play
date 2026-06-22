@@ -20,6 +20,12 @@ struct VideoPlayerView: View {
     init(_ viewModel: VideoPlayerViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
+
+    // Add onDisappear to cleanup
+    private func cleanup() {
+        print("🧹 [VideoPlayerView] Cleaning up")
+        viewModel.saveWatchProgress()
+    }
     
     var body: some View {
         ZStack {
@@ -54,41 +60,26 @@ struct VideoPlayerView: View {
         }
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
+        .onDisappear {
+            cleanup()
+        }
     }
     
     private func navView(_ title: String) -> some View {
         ZStack (alignment: .leading){
             Button{
                 print("🔙 [VideoPlayerView] Back button tapped")
-                print("📊 [VideoPlayerView] Saving watch progress...")
 
-                // Save watch progress before dismissing
+                // Save watch progress
                 viewModel.saveWatchProgress()
 
-                // Restore portrait orientation immediately
+                // Restore portrait orientation
                 AppDelegate.orientationLock = .portrait
 
-                // Force portrait rotation
-                if #available(iOS 16.0, *) {
-                    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                    windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
-                } else {
-                    let value = UIInterfaceOrientation.portrait.rawValue
-                    UIDevice.current.setValue(value, forKey: "orientation")
-                    UIViewController.attemptRotationToDeviceOrientation()
-                }
+                // Dismiss immediately - let the view controller handle orientation
+                presentationMode.wrappedValue.dismiss()
 
-                // Dismiss after a short delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    presentationMode.wrappedValue.dismiss()
-
-                    // Unlock all orientations after dismiss
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        AppDelegate.orientationLock = .all
-                    }
-
-                    didTapBack?()
-                }
+                didTapBack?()
             } label: {
                 Image("ic.backBtn")
                     .resizable()

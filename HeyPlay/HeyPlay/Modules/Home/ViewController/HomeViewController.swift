@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
 class HomeViewController: BaseViewController {
 
@@ -20,6 +21,10 @@ class HomeViewController: BaseViewController {
     private let loadMoreFooter = LoadMoreFooterView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 60))
     private let refreshControl = UIRefreshControl()
 
+    // Force Update Dialog
+    private var forceUpdateDialogHostingController: UIHostingController<AnyView>?
+    private var hasCheckedForceUpdate = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -29,6 +34,22 @@ class HomeViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Show navigation bar (in case it was hidden by detail screen)
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.isNavigationBarHidden = false
+        // Restore navigation bar items every time view appears
+        setNavigationBarIcon()
+        setRightBarItems()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Check for force update only once when home screen appears
+        if !hasCheckedForceUpdate {
+            hasCheckedForceUpdate = true
+            checkForForceUpdate()
+        }
     }
 
     override func setupUI() {
@@ -157,5 +178,116 @@ class HomeViewController: BaseViewController {
             }
         }
         return nil
+    }
+
+    // MARK: - Delete Movie from Last Watch
+    func handleDeleteMovie(movieId: Int) {
+        // Find the movie to get its lastWatchId
+        guard let movie = viewModel.lastWatchList.first(where: { $0.id == movieId }),
+              let lastWatchId = movie.lastWatchId else {
+            print("⚠️ [Home] Cannot delete - lastWatchId not found for movie: \(movieId)")
+            return
+        }
+
+        // Show confirmation alert
+        let alert = UIAlertController(
+            title: "Remove from Continue Watching",
+            message: "Are you sure you want to remove \"\(movie.name ?? "this item")\" from your continue watching list?",
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Remove", style: .destructive) { [weak self] _ in
+            self?.deleteMovie(lastWatchId: String(lastWatchId))
+        })
+
+        present(alert, animated: true)
+    }
+
+    private func deleteMovie(lastWatchId: String) {
+        showLoading(message: "Removing...")
+
+        Task {
+            let result = await LastWatchService.shared.deleteLastWatch(lastWatchId: lastWatchId)
+
+            await MainActor.run {
+                hideLoading()
+
+                switch result {
+                case .success:
+                    // Refresh home data to update the list
+                    viewModel.fetchAllData()
+
+                case .failure(let error):
+                    showErrorMessage(message: error.localizedDescription)
+                }
+            }
+        }
+    }
+
+    private func showErrorMessage(message: String) {
+        let alert = UIAlertController(
+            title: "Error",
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
+    // MARK: - Force Update Check
+    private func checkForForceUpdate() {
+        print("📱 [Home] Checking for force update...")
+
+        Task {
+            let result = await VersionCheckService.shared.checkAppVersion()
+
+            await MainActor.run {
+                switch result {
+                case .success(let versionData):
+                    if versionData.isForceUpdate {
+                        // Show force update dialog (non-dismissible)
+                        showForceUpdateDialog(versionData: versionData)
+                    } else {
+                        print("✅ [Home] No force update required")
+                    }
+
+                case .failure(let error):
+                    print("⚠️ [Home] Version check failed: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    private func showForceUpdateDialog(versionData: VersionCheckData) {
+        print("🚨 [Home] Showing force update dialog")
+
+        if #available(iOS 14.0, *) {
+            let dialogView = ForceUpdateDialog(
+                title: versionData.safeTitle,
+                message: versionData.safeMessage,
+                onUpdate: {
+                    self.openAppStore(url: versionData.safeStoreUrl)
+                }
+            )
+
+            let hostingController = UIHostingController(rootView: AnyView(dialogView))
+            hostingController.view.backgroundColor = .clear
+            hostingController.modalPresentationStyle = .overFullScreen
+            hostingController.modalTransitionStyle = .crossDissolve
+
+            self.forceUpdateDialogHostingController = hostingController
+            self.present(hostingController, animated: true)
+        }
+    }
+
+    private func openAppStore(url: String) {
+        guard !url.isEmpty, let storeURL = URL(string: url) else {
+            print("⚠️ [Home] Invalid App Store URL")
+            return
+        }
+
+        print("📱 [Home] Opening App Store: \(url)")
+        UIApplication.shared.open(storeURL)
     }
 }

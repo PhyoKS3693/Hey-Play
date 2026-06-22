@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SearchView : View {
     @StateObject private var viewModel = SearchViewModel()
+    @ObservedObject private var errorManager = ErrorManager.shared
 
     var body: some View {
         if #available(iOS 15.0, *) {
@@ -43,12 +44,12 @@ struct SearchView : View {
             .task {
                 await viewModel.loadSearchPreload()
             }
-            .alert("Error", isPresented: .constant(viewModel.errorMessage != nil)) {
-                Button("OK") {
+            .errorDialog($errorManager.currentError)
+            .onChange(of: viewModel.errorMessage) { error in
+                if let errorMsg = error {
+                    ErrorManager.shared.showError(title: "Error", message: errorMsg)
                     viewModel.errorMessage = nil
                 }
-            } message: {
-                Text(viewModel.errorMessage ?? "")
             }
         } else {
             // Fallback on earlier versions

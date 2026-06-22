@@ -38,6 +38,9 @@ class MovieTableViewCell: UITableViewCell {
         bgView.backgroundColor = .darkGrey
 
         setupCollectionView()
+
+        // Set fixed height for collection view
+        setCollectionViewHeight()
     }
 
     func setupCollectionView() {
@@ -50,12 +53,34 @@ class MovieTableViewCell: UITableViewCell {
 
         // Initialize the collection view with the custom layout.
         collectionView.setCollectionViewLayout(layout, animated: false)
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.autoresizingMask = [.flexibleWidth]
         collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.registerForCell(strID: FullMovieCollectionViewCell.identifier)
         collectionView.reloadData()
+    }
+
+    private func setCollectionViewHeight() {
+        // Set a fixed height constraint for the collection view
+        // First, check if there's already a height constraint from XIB
+        var hasHeightConstraint = false
+
+        for constraint in collectionView.constraints {
+            if constraint.firstAttribute == .height {
+                // Update existing height constraint
+                constraint.constant = 240
+                hasHeightConstraint = true
+                break
+            }
+        }
+
+        // If no height constraint exists, add one
+        if !hasHeightConstraint {
+            let heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 240)
+            heightConstraint.priority = .required
+            heightConstraint.isActive = true
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

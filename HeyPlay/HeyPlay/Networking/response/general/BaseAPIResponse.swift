@@ -7,6 +7,12 @@
 
 import Foundation
 
+// MARK: - API Error Detail
+struct APIErrorDetail: Decodable {
+    let fieldCode: String
+    let errorMessage: String
+}
+
 // MARK: - Base API Response
 struct BaseAPIResponse<T: Decodable>: Decodable {
     let responseCode: String
@@ -18,10 +24,15 @@ struct BaseAPIResponse<T: Decodable>: Decodable {
     let emptyTitle: String?
     let emptyMessage: String?
     let shortErrorTitle: String?
+    let errors: [APIErrorDetail]?
     let data: T?
 
     var isSuccess: Bool {
         return responseCode == "1"
+    }
+
+    var isSessionExpired: Bool {
+        return responseCode == "1000" && errors?.contains(where: { $0.fieldCode == "1004" }) == true
     }
 }
 

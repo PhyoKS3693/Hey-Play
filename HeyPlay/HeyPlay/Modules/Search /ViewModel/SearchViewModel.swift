@@ -139,8 +139,10 @@ final class SearchViewModel: ObservableObject {
                 self.searchResults.append(contentsOf: newMovies)
             }
 
-            // Check if more data available (if less than expected, no more data)
-            self.hasMoreData = newMovies.count >= 20 // Assuming 20 items per page
+            // Check if more data available (API returns 10 items per page)
+            // If we get less than 10 items, it means we've reached the end
+            self.hasMoreData = newMovies.count >= 10
+            print("📄 [SearchViewModel] Page \(currentPage): Loaded \(newMovies.count) items, hasMoreData: \(hasMoreData)")
 
         case .failure(let error):
             self.errorMessage = error.localizedDescription

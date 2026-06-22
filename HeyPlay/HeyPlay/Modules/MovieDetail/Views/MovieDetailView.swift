@@ -40,6 +40,7 @@ struct MovieDetailView: View {
                         presentationMode.wrappedValue.dismiss()
                     },
                     onFavorite: {
+                        print("💝 [MovieDetailView] Favorite button tapped - DetailType: \(detailType)")
                         viewModel.toggleFavourite()
                     },
                     onShare: {
@@ -73,6 +74,17 @@ struct MovieDetailView: View {
                         .padding(.bottom, 15)
                     })
 
+                    // Ad Section - Show custom ad if enabled, otherwise show Google ad
+                    if let adsSetting = viewModel.contentDetail?.adsSetting,
+                       adsSetting.isCustomAds == true,
+                       adsSetting.id != nil {
+                        // Custom Ad from API
+                        CustomAdBannerView(adsSetting: adsSetting)
+                    } else {
+                        // Google AdMob Banner as fallback
+                        BannerAdContainer()
+                    }
+
                     SeriesAndTrailerAndRecommendView(
                         tapTrailer: $tapTrailer,
                         tapRecommend: $tapRecommend,
@@ -100,11 +112,8 @@ struct MovieDetailView: View {
                 }
                 .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
                     scrollOffset = value
-                    if tapRecommend {
-                        self.isSticky = scrollOffset <= 1590
-                    } else if tapTrailer || tapEpisodes {
-                        self.isSticky = false
-                    }
+                    // Sticky header is disabled for all tabs
+                    self.isSticky = false
                 }
             }
 
@@ -119,48 +128,15 @@ struct MovieDetailView: View {
                     isPresented: $showUpgradeDialog,
                     onUpgrade: {
                         // Navigate to subscription plans
-                        // TODO: Implement navigation to subscription page
-                        print("Navigate to subscription plans")
+                        print("✅ [MovieDetailView] Navigating to subscription plan screen")
+                        ViewNavigation.shared.showSubscriptionPlan()
                     }
                 )
-            }
-
-            // Season Dropdown Overlay
-            if showSeasonPicker && detailType == .series && viewModel.hasSeasons {
-                ZStack {
-                    // Tap outside to dismiss
-                    Color.clear
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            showSeasonPicker = false
-                        }
-
-                    // Dropdown list positioned below season button
-                    GeometryReader { geometry in
-                        VStack(spacing: 0) {
-                            Spacer()
-                                .frame(height: 445)
-
-                            HStack(spacing: 0) {
-                                SeasonDropdownList(
-                                    viewModel: viewModel,
-                                    isOpen: $showSeasonPicker,
-                                    currentSelectedSeason: $currentSelectedSeason
-                                )
-                                .frame(width: (geometry.size.width - 40 - 16) / 2)
-                                .padding(.leading, 20)
-
-                                Spacer()
-                            }
-
-                            Spacer()
-                        }
-                    }
-                }
             }
         }
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
+        .toast($viewModel.toast)
         .onAppear {
             viewModel.fetchContentDetail()
         }
@@ -176,28 +152,24 @@ struct MovieDetailView: View {
                 tapRecommend = false
             }
 
-            // Set current selected season
-            if let selectedId = viewModel.selectedSeasonId,
-               let season = viewModel.seasonList.first(where: { $0.seasonId == selectedId }) {
-                currentSelectedSeason = season.safeSeasonName
-            } else if let firstSeason = viewModel.seasonList.first {
-                currentSelectedSeason = firstSeason.safeSeasonName
+            // Set current selected season - match contentDetail.id with season.movieId
+            if let contentDetail = newDetail {
+                // Find the season where movieId matches contentDetail.id
+                if let matchingSeason = viewModel.seasonList.first(where: { $0.movieId == contentDetail.id }) {
+                    currentSelectedSeason = matchingSeason.safeSeasonName
+                    print("🎬 [MovieDetailView] Found matching season: \(matchingSeason.safeSeasonName) (movieId: \(matchingSeason.movieId ?? -1) == contentId: \(contentDetail.id))")
+                } else if let firstSeason = viewModel.seasonList.first {
+                    // Fallback to first season if no match found
+                    currentSelectedSeason = firstSeason.safeSeasonName
+                    print("⚠️ [MovieDetailView] No matching season found, using first season: \(firstSeason.safeSeasonName)")
+                }
             }
         }
         .sheet(isPresented: $showingShare) {
-            let text = "Check out \(viewModel.title)!"
-            let url = URL(string: "https://example.com")!
-            ActivityView(activityItems: [text, url],
-                         excludedActivityTypes: [.assignToContact, .addToReadingList]) { activity, completed, items, error in
-                if completed {
-                    print("Shared via:", activity?.rawValue ?? "unknown")
-                } else {
-                    print("Share cancelled")
-                }
-                if let err = error {
-                    print("Share error:", err)
-                }
-            }
+            ShareSheetView(
+                title: viewModel.title,
+                shareUrl: viewModel.contentDetail?.safeShareUrl ?? ""
+            )
         }
     }
 }
@@ -223,6 +195,46 @@ struct LoadingOverlayView: View {
             .background(Color.black.opacity(0.7))
             .cornerRadius(16)
         }
+    }
+}
+
+// MARK: - Share Sheet View
+@available(iOS 14.0, *)
+struct ShareSheetView: View {
+    let title: String
+    let shareUrl: String
+
+    var body: some View {
+        let text = "Check out \(title)!"
+        let activityItems = buildActivityItems()
+
+        return ActivityView(
+            activityItems: activityItems,
+            excludedActivityTypes: [.assignToContact, .addToReadingList]
+        ) { activity, completed, items, error in
+            if completed {
+                print("Shared via:", activity?.rawValue ?? "unknown")
+            } else {
+                print("Share cancelled")
+            }
+            if let err = error {
+                print("Share error:", err)
+            }
+        }
+    }
+
+    private func buildActivityItems() -> [Any] {
+        let text = "Check out \(title)!"
+        var activityItems: [Any] = [text]
+
+        if let url = URL(string: shareUrl), !shareUrl.isEmpty {
+            activityItems.append(url)
+            print("✅ [ShareSheetView] Sharing with URL: \(shareUrl)")
+        } else {
+            print("⚠️ [ShareSheetView] No valid share URL available")
+        }
+
+        return activityItems
     }
 }
 

@@ -22,7 +22,6 @@ class MovieCollectionTableViewCell: UITableViewCell {
     var movies: [Movie] = [] {
         didSet {
             collectionView.reloadData()
-            updateCollectionViewHeight()
         }
     }
 
@@ -41,42 +40,48 @@ class MovieCollectionTableViewCell: UITableViewCell {
         lblCollectionName.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         setupCollection()
+        setFixedCollectionViewHeight()
     }
 
     func setupCollection() {
         collectionView.registerForCell(strID: FullMovieCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
+
+        // Create a new flow layout to ensure clean state
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.estimatedItemSize = .zero // Disable automatic sizing - use exact sizes from delegate
+        flowLayout.minimumLineSpacing = Self.itemSpacing
+        flowLayout.minimumInteritemSpacing = Self.itemSpacing
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: Self.itemSpacing, bottom: 0, right: Self.itemSpacing)
+
+        collectionView.collectionViewLayout = flowLayout
         collectionView.reloadData()
     }
 
-    private func updateCollectionViewHeight() {
-        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
-            return
-        }
+    // MARK: - Constants for Layout 6
+    private static let itemHeight: CGFloat = 200 // Fixed constant height for each item
+    private static let itemSpacing: CGFloat = 10
+    private static let numberOfRows: CGFloat = 2
 
-        let itemHeight: CGFloat = 206
-        let spacing = flowLayout.minimumLineSpacing
+    private func setFixedCollectionViewHeight() {
+        // Set a constant height for Layout 6 (2 rows of items)
+        let fixedHeight = (Self.itemHeight * Self.numberOfRows) + (Self.itemSpacing * (Self.numberOfRows - 1))
 
-        // Calculate rows: Since we show 2.5 items width, calculate ceil(count / 2.5)
-        let itemsPerRow: CGFloat = 2.5
-        let rowCount = max(1, Int(ceil(CGFloat(movies.count) / itemsPerRow)))
-        let totalHeight = CGFloat(rowCount) * itemHeight + CGFloat(max(0, rowCount - 1)) * spacing
-
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-
-            // Try to find height constraint if outlet is not connected
-            if self.collectionViewHeightConstraint == nil {
-                for constraint in self.collectionView.constraints {
-                    if constraint.firstAttribute == .height {
-                        constraint.constant = totalHeight
-                        return
-                    }
+        // Try to find height constraint if outlet is not connected
+        if collectionViewHeightConstraint == nil {
+            for constraint in collectionView.constraints {
+                if constraint.firstAttribute == .height {
+                    constraint.constant = fixedHeight
+                    return
                 }
-            } else {
-                self.collectionViewHeightConstraint?.constant = totalHeight
             }
+            // If no constraint found, create one
+            let heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: fixedHeight)
+            heightConstraint.isActive = true
+        } else {
+            collectionViewHeightConstraint?.constant = fixedHeight
         }
     }
 
@@ -116,7 +121,28 @@ extension MovieCollectionTableViewCell: UICollectionViewDelegate, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.bounds.width - 50) / 2.5, height: 206)
+        // Layout 6: 2 columns grid with equal padding and CONSTANT item height
+        let totalSpacing = Self.itemSpacing * 3 // left + middle + right
+
+        // Use the container width if collection view width is not available yet
+        let containerWidth = collectionView.bounds.width > 0 ? collectionView.bounds.width : self.bounds.width
+        let availableWidth = containerWidth - totalSpacing
+        let itemWidth = max(0, availableWidth / 2) // Prevent negative width
+
+        // Use the constant item height
+        return CGSize(width: itemWidth, height: Self.itemHeight)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return Self.itemSpacing
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return Self.itemSpacing
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: Self.itemSpacing, bottom: 0, right: Self.itemSpacing)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

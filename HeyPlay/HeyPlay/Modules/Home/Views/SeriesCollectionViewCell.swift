@@ -22,12 +22,36 @@ class SeriesCollectionViewCell: UICollectionViewCell {
         // Initialization code
         imgSeries.clipsToBounds = true
         imgSeries.cornerRadius = 8
+
+        // Set badge background with blur effect
+        viewType.backgroundColor = .white.withAlphaComponent(0.04)
+
+        // Add blur effect
+        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.frame = viewType.bounds
+        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurView.layer.cornerRadius = 11
+        blurView.clipsToBounds = true
+        viewType.insertSubview(blurView, at: 0)
+
+        viewType.layer.cornerRadius = 11
+        viewType.clipsToBounds = true
     }
 
     // MARK: - Configure with Movie Data
     func configure(with movie: Movie) {
         lblName.text = movie.name
-        lblSeason.text = movie.totalEpisodeText
+
+        // Hide episode label if count is 0 or text is empty
+        if let totalEpisode = movie.totalEpisode, totalEpisode > 0,
+           let episodeText = movie.totalEpisodeText, !episodeText.isEmpty {
+            lblSeason.text = episodeText
+            lblSeason.isHidden = false
+        } else {
+            lblSeason.text = nil
+            lblSeason.isHidden = true
+        }
 
         // Set subscription type badge
         if movie.isFree {

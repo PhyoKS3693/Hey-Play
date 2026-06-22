@@ -39,6 +39,32 @@ class ReelPlayerView: UIView {
         return imageView
     }()
 
+    // Backward button
+    private let backwardButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "gobackward.10"), for: .normal)
+        button.tintColor = .white
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
+        button.imageView?.contentMode = .scaleAspectFit
+        button.alpha = 0 // Hidden by default
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    // Forward button
+    private let forwardButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "goforward.10"), for: .normal)
+        button.tintColor = .white
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
+        button.imageView?.contentMode = .scaleAspectFit
+        button.alpha = 0 // Hidden by default
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,6 +94,28 @@ class ReelPlayerView: UIView {
             playPauseIcon.widthAnchor.constraint(equalToConstant: 80),
             playPauseIcon.heightAnchor.constraint(equalToConstant: 80)
         ])
+
+        // Add backward button
+        addSubview(backwardButton)
+        NSLayoutConstraint.activate([
+            backwardButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            backwardButton.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -80),
+            backwardButton.widthAnchor.constraint(equalToConstant: 50),
+            backwardButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+
+        // Add forward button
+        addSubview(forwardButton)
+        NSLayoutConstraint.activate([
+            forwardButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            forwardButton.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 80),
+            forwardButton.widthAnchor.constraint(equalToConstant: 50),
+            forwardButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+
+        // Add button actions
+        backwardButton.addTarget(self, action: #selector(handleBackward), for: .touchUpInside)
+        forwardButton.addTarget(self, action: #selector(handleForward), for: .touchUpInside)
 
         // Add tap gesture to play/pause
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -193,6 +241,7 @@ class ReelPlayerView: UIView {
         isPlaying = true
         print("▶️ [ReelPlayerView] Playing")
         showPlayPauseIcon(isPlaying: true)
+        hideSeekButtons()
     }
 
     func pause() {
@@ -201,12 +250,45 @@ class ReelPlayerView: UIView {
         isPlaying = false
         print("⏸ [ReelPlayerView] Paused")
         showPlayPauseIcon(isPlaying: false)
+        showSeekButtons()
     }
 
     func stop() {
         player?.pause()
         player?.seek(to: .zero)
         isPlaying = false
+        hideSeekButtons()
+    }
+
+    // MARK: - Seek Forward/Backward
+    func seekForward(seconds: Double = 10.0) {
+        guard let player = player else { return }
+        let currentTime = player.currentTime()
+        let newTime = CMTimeAdd(currentTime, CMTime(seconds: seconds, preferredTimescale: 1))
+        player.seek(to: newTime) { [weak self] completed in
+            if completed {
+                // Auto-play after seeking
+                self?.play()
+            }
+        }
+        print("⏩ [ReelPlayerView] Seeking forward \(seconds) seconds")
+        showSeekIcon(isForward: true)
+    }
+
+    func seekBackward(seconds: Double = 10.0) {
+        guard let player = player else { return }
+        let currentTime = player.currentTime()
+        let newTime = CMTimeSubtract(currentTime, CMTime(seconds: seconds, preferredTimescale: 1))
+        let zeroTime = CMTime.zero
+        let seekTime = CMTimeMaximum(newTime, zeroTime) // Don't go below 0
+        player.seek(to: seekTime) { [weak self] completed in
+            if completed {
+                // Auto-play after seeking
+                self?.play()
+            }
+        }
+        print("⏪ [ReelPlayerView] Seeking backward \(seconds) seconds")
+        showSeekIcon(isForward: false)
     }
 
     @objc private func handleTap() {
@@ -215,6 +297,14 @@ class ReelPlayerView: UIView {
         } else {
             play()
         }
+    }
+
+    @objc private func handleBackward() {
+        seekBackward(seconds: 10.0)
+    }
+
+    @objc private func handleForward() {
+        seekForward(seconds: 10.0)
     }
 
     // MARK: - Show Play/Pause Icon
@@ -229,6 +319,37 @@ class ReelPlayerView: UIView {
                 self.playPauseIcon.alpha = 0
                 self.playPauseIcon.transform = .identity
             })
+        }
+    }
+
+    // MARK: - Show Seek Icon
+    private func showSeekIcon(isForward: Bool) {
+        let iconName = isForward ? "goforward.10" : "gobackward.10"
+        playPauseIcon.image = UIImage(systemName: iconName)
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.playPauseIcon.alpha = 1.0
+            self.playPauseIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { _ in
+            UIView.animate(withDuration: 0.2, delay: 0.3, animations: {
+                self.playPauseIcon.alpha = 0
+                self.playPauseIcon.transform = .identity
+            })
+        }
+    }
+
+    // MARK: - Show/Hide Seek Buttons
+    private func showSeekButtons() {
+        UIView.animate(withDuration: 0.3) {
+            self.backwardButton.alpha = 1.0
+            self.forwardButton.alpha = 1.0
+        }
+    }
+
+    private func hideSeekButtons() {
+        UIView.animate(withDuration: 0.3) {
+            self.backwardButton.alpha = 0
+            self.forwardButton.alpha = 0
         }
     }
 
@@ -250,6 +371,10 @@ class ReelPlayerView: UIView {
         // Stop playback
         player?.pause()
         playerLayer?.removeFromSuperlayer()
+
+        // Hide seek buttons
+        backwardButton.alpha = 0
+        forwardButton.alpha = 0
 
         // Clean up
         player = nil

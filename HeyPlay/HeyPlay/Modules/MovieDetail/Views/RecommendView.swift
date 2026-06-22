@@ -35,39 +35,39 @@ enum PackType : String {
 struct RecommendView : View {
     var movies: [Movie] = []
     let columns = 3
+    var onMovieTapped: ((Int, Bool) -> Void)?
 
     private var items: [Movie] {
         movies.isEmpty ? [] : movies
     }
 
     var body: some View {
-        ZStack {
-            ScrollView {
-                VStack(spacing: 10) {
-                    if movies.isEmpty {
-                        // Placeholder items
-                        ForEach(0..<7, id: \.self) { row in
-                            HStack(spacing: 10) {
-                                ForEach(0..<columns, id: \.self) { _ in
-                                    RecommendItemView()
-                                }
-                            }
+        VStack(spacing: 10) {
+            if movies.isEmpty {
+                // Placeholder items
+                ForEach(0..<7, id: \.self) { row in
+                    HStack(spacing: 10) {
+                        ForEach(0..<columns, id: \.self) { _ in
+                            RecommendItemView()
                         }
-                    } else {
-                        ForEach(0..<rowsCount(), id: \.self) { row in
-                            HStack(spacing: 10) {
-                                ForEach(0..<columns, id: \.self) { column in
-                                    if let movie = movieAt(row: row, column: column) {
-                                        RecommendItemView(
-                                            imageURL: movie.fullImageURL,
-                                            movieTitle: movie.name ?? "Untitled",
-                                            packType: movie.isVIP ? .vip : .free
-                                        )
-                                    } else {
-                                        Color.clear
-                                            .frame(width: (UIScreen.main.bounds.width - 20) / 3, height: 190)
-                                    }
+                    }
+                }
+            } else {
+                ForEach(0..<rowsCount(), id: \.self) { row in
+                    HStack(spacing: 10) {
+                        ForEach(0..<columns, id: \.self) { column in
+                            if let movie = movieAt(row: row, column: column) {
+                                RecommendItemView(
+                                    imageURL: movie.fullImageURL,
+                                    movieTitle: movie.name ?? "Untitled",
+                                    packType: movie.isVIP ? .vip : .free
+                                )
+                                .onTapGesture {
+                                    onMovieTapped?(movie.id, movie.isSeries)
                                 }
+                            } else {
+                                Color.clear
+                                    .frame(width: (UIScreen.main.bounds.width - 20) / 3, height: 190)
                             }
                         }
                     }
@@ -163,13 +163,19 @@ struct PackageType : View {
             })
             .padding(.all , 5)
         }
-        .frame(width: 50 , height: 22)
+        .frame(width: 38 , height: 22)
         .background(
-            // MARK: Blurred background card
-            BlurView(style: .systemUltraThinMaterialDark)
-                .cornerRadius(11)
-                .shadow(radius: 8)
+            ZStack {
+                // MARK: Blurred background card
+                BlurView(style: .systemUltraThinMaterialDark)
+                    .cornerRadius(11)
+
+                // White overlay with 4% opacity
+                Color.white.opacity(0.04)
+                    .cornerRadius(11)
+            }
         )
+        .cornerRadius(11)
     }
 }
 

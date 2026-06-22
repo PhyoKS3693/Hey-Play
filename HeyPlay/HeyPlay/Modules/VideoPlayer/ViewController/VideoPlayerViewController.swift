@@ -17,6 +17,13 @@ final class VideoPlayerViewController: BaseViewController {
     var movieId: Int = 0
     var episodeId: String? = nil
 
+    deinit {
+        print("♻️ [VideoPlayerViewController] Deinit called - final cleanup")
+
+        // Restore orientation (don't call saveWatchProgress here as it could retain self)
+        AppDelegate.orientationLock = .all
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
@@ -63,34 +70,30 @@ final class VideoPlayerViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        print("💾 [VideoPlayerViewController] View disappearing, saving progress and cleaning up...")
+
         // Save watch progress before leaving
-        print("💾 [VideoPlayerViewController] View disappearing, saving progress...")
         viewModel.saveWatchProgress()
-    }
 
-    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        print("🔄 [VideoPlayerViewController] Dismissing, restoring portrait orientation")
-
-        // First unlock orientation
+        // Restore portrait orientation
         AppDelegate.orientationLock = .portrait
 
-        // Force rotation to portrait
-        if #available(iOS 16.0, *) {
-            // iOS 16+ method
-            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
-        } else {
-            // iOS 15 and below
-            let value = UIInterfaceOrientation.portrait.rawValue
-            UIDevice.current.setValue(value, forKey: "orientation")
-        }
+        // Force rotation to portrait on main thread
+        DispatchQueue.main.async {
+            if #available(iOS 16.0, *) {
+                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+            } else {
+                let value = UIInterfaceOrientation.portrait.rawValue
+                UIDevice.current.setValue(value, forKey: "orientation")
+                UIViewController.attemptRotationToDeviceOrientation()
+            }
 
-        // Call super dismiss with completion that unlocks orientation
-        super.dismiss(animated: flag) {
-            print("✅ [VideoPlayerViewController] Dismissed, portrait restored")
-            // After dismiss completes, allow all orientations again
-            AppDelegate.orientationLock = .all
-            completion?()
+            // Unlock all orientations after rotation completes
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                AppDelegate.orientationLock = .all
+                print("✅ [VideoPlayerViewController] Portrait restored, all orientations unlocked")
+            }
         }
     }
 

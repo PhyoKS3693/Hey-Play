@@ -33,8 +33,11 @@ class RecentCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Configure with Movie Data
-    func configure(with movie: Movie) {
+    func configure(with movie: Movie, showDeleteButton: Bool = false) {
         lblName.text = movie.name
+
+        // Show/hide delete button based on parameter
+        btnDelete.isHidden = !showDeleteButton
 
         // Load image using Kingfisher
         if let url = URL(string: movie.fullImageURL) {

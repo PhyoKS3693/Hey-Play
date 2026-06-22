@@ -43,6 +43,7 @@ final class VideoPlayerViewModel: ObservableObject {
     }
 
     deinit {
+        print("♻️ [VideoPlayerViewModel] Deinit called - cleaning up")
         stopProgressTracking()
     }
 
@@ -62,13 +63,19 @@ final class VideoPlayerViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        Task { @MainActor in
+        // Capture values to avoid retaining self
+        let capturedMovieId = movieId
+        let capturedEpisodeId = episodeId
+
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
+
             let result = await ContentService.shared.watchContent(
-                movieId: movieId,
-                episodeId: episodeId
+                movieId: capturedMovieId,
+                episodeId: capturedEpisodeId
             )
 
-            isLoading = false
+            self.isLoading = false
 
             switch result {
             case .success(let data):
@@ -77,7 +84,7 @@ final class VideoPlayerViewModel: ObservableObject {
                 self.currentTime = Double(data.lastWatchTimeStamps ?? 0)
 
                 // Start tracking progress
-                startProgressTracking()
+                self.startProgressTracking()
 
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
@@ -100,12 +107,18 @@ final class VideoPlayerViewModel: ObservableObject {
         print("   EpisodeId: \(episodeId ?? "nil")")
         print("   Timestamp: \(timestampString) ms (\(Int(currentTime/1000))s)")
 
-        Task {
+        // Capture values to avoid retaining self
+        let capturedMovieId = movieId
+        let capturedEpisodeId = episodeId
+
+        Task { [weak self] in
             let result = await LastWatchService.shared.addLastWatch(
-                movieId: movieId,
-                movieEpisodeId: episodeId ?? "",
+                movieId: capturedMovieId,
+                movieEpisodeId: capturedEpisodeId ?? "",
                 lastWatchTimeStamps: timestampString
             )
+
+            guard let _ = self else { return }
 
             switch result {
             case .success:
@@ -118,9 +131,12 @@ final class VideoPlayerViewModel: ObservableObject {
 
     // MARK: - Progress Tracking
     private func startProgressTracking() {
+        stopProgressTracking() // Stop any existing timer first
+
         // Save progress every 10 seconds
         saveProgressTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
-            self?.saveWatchProgress()
+            guard let self = self else { return }
+            self.saveWatchProgress()
         }
     }
 

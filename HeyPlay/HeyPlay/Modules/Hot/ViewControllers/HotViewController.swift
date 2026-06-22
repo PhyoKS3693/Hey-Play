@@ -29,6 +29,9 @@ class HotViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Hide navigation bar for Hot tab
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.isNavigationBarHidden = true
         // Play video when screen appears
         playCurrentVideo()
     }

@@ -8,8 +8,9 @@
 import Foundation
 
 // MARK: - Movie
-struct Movie: Decodable, Identifiable {
+struct Movie: Decodable, Identifiable, Equatable {
     let id: Int
+    let lastWatchId: Int?  // For delete last watch functionality
     let episodeId: Int?  // For series episodes
     let name: String?
     let type: Int?
@@ -80,7 +81,7 @@ struct Movie: Decodable, Identifiable {
 }
 
 // MARK: - Movie Category
-struct MovieCategory: Decodable, Identifiable {
+struct MovieCategory: Decodable, Identifiable, Equatable {
     let id: Int
     let name: String?
 }

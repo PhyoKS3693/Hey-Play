@@ -33,12 +33,21 @@ extension ViewPagerViewController: UICollectionViewDataSource, UICollectionViewD
 
 extension ViewPagerViewController {
     func setNavTitle() {
-        let titleItem = UIBarButtonItem(
-            title: movieSeriesType.getTitle(),
-            style: .plain,
-            target: nil,
-            action: nil
-        )
+        // Create title label
+        let titleLabel = UILabel()
+        titleLabel.text = movieSeriesType.getTitle()
+        titleLabel.font = FontUtility.heading2()
+        titleLabel.textColor = .white
+        titleLabel.sizeToFit()
+
+        // Create container view for the label
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: titleLabel.frame.width, height: 44))
+        titleLabel.frame = CGRect(x: 0, y: 0, width: titleLabel.frame.width, height: 44)
+        titleLabel.textAlignment = .left
+        containerView.addSubview(titleLabel)
+
+        // Set as left bar button item
+        let titleItem = UIBarButtonItem(customView: containerView)
         navigationItem.leftBarButtonItem = titleItem
     }
     

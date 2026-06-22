@@ -160,6 +160,31 @@ final class LoginViewModel: ObservableObject {
         }
     }
 
+    // MARK: - LINE Login
+    func loginWithLine(lineUserId: String, name: String, deviceToken: String? = nil) {
+        isLoading = true
+        errorMessage = nil
+
+        Task { @MainActor in
+            let result = await AuthService.shared.loginWithLine(
+                lineUserId: lineUserId,
+                name: name,
+                deviceToken: deviceToken
+            )
+
+            isLoading = false
+
+            switch result {
+            case .success(let data):
+                self.loginData = data
+                self.saveLoginData(data)
+                self.loginSuccess = true
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
     // MARK: - Save Login Data
     private func saveLoginData(_ data: LoginData) {
         // Save customerId (converted from id)
@@ -175,6 +200,14 @@ final class LoginViewModel: ObservableObject {
 
         // Mark as logged in
         AppDefaultsManager.shared.isLoggedIn = true
+
+        // Register FCM token after successful login
+        if let fcmToken = NotificationManager.shared.fcmToken, !fcmToken.isEmpty {
+            print("📱 [LoginViewModel] Registering FCM token after login: \(fcmToken)")
+            NotificationManager.shared.registerDeviceToken(fcmToken)
+        } else {
+            print("⚠️ [LoginViewModel] No FCM token available to register after login")
+        }
     }
 
     // MARK: - Reset State

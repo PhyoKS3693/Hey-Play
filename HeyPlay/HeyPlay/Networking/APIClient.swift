@@ -56,7 +56,7 @@ class APIClient {
         decoder: DataDecoder = JSONDecoder()
     ) async -> DataResponse<T, AFError> {
         let mergedHeaders = mergeHeaders(headers)
-        return await withCheckedContinuation { cont in
+        let response = await withCheckedContinuation { cont in
             request(
                 urlConvertible: urlConvertible, method: method,
                 parameters: parameters, encoding: encoding, headers: mergedHeaders,
@@ -65,6 +65,40 @@ class APIClient {
                 decoder: decoder,
                 completion: { cont.resume(returning: $0 ) }
             )
+        }
+
+        // Check for session expiration
+        checkSessionExpiration(response: response)
+
+        return response
+    }
+
+    // MARK: - Session Expiration Check
+    private func checkSessionExpiration<T: Decodable>(response: DataResponse<T, AFError>) {
+        // Try to extract session expiration info from response data
+        if let data = response.data {
+            do {
+                // Decode as a dictionary to check responseCode and errors
+                if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   let responseCode = json["responseCode"] as? String,
+                   responseCode == "1000",
+                   let errors = json["errors"] as? [[String: Any]] {
+
+                    // Check if any error has fieldCode "1004"
+                    let hasSessionExpiredError = errors.contains { error in
+                        (error["fieldCode"] as? String) == "1004"
+                    }
+
+                    if hasSessionExpiredError {
+                        print("🚨 [APIClient] Session expired detected!")
+                        DispatchQueue.main.async {
+                            ViewNavigation.shared.handleSessionExpired()
+                        }
+                    }
+                }
+            } catch {
+                // Ignore JSON parsing errors - response might not be JSON
+            }
         }
     }
     

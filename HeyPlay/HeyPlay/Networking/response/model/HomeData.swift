@@ -15,6 +15,7 @@ struct HomeData: Decodable {
     let playlists: [Playlist]?
     let lastWatchContentList: [Movie]?
     let bannerList: [Banner]?
+    let adsSetting: AdsSetting?
 
     // Safe accessors
     var safeFirebaseTopics: [String] { firebaseTopics ?? [] }
@@ -42,12 +43,12 @@ struct Playlist: Decodable, Identifiable {
     var safeMovieList: [Movie] { movieList ?? [] }
 
     // MARK: - Layout Types
-    /// Layout 1: Horizontal 2-row grid of movie posters
-    /// Layout 2: Horizontal scrolling smaller cards (5 items visible)
-    /// Layout 3: Vertical list with image left, text right (episode list)
-    /// Layout 4: Large portrait posters (2 columns)
-    /// Layout 5: Featured/Recent large landscape cards
-    /// Layout 6: Vertical grid of portrait posters (3 columns)
+    /// Layout 1: Horizontal scrolling portrait cards (5 items visible)
+    /// Layout 2: Horizontal scrolling landscape cards (2 rows visible)
+    /// Layout 3: Vertical list with image left, title/episode right
+    /// Layout 4: Vertical grid of portrait posters (3 columns)
+    /// Layout 5: Horizontal scrolling large landscape cards (1 row)
+    /// Layout 6: Vertical grid of portrait posters (2 columns)
     enum LayoutType: Int {
         case layout1 = 1
         case layout2 = 2
@@ -159,6 +160,21 @@ struct BannerPackage: Decodable, Identifiable {
     let id: Int
     let name: String?
     let price: Double?
+}
+
+// MARK: - Ads Setting
+struct AdsSetting: Decodable, Equatable {
+    let id: Int?
+    let title: String?
+    let image: String?
+    let link: String?
+    let isCustomAds: Bool?
+    let isAuthRequired: Bool?
+    let isExternal: Bool?
+
+    var safeTitle: String { title ?? "" }
+    var safeLink: String { link ?? "" }
+    var safeImage: String { image ?? "" }
 }
 
 // MARK: - Type Alias for API Response

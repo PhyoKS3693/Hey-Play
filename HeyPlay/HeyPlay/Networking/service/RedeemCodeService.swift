@@ -45,8 +45,16 @@ final class RedeemCodeService: RedeemCodeServiceProtocol {
                 // Return the success message from API
                 return .success(apiResponse.responseMessage)
             } else {
-                print("❌ [RedeemCodeService] Failed: \(apiResponse.responseMessage)")
-                return .failure(APIError.serverError(apiResponse.responseMessage))
+                // Extract error message from errors array if available
+                let errorMessage: String
+                if let errors = apiResponse.errors, let firstError = errors.first {
+                    errorMessage = firstError.errorMessage
+                    print("❌ [RedeemCodeService] Failed with fieldCode \(firstError.fieldCode): \(errorMessage)")
+                } else {
+                    errorMessage = apiResponse.responseMessage
+                    print("❌ [RedeemCodeService] Failed: \(errorMessage)")
+                }
+                return .failure(APIError.serverError(errorMessage))
             }
         case .failure(let error):
             print("❌ [RedeemCodeService] API Error: \(error.localizedDescription)")

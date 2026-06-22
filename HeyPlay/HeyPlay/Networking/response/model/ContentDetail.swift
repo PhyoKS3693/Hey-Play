@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Content Detail
-struct ContentDetail: Decodable, Identifiable {
+struct ContentDetail: Decodable, Identifiable, Equatable {
     let id: Int
     let title: String?
     let description: String?
@@ -31,6 +31,8 @@ struct ContentDetail: Decodable, Identifiable {
     let movieType: Int?
     let movieTypeDesc: String?
     let trailerUrl: String?
+    let adsSetting: AdsSetting?
+    let shareUrl: String?
 
     // MARK: - Safe Accessors
     var safeTitle: String { title ?? "" }
@@ -81,10 +83,14 @@ struct ContentDetail: Decodable, Identifiable {
     var safeLandscapeImage: String {
         return landscapseImage ?? ""
     }
+
+    var safeShareUrl: String {
+        return shareUrl ?? ""
+    }
 }
 
 // MARK: - Movie Artist
-struct MovieArtist: Decodable, Identifiable {
+struct MovieArtist: Decodable, Identifiable, Equatable {
     let movieId: Int?
     let artistId: Int?
     let artistType: Int?
@@ -103,7 +109,7 @@ struct MovieArtist: Decodable, Identifiable {
 }
 
 // MARK: - Episode
-struct Episode: Decodable, Identifiable {
+struct Episode: Decodable, Identifiable, Equatable {
     let episodeId: Int?
     let name: String?
     let description: String?
@@ -111,6 +117,9 @@ struct Episode: Decodable, Identifiable {
     let subscriptionType: Int?
     let subscriptionTypeDesc: String?
     let playable: Bool?
+    let playerType: Int?
+    let detailImage: String?
+    let landscapseImage: String?
 
     // ID for Identifiable protocol
     var id: Int { episodeId ?? 0 }
@@ -118,23 +127,33 @@ struct Episode: Decodable, Identifiable {
     // Backward compatibility
     var episodeName: String { name ?? "" }
     var duration: String? { nil } // Not in current API response
-    var thumbnail: String? { nil } // Not in current API response
+    var thumbnail: String? { detailImage } // Use detailImage as thumbnail
 
     // Computed properties
     var isPlayable: Bool { playable ?? false }
     var safeStreamingUrl: String { streamingUrl ?? "" }
+    var safeDetailImage: String { detailImage ?? "" }
+    var safeLandscapeImage: String { landscapseImage ?? "" }
+    var safeDescription: String { description ?? "" }
 }
 
 // MARK: - Season
-struct Season: Decodable, Identifiable {
-    let id: Int?
-    let seasonNumber: Int?
-    let seasonName: String?
-    let episodes: [Episode]?
+struct Season: Decodable, Identifiable, Equatable {
+    let seasonId: Int?
+    let movieId: Int?
+    let seasonNo: Int?
+    let seasonDisplayText: String?
+
+    // ID for Identifiable protocol
+    var id: Int { seasonId ?? 0 }
+
+    // Backward compatibility
+    var seasonNumber: Int? { seasonNo }
+    var seasonName: String? { seasonDisplayText }
 
     // Safe accessors
-    var safeSeasonName: String { seasonName ?? "" }
-    var safeEpisodes: [Episode] { episodes ?? [] }
+    var safeSeasonName: String { seasonDisplayText ?? "" }
+    var safeSeasonNumber: Int { seasonNo ?? 0 }
 }
 
 // MARK: - Type Alias for API Response

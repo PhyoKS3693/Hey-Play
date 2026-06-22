@@ -17,12 +17,20 @@ class RecentTableViewCell: UITableViewCell {
 
     var navigateToMovieDetail: ((Int) -> Void)?
     var navigateToViewAll: (() -> Void)?
+    var onDeleteMovie: ((Int) -> Void)?
 
     // Movie data
     var movies: [Movie] = [] {
         didSet {
             collectionView.reloadData()
             updateCollectionViewHeight()
+        }
+    }
+
+    // Control delete button visibility
+    var showDeleteButton: Bool = false {
+        didSet {
+            collectionView.reloadData()
         }
     }
 
@@ -101,7 +109,13 @@ extension RecentTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
         }
 
         if !movies.isEmpty && indexPath.item < movies.count {
-            cell.configure(with: movies[indexPath.item])
+            let movie = movies[indexPath.item]
+            cell.configure(with: movie, showDeleteButton: showDeleteButton)
+
+            // Set delete callback
+            cell.onDeleteTapped = { [weak self] in
+                self?.onDeleteMovie?(movie.id)
+            }
         }
 
         return cell

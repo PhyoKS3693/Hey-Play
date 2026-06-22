@@ -117,6 +117,7 @@ final class LastWatchService: LastWatchServiceProtocol {
 
     // MARK: - Get Last Watch List
     func getLastWatchList(pageNo: Int = 1) async -> Result<LastWatchData, Error> {
+        print("📡 [LastWatchService] Calling getLastWatchList API - pageNo: \(pageNo)")
         let request = LastWatchListRequest(pageNo: pageNo)
 
         let response = await APIClient.shared.request(
@@ -133,12 +134,20 @@ final class LastWatchService: LastWatchServiceProtocol {
 
         switch response.result {
         case .success(let apiResponse):
+            print("📥 [LastWatchService] API Response - success: \(apiResponse.isSuccess), message: \(apiResponse.responseMessage)")
             if apiResponse.isSuccess, let data = apiResponse.data {
+                let itemCount = data.movies?.count ?? 0
+                print("✅ [LastWatchService] Parsed \(itemCount) items")
+                if let firstItem = data.movies?.first {
+                    print("📝 [LastWatchService] First item - id(API): \(firstItem.contentIdFromAPI ?? -999), movieId: \(firstItem.movieId ?? -999), seriesId: \(firstItem.seriesId ?? -999), type: \(firstItem.type ?? -999)")
+                }
                 return .success(data)
             } else {
+                print("❌ [LastWatchService] API returned error: \(apiResponse.responseMessage)")
                 return .failure(APIError.serverError(apiResponse.responseMessage))
             }
         case .failure(let error):
+            print("❌ [LastWatchService] Network error: \(error.localizedDescription)")
             return .failure(error)
         }
     }

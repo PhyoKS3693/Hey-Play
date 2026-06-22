@@ -48,6 +48,37 @@
 				<string>com.googleusercontent.apps.78342389719-17e2poj7nqp3hmkm3934prcu4suqb9ck</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>line3rdp.com.gd.heyplay.staging</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>lineauth2</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>HeyPlay needs access to your camera to take profile photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>HeyPlay needs access to your photo library to select profile photos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>HeyPlay needs access to save photos to your library.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-5296255593265550~7830200274</string>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
 	</array>
 </dict>
 </plist>

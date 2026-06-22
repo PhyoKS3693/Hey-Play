@@ -33,9 +33,12 @@ enum APIEndpoint {
     case loginOTPVerify
     case loginWithGoogle
     case loginWithApple
+    case loginWithLine
+    case registerDeviceToken
 
     // MARK: - Profile
     case profile
+    case profileUpdate
 
     // MARK: - Last Watch
     case lastWatchAdd
@@ -77,6 +80,9 @@ enum APIEndpoint {
     case validateNewPhoneForChange
     case updatePhoneNumber
 
+    // MARK: - Version Check
+    case checkAppVersion
+
     // MARK: - Properties
     var path: String {
         switch self {
@@ -109,10 +115,16 @@ enum APIEndpoint {
             return "/api/auth/login-with-google"
         case .loginWithApple:
             return "/api/auth/login-with-apple"
+        case .loginWithLine:
+            return "/api/auth/login-with-line"
+        case .registerDeviceToken:
+            return "/api/auth/register-device-token"
 
         // Profile
         case .profile:
             return "/api/customer/profile"
+        case .profileUpdate:
+            return "/api/customer/updateProfile"
 
         // Last Watch
         case .lastWatchAdd:
@@ -175,6 +187,10 @@ enum APIEndpoint {
             return "/api/customer/validateNewPhoneForPhoneNoChange"
         case .updatePhoneNumber:
             return "/api/customer/updatePhoneNumber"
+
+        // Version Check
+        case .checkAppVersion:
+            return "/api/check/checkAppVersion"
         }
     }
 
@@ -186,17 +202,21 @@ enum APIEndpoint {
 // MARK: - HTTP Headers
 struct APIHeaders {
     static func defaultHeaders(customerId: String, sessionId: String) -> [String: String] {
+        let phoneUUID = AppDefaultsManager.shared.phoneUUID
         return [
             "customerId": customerId,
             "sessionId": sessionId,
+            "phoneUUID": phoneUUID,
             "Content-Type": "application/json"
         ]
     }
 
     static func authHeaders(deviceType: String = "2", versionNumber: String = "1.0") -> [String: String] {
+        let phoneUUID = AppDefaultsManager.shared.phoneUUID
         return [
             "deviceType": deviceType,
             "versionNumber": versionNumber,
+            "phoneUUID": phoneUUID,
             "Content-Type": "application/json"
         ]
     }

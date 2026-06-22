@@ -10,9 +10,8 @@ import UIKit
 
 // MARK: - HorizontalTwoRowLayout
 
-/// A custom UICollectionViewFlowLayout that displays the first cell
-/// as full width and full height, while subsequent cells are half-height
-/// and arranged in two horizontal rows.
+/// A custom UICollectionViewFlowLayout that displays the first cell as a large landscape card (full height)
+/// and subsequent cells as smaller portrait cards arranged in 2 rows, scrolling horizontally.
 class HorizontalTwoRowLayout: UICollectionViewFlowLayout {
 
     // A cache to store the calculated layout attributes for each item.
@@ -24,10 +23,10 @@ class HorizontalTwoRowLayout: UICollectionViewFlowLayout {
     // The content height of the collection view.
     private var contentHeight: CGFloat {
         guard let collectionView = collectionView else {
-            return 0
+            return 240 // Default fixed height
         }
-        let insets = collectionView.contentInset
-        return collectionView.bounds.height - (insets.top + insets.bottom)
+        // Use a fixed height for consistency
+        return max(collectionView.bounds.height, 240)
     }
 
     // MARK: - Overrides
@@ -47,56 +46,66 @@ class HorizontalTwoRowLayout: UICollectionViewFlowLayout {
         // Set the scroll direction to horizontal.
         self.scrollDirection = .horizontal
 
-        // Define constants for spacing and cell dimensions.
-        let fullHeightCellWidth: CGFloat = (collectionView.bounds.width / 2) - 8
-        let halfHeightCellWidth: CGFloat = ((collectionView.bounds.width - fullHeightCellWidth) - minimumInteritemSpacing) / 2
-        
-        var xOffset: CGFloat = 0.0
+        // Calculate available width (screen width minus container padding)
+        let availableWidth = collectionView.bounds.width - sectionInset.left - sectionInset.right
 
-        // Calculate attributes for the first, full-height cell.
+        // Define cell dimensions to fit screen
+        let spacing: CGFloat = minimumInteritemSpacing
+
+        // Large card fills the FULL collection height (no insets)
+        let largeCardHeight = collectionView.bounds.height
+        let largeCardWidth = availableWidth * 0.55
+
+        // Calculate small card dimensions based on remaining space
+        // Remaining width for small cards (account for spacing between large and small cards)
+        let remainingWidth = availableWidth - largeCardWidth - minimumLineSpacing
+
+        // Small cards: 2 columns of small cards visible
+        let smallCardWidth = (remainingWidth - minimumLineSpacing) / 2
+        let smallCardHeight = (largeCardHeight - spacing) / 2
+
+        var xOffset: CGFloat = sectionInset.left
+
+        // Calculate attributes for the first cell (large landscape card)
         if collectionView.numberOfItems(inSection: 0) > 0 {
             let indexPath = IndexPath(item: 0, section: 0)
-            let frame = CGRect(x: xOffset, y: 0, width: fullHeightCellWidth, height: contentHeight + 8)
+            // First item fills full height from y=0
+            let frame = CGRect(x: xOffset, y: 0, width: largeCardWidth, height: largeCardHeight)
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = frame
             cache.append(attributes)
-            xOffset += fullHeightCellWidth + minimumLineSpacing
+            xOffset += largeCardWidth + minimumLineSpacing
         }
-        
-        // Calculate attributes for the remaining, half-height cells.
-        var yOffset: CGFloat = 0
+
+        // Calculate attributes for remaining cells (small portrait cards in 2 rows)
+        var currentRow = 0
         for item in 1 ..< collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
-            
-            // Determine the y position for the current item based on the row.
-            let x: CGFloat
+
+            // Determine y position based on row
             let y: CGFloat
-            
-            if yOffset == 0 {
-                // First cell in the column (top row).
-                x = xOffset
+            if currentRow == 0 {
                 y = 0
-                yOffset = (collectionView.bounds.height / 2) + minimumInteritemSpacing
             } else {
-                // Second cell in the column (bottom row).
-                x = xOffset
-                y = yOffset
-                xOffset += (halfHeightCellWidth) + minimumLineSpacing
-                yOffset = 0
+                y = smallCardHeight + spacing
             }
 
-            let frame = CGRect(x: x, y: y, width: (halfHeightCellWidth - 8), height: (collectionView.bounds.height - minimumLineSpacing) / 2 )
+            let frame = CGRect(x: xOffset, y: y, width: smallCardWidth, height: smallCardHeight)
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = frame
             cache.append(attributes)
+
+            // Toggle between rows
+            if currentRow == 0 {
+                currentRow = 1
+            } else {
+                currentRow = 0
+                xOffset += smallCardWidth + minimumLineSpacing
+            }
         }
-        
-        // Update the total content width.
-        if yOffset == 0 {
-            contentWidth = xOffset
-        } else {
-            contentWidth = xOffset + halfHeightCellWidth + minimumLineSpacing
-        }
+
+        // Update the total content width
+        contentWidth = xOffset + sectionInset.right
     }
 
     /// Overrides `layoutAttributesForElements(in:)` to return attributes within the given rect.
@@ -116,5 +125,18 @@ class HorizontalTwoRowLayout: UICollectionViewFlowLayout {
         // If the index path is valid, return the cached attributes.
         guard indexPath.item < cache.count else { return nil }
         return cache[indexPath.item]
+    }
+
+    /// Override to invalidate layout when bounds change
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        guard let collectionView = collectionView else { return false }
+        return newBounds.width != collectionView.bounds.width || newBounds.height != collectionView.bounds.height
+    }
+
+    /// Clear cache when invalidating
+    override func invalidateLayout() {
+        super.invalidateLayout()
+        cache.removeAll()
+        contentWidth = 0
     }
 }

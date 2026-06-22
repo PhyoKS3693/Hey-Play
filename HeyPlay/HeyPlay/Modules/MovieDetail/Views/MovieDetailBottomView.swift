@@ -20,39 +20,44 @@ struct MovieDetailBottomView: View {
     @Binding var showUpgradeDialog: Bool
 
     var body: some View {
-        ScrollView {
-            VStack(content: {
-                if tapEpisodes {
+        VStack(content: {
+            if tapEpisodes {
+                if viewModel.hasEpisodes {
                     EpisodesListView(
                         episodes: viewModel.episodes,
                         movieTitle: viewModel.title,
                         movieId: viewModel.contentDetail?.id ?? 0,
                         showUpgradeDialog: $showUpgradeDialog
                     )
+                } else {
+                    EmptyEpisodesView()
                 }
+            }
 
-                if tapRecommend {
-                    RecommendView(movies: viewModel.recommendMovies)
+            if tapRecommend {
+                RecommendView(movies: viewModel.recommendMovies) { movieId, isSeries in
+                    let detailType: DetailType = isSeries ? .series : .movie
+                    ViewNavigation.shared.showMovieDetail(detailType: detailType, movieId: movieId)
                 }
+            }
 
-                if tapTrailer {
-                    ZStack {
-                        VStack {
-                            MovieDetailDescriptionView(
-                                description: viewModel.description,
-                                imageURL: viewModel.imageURL,
-                                trailerUrl: viewModel.contentDetail?.safeTrailerUrl ?? ""
-                            )
+            if tapTrailer {
+                ZStack {
+                    VStack {
+                        MovieDetailDescriptionView(
+                            description: viewModel.description,
+                            imageURL: viewModel.imageURL,
+                            trailerUrl: viewModel.contentDetail?.safeTrailerUrl ?? ""
+                        )
 
-                            CastView(cast: viewModel.cast)
-                        }
+                        CastView(cast: viewModel.cast)
                     }
-                    .background(Color.grey)
-                    .cornerRadius(20)
                 }
-                Spacer()
-            })
-        }
+                .background(Color.grey)
+                .cornerRadius(20)
+            }
+            Spacer()
+        })
         .background(Color.black)
     }
 }
@@ -63,9 +68,10 @@ struct SeriesAndTrailerAndRecommendView : View {
     @Binding var tapRecommend : Bool
     @Binding var tapEpisodes : Bool
     @Binding var detailType : DetailType
+
     var body: some View {
             HStack(spacing: 16) {
-                
+
                 if detailType == .series {
                     Button(action: {
                         tapEpisodes = true
@@ -75,7 +81,7 @@ struct SeriesAndTrailerAndRecommendView : View {
                         Text("Episodes".localized())
                             .font(FontUtility.body1())
                         .foregroundColor(.white)
-                        
+
                     }
                     .frame(maxWidth: 150, minHeight: 40)
                     .background(tapEpisodes ? Color.primaryBg : Color.recommendBG)
@@ -173,6 +179,7 @@ struct MovieDetailDescriptionView: View {
                 .font(FontUtility.body2())
                 .foregroundColor(.white)
                 .padding(.horizontal, 8)
+                .padding(.bottom, 16)
         }
     }
 }
@@ -203,6 +210,33 @@ struct TrailerVideoPlayer: UIViewControllerRepresentable {
             uiViewController.player = newPlayer
             newPlayer.play()
         }
+    }
+}
+
+@available(iOS 14.0, *)
+struct EmptyEpisodesView: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "film.stack")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 60, height: 60)
+                .foregroundColor(.gray)
+                .padding(.top, 40)
+
+            Text("No Episodes Available")
+                .font(FontUtility.headline2())
+                .foregroundColor(.white)
+
+            Text("Episodes for this series are not available yet.")
+                .font(FontUtility.body2())
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+                .padding(.bottom, 40)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
     }
 }
 

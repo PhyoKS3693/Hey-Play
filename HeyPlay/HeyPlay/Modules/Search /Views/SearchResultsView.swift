@@ -125,17 +125,23 @@ struct SearchMovieGridCard: View {
                     Image(movie.isFree ? "ic-free" : "ic-vip")
                         .resizable()
                         .renderingMode(.original)
-                        .frame(width: 12, height: 12)
+                        .frame(width: 16, height: 16)
                         .foregroundColor(.white)
 
                     Text(movie.subscriptionTypeDesc ?? "")
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(FontUtility.smallText4())
                         .foregroundColor(.white)
                 }
-                .padding(.horizontal, 6)
+                .padding(.horizontal, 5)
                 .padding(.vertical, 3)
-                .background(Color.white.opacity(0.4))
-                .cornerRadius(4)
+                .frame(width: 38, height: 22)
+                .background(
+                    ZStack {
+                        BlurView(style: .systemUltraThinMaterialDark)
+                        Color.white.opacity(0.04)
+                    }
+                )
+                .cornerRadius(11)
                 .padding(8)
             }
 

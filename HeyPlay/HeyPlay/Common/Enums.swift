@@ -104,7 +104,7 @@ enum MovieSeriesType {
     func getTitle() -> String {
         switch self {
         case .movie:
-            return "Movies"
+            return "Movie"
         case .series:
             return "Series"
         }

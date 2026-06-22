@@ -25,7 +25,7 @@ final class PackageViewController: UIHostingController<PackageScreen> {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black_Color")
-        
+
         rootView.didSelectPaymentPlan = { [weak self] name, type, amount in
             guard let self = self else { return }
             let controller = PlanViewController(
@@ -37,10 +37,22 @@ final class PackageViewController: UIHostingController<PackageScreen> {
             )
             self.navigationController?.pushViewController(controller, animated: true)
         }
-        
+
         rootView.didTapBack = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar completely
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
 }

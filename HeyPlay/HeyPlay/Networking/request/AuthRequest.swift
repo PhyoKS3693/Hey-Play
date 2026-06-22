@@ -80,3 +80,37 @@ struct AppleLoginRequest: Encodable {
         self.deviceType = deviceType
     }
 }
+
+// MARK: - LINE Login Request
+struct LineLoginRequest: Encodable {
+    let lineUserId: String
+    let name: String
+    let deviceToken: String?
+    let deviceType: Int
+
+    init(
+        lineUserId: String,
+        name: String,
+        deviceToken: String? = "",
+        deviceType: Int = 2
+    ) {
+        self.lineUserId = lineUserId
+        self.name = name
+        self.deviceToken = deviceToken
+        self.deviceType = deviceType
+    }
+}
+
+// MARK: - Register Device Token Request
+struct RegisterDeviceTokenRequest: Encodable {
+    let fcmToken: String
+    let deviceType: String
+
+    init(
+        fcmToken: String,
+        deviceType: String = "2"
+    ) {
+        self.fcmToken = fcmToken
+        self.deviceType = deviceType
+    }
+}

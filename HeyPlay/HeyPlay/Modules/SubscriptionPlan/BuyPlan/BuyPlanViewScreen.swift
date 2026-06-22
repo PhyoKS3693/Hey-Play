@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct BuyPlanViewScreen: View {
     var host: HostController?
@@ -18,12 +19,19 @@ struct BuyPlanViewScreen: View {
     init(_ viewModel: BuyPlanViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
-    
+
+    private let columns = [
+        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 16)
+    ]
+
     var body: some View {
-        VStack (alignment: .leading) {
+        VStack(spacing: 0) {
             navView()
-            
-            ZStack {
+
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading) {
+                    ZStack {
                 Image("package_bg")
                     .resizable()
                     .scaledToFill()
@@ -75,34 +83,43 @@ struct BuyPlanViewScreen: View {
                     .stroke(Color.white, lineWidth: 1)
             )
             
-            Text("Payment Method")
+            Text("Choose Payment Method")
                 .font(FontUtility.heading2())
                 .foregroundColor(Color("white_color"))
-                .padding(10)
-            
-            HStack(spacing: 10) {
-                Image(systemName: "creditcard.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 18, height: 18)
-                    .foregroundColor(.white)
+                .padding(.vertical, 10)
 
-                Text(viewModel.paymentMethodName)
+            if viewModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 40)
+            } else if viewModel.paymentMethods.isEmpty {
+                Text("No payment methods available")
                     .font(FontUtility.body2())
-                    .foregroundColor(Color("white_color"))
-
-                Spacer()
-
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 40)
+            } else {
+                LazyVGrid(columns: columns, spacing: 16) {
+                    ForEach(viewModel.paymentMethods) { paymentMethod in
+                        PaymentMethodCard(
+                            paymentMethod: paymentMethod,
+                            isSelected: viewModel.selectedPaymentMethod?.id == paymentMethod.id,
+                            onTap: {
+                                viewModel.selectedPaymentMethod = paymentMethod
+                            }
+                        )
+                    }
+                }
             }
-            .frame(maxWidth: .infinity)
-            .padding(14)
-            .background (
-                RoundedRectangle(cornerRadius: 19)
-                    .fill(Color("darkGrey_Color"))
-            )
-            
-            Spacer()
 
+            Spacer()
+                .frame(minHeight: 20)
+                }
+                .padding(.horizontal, 16)
+            }
+
+            // Continue Button (Fixed at bottom)
             Button {
                 Task {
                     await viewModel.buyPackage()
@@ -119,11 +136,23 @@ struct BuyPlanViewScreen: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 50)
-            .background(Color("pink_Color"))
+            .background(
+                viewModel.selectedPaymentMethod != nil ?
+                    Color("pink_Color") : Color.gray.opacity(0.5)
+            )
             .cornerRadius(20)
-            .disabled(viewModel.isLoading)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
+            .disabled(viewModel.isLoading || viewModel.selectedPaymentMethod == nil)
         }
-        .padding(.horizontal, 16)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .onAppear {
+            if viewModel.paymentMethods.isEmpty {
+                Task {
+                    await viewModel.fetchPaymentMethods()
+                }
+            }
+        }
         .onChange(of: viewModel.purchaseSuccess) { success in
             if success {
                 didCompletePurchase?(viewModel.paymentUrl)
@@ -165,6 +194,74 @@ struct BuyPlanViewScreen: View {
             }
         }
         .padding(10)
+    }
+}
+
+// MARK: - Payment Method Card
+struct PaymentMethodCard: View {
+    let paymentMethod: PaymentMethod
+    let isSelected: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: {
+            print("💳 [PaymentCard] Tapped: \(paymentMethod.displayName)")
+            onTap()
+        }) {
+            VStack(spacing: 10) {
+                Spacer()
+
+                // Payment Method Image
+                if let imageURL = paymentMethod.fullImageURL, let url = URL(string: imageURL) {
+                    KFImage(url)
+                        .placeholder {
+                            Rectangle()
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(width: 80, height: 80)
+                                .cornerRadius(12)
+                        }
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
+                        .cornerRadius(12)
+                } else {
+                    Image(systemName: "creditcard.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 60, height: 60)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+
+                // Payment Method Name
+                Text(paymentMethod.displayName)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.white)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity)
+
+                Spacer()
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity)
+            .frame(height: 160)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(red: 45/255, green: 45/255, blue: 47/255))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(
+                        isSelected ? Color("pink_Color") : Color.clear,
+                        lineWidth: 2
+                    )
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
+        .onAppear {
+            print("💳 [PaymentCard] Displaying: \(paymentMethod.displayName)")
+        }
     }
 }
 

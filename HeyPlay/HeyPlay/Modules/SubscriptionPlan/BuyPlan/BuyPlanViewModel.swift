@@ -16,10 +16,20 @@ final class BuyPlanViewModel: ObservableObject {
     var packageType: String = ""
     var chargedAmount: String = ""
 
-    // MARK: - Payment Method Info
-    var paymentMethodId: Int?
-    var paymentMethodName: String = ""
-    var paymentMethodIcon: String = ""
+    // MARK: - Payment Methods
+    @Published var paymentMethods: [PaymentMethod] = []
+    @Published var selectedPaymentMethod: PaymentMethod?
+
+    // MARK: - Payment Method Info (for backward compatibility)
+    var paymentMethodId: Int? {
+        return selectedPaymentMethod?.id
+    }
+    var paymentMethodName: String {
+        return selectedPaymentMethod?.displayName ?? ""
+    }
+    var paymentMethodIcon: String {
+        return selectedPaymentMethod?.fullImageURL ?? ""
+    }
 
     // MARK: - User Info
     var phoneNumber: String {
@@ -32,11 +42,42 @@ final class BuyPlanViewModel: ObservableObject {
     @Published var purchaseSuccess: Bool = false
     @Published var paymentUrl: String?
 
+    // MARK: - Fetch Payment Methods
+    func fetchPaymentMethods() async {
+        await MainActor.run {
+            isLoading = true
+            errorMessage = nil
+        }
+
+        let result = await SubscriptionPlanService.shared.getSubscriptionPlanPreload()
+
+        await MainActor.run {
+            isLoading = false
+
+            switch result {
+            case .success(let data):
+                self.paymentMethods = data.paymentMethodList ?? []
+                // Auto-select first payment method if available
+                if let firstMethod = self.paymentMethods.first {
+                    self.selectedPaymentMethod = firstMethod
+                }
+                print("✅ Fetched \(self.paymentMethods.count) payment methods")
+                // Debug: Print all payment method names
+                for method in self.paymentMethods {
+                    print("💳 Payment Method: ID=\(method.id), Name=\(method.name ?? "nil"), DisplayName=\(method.displayName)")
+                }
+            case .failure(let error):
+                print("❌ Failed to fetch payment methods: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
     // MARK: - Buy Package
     func buyPackage() async {
         guard let packageId = packageId, let paymentMethodId = paymentMethodId else {
             await MainActor.run {
-                self.errorMessage = "Missing package or payment method information"
+                self.errorMessage = "Please select a payment method"
             }
             return
         }

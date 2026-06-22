@@ -20,6 +20,7 @@ final class AppDefaultsManager {
         case sessionId
         case phoneNumber
         case isLoggedIn
+        case phoneUUID
     }
 
     // MARK: - Auth Properties
@@ -41,6 +42,22 @@ final class AppDefaultsManager {
     var isLoggedIn: Bool {
         get { bool(for: .isLoggedIn) }
         set { set(newValue, for: .isLoggedIn) }
+    }
+
+    // MARK: - Device UUID
+    var phoneUUID: String {
+        get {
+            // Check if UUID already exists
+            if let existingUUID = string(for: .phoneUUID) {
+                return existingUUID
+            }
+
+            // Generate new UUID on first launch
+            let newUUID = UUID().uuidString
+            set(newUUID, for: .phoneUUID)
+            print("📱 [AppDefaults] Generated new phoneUUID: \(newUUID)")
+            return newUUID
+        }
     }
 
     // Save Boolean
@@ -102,6 +119,19 @@ final class AppDefaultsManager {
         defaults.removeObject(forKey: Key.sessionId.rawValue)
         defaults.removeObject(forKey: Key.phoneNumber.rawValue)
         defaults.removeObject(forKey: Key.isLoggedIn.rawValue)
+    }
+
+    // MARK: - Clear All Data (Session Expired)
+    func clearAllData() {
+        print("🗑️ [AppDefaults] Clearing all cache data except phoneUUID")
+        // Clear all keys except phoneUUID (it should persist across sessions)
+        defaults.removeObject(forKey: Key.language.rawValue)
+        defaults.removeObject(forKey: Key.customerId.rawValue)
+        defaults.removeObject(forKey: Key.sessionId.rawValue)
+        defaults.removeObject(forKey: Key.phoneNumber.rawValue)
+        defaults.removeObject(forKey: Key.isLoggedIn.rawValue)
+        // Note: phoneUUID is NOT cleared - it persists until app uninstall
+        print("✅ [AppDefaults] Cache cleared successfully")
     }
 }
 

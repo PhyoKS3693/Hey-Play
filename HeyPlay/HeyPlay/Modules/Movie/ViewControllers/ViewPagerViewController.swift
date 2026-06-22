@@ -31,7 +31,16 @@ class ViewPagerViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Show navigation bar (in case it was hidden by detail screen)
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.isNavigationBarHidden = false
+        // Restore navigation bar items every time view appears
+        setNavTitle()
+        setRightBarItems()
     }
     
     override func setupUI() {

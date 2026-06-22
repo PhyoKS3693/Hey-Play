@@ -17,9 +17,33 @@ struct WatchListScreen: View {
     @ObservedObject private var viewModel: WatchListViewModel
 
     @State private var selectedTab: WatchListType = .lastWatch
+    @State private var showClearAllDialog: Bool = false
+    @State private var hasLoadedInitialData: Bool = false
 
     init(_ viewModel: WatchListViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
+    }
+
+    private var clearAllMessage: String {
+        switch selectedTab {
+        case .lastWatch:
+            return "Are you sure you want to clear all recent items?"
+        case .watchLater:
+            return "Are you sure you want to clear all watchlist items?"
+        case .favourites:
+            return "Are you sure you want to clear all favourite items?"
+        }
+    }
+
+    private var shouldShowClearAllButton: Bool {
+        switch selectedTab {
+        case .lastWatch:
+            return !viewModel.lastWatchItems.isEmpty
+        case .watchLater:
+            return !viewModel.watchLaterItems.isEmpty
+        case .favourites:
+            return false // Never show for favourites
+        }
     }
 
     var body: some View {
@@ -84,11 +108,14 @@ struct WatchListScreen: View {
             .padding(.horizontal, 10)
 
             // Clear All Button Row (on new line)
-            if selectedTab != .favourites {
+            // Only show if:
+            // 1. Not on favourites tab
+            // 2. Has items in the current list
+            if selectedTab != .favourites && shouldShowClearAllButton {
                 HStack {
                     Spacer()
                     Button {
-                        self.didTapClearAll?()
+                        showClearAllDialog = true
                     } label: {
                         Text("Clear All")
                             .font(FontUtility.body2())
@@ -117,20 +144,44 @@ struct WatchListScreen: View {
                 }
             }
             .onAppear {
-                viewModel.listType = selectedTab
-                viewModel.fetchData()
+                if !hasLoadedInitialData {
+                    print("📱 [WatchList] Initial load - fetching data for tab: \(selectedTab)")
+                    viewModel.listType = selectedTab
+                    viewModel.fetchData()
+                    hasLoadedInitialData = true
+                }
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .customDialog(isPresented: $showClearAllDialog) {
+            CustomDialogView(
+                iconName: "img_question",
+                title: "Clear All",
+                message: clearAllMessage,
+                showCloseButton: true,
+                closeAction: {
+                    showClearAllDialog = false
+                },
+                primaryButtonTitle: "Yes",
+                primaryAction: {
+                    showClearAllDialog = false
+                    didTapClearAll?()
+                },
+                secondaryButtonTitle: "Cancel",
+                secondaryAction: {
+                    showClearAllDialog = false
+                }
+            ) {
+                EmptyView()
+            }
+        }
     }
 
     // MARK: - Recent List
     private func renderRecentList() -> some View {
         VStack {
             if viewModel.lastWatchItems.isEmpty {
-                Text(viewModel.emptyMessage)
-                    .foregroundColor(.gray)
-                    .padding(.top, 50)
+                EmptyStateView()
             } else {
                 ForEach(viewModel.lastWatchItems) { item in
                     renderRecentItem(item)
@@ -187,10 +238,6 @@ struct WatchListScreen: View {
                         .frame(width: 15, height: 15)
                         .padding(.trailing, 4)
 
-                    Text("Last watch on:")
-                        .font(FontUtility.smallText1())
-                        .foregroundColor(Color.white)
-
                     Text(item.lastWatchDate ?? "")
                         .font(FontUtility.smallText1())
                         .foregroundColor(Color.white)
@@ -216,7 +263,9 @@ struct WatchListScreen: View {
         .padding(.horizontal, 10)
         .onTapGesture {
             let detailType: DetailType = item.isSeries ? .series : .movie
-            ViewNavigation.shared.showMovieDetail(detailType: detailType, movieId: item.movieId ?? 0)
+            let contentId = item.contentId
+            print("🎬 [WatchList] Recent item tapped - contentId: \(contentId), id(API): \(item.contentIdFromAPI ?? -1), movieId: \(item.movieId ?? -1), seriesId: \(item.seriesId ?? -1), name: \(item.movieName ?? "N/A"), type: \(detailType)")
+            ViewNavigation.shared.showMovieDetail(detailType: detailType, movieId: contentId)
         }
     }
 
@@ -224,9 +273,7 @@ struct WatchListScreen: View {
     private func renderWatchLaterList() -> some View {
         VStack {
             if viewModel.watchLaterItems.isEmpty {
-                Text(viewModel.emptyMessage)
-                    .foregroundColor(.gray)
-                    .padding(.top, 50)
+                EmptyStateView()
             } else {
                 ForEach(viewModel.watchLaterItems) { item in
                     renderWatchLaterItem(item)
@@ -320,35 +367,71 @@ struct WatchListScreen: View {
     // MARK: - Favourites List
     private func renderFavouritesList() -> some View {
         VStack(alignment: .leading, spacing: 20) {
-            if viewModel.favouriteItems.isEmpty {
-                Text(viewModel.emptyMessage)
-                    .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 50)
+            if viewModel.favouriteItems.isEmpty && viewModel.favouriteReels.isEmpty {
+                EmptyStateView()
             } else {
-                // Movies Grid
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Movies")
-                        .font(FontUtility.heading2())
-                        .foregroundColor(.white)
+                // Short Section (Horizontal Scroll)
+                if !viewModel.favouriteReels.isEmpty {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Text("Short")
+                                .font(FontUtility.heading2())
+                                .foregroundColor(.white)
+
+                            Spacer()
+
+                            Button(action: {
+                                print("🔥 [WatchList] View All Shorts tapped - Navigating to Hot tab")
+                                ViewNavigation.shared.showHotTab()
+                            }) {
+                                HStack(spacing: 4) {
+                                    Text("View All")
+                                        .font(FontUtility.body2())
+                                        .foregroundColor(.white)
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.white)
+                                }
+                            }
+                        }
                         .padding(.horizontal, 10)
 
-                    LazyVGrid(columns: [
-                        GridItem(.flexible(), spacing: 10),
-                        GridItem(.flexible(), spacing: 10),
-                        GridItem(.flexible(), spacing: 10)
-                    ], spacing: 16) {
-                        ForEach(viewModel.favouriteItems) { item in
-                            renderMovieItem(item)
-                                .onAppear {
-                                    // Load more when reaching the last item
-                                    if item.id == viewModel.favouriteItems.last?.id {
-                                        viewModel.loadMoreData()
-                                    }
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 12) {
+                                ForEach(viewModel.favouriteReels) { item in
+                                    renderShortItem(item)
                                 }
+                            }
+                            .padding(.horizontal, 10)
                         }
                     }
-                    .padding(.horizontal, 10)
+                }
+
+                // Movies Grid
+                if !viewModel.favouriteItems.isEmpty {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Movies")
+                            .font(FontUtility.heading2())
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 10)
+
+                        LazyVGrid(columns: [
+                            GridItem(.flexible(), spacing: 10),
+                            GridItem(.flexible(), spacing: 10),
+                            GridItem(.flexible(), spacing: 10)
+                        ], spacing: 16) {
+                            ForEach(viewModel.favouriteItems) { item in
+                                renderMovieItem(item)
+                                    .onAppear {
+                                        // Load more when reaching the last item
+                                        if item.id == viewModel.favouriteItems.last?.id {
+                                            viewModel.loadMoreData()
+                                        }
+                                    }
+                            }
+                        }
+                        .padding(.horizontal, 10)
+                    }
                 }
 
                 // Loading indicator for pagination
@@ -364,6 +447,36 @@ struct WatchListScreen: View {
             }
         }
         .padding(.vertical, 10)
+    }
+
+    // MARK: - Render Short Item (Vertical aspect ratio for reels)
+    private func renderShortItem(_ item: FavouriteReelItem) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ZStack(alignment: .topLeading) {
+                KFImage(URL(string: item.fullImageURL))
+                    .placeholder {
+                        Color.gray
+                    }
+                    .resizable()
+                    .aspectRatio(9/16, contentMode: .fill)
+                    .frame(width: 140, height: 200)
+                    .clipped()
+                    .cornerRadius(12)
+
+                // Note: API doesn't return subscriptionType for reels
+                // Using Free badge as default
+                Image("free_badge")
+                    .resizable()
+                    .frame(width: 40, height: 22)
+                    .padding(8)
+            }
+        }
+        .onTapGesture {
+            if let reelId = item.reelId {
+                print("🔥 [WatchList] Short tapped - reelId: \(reelId), navigating to Hot tab")
+                ViewNavigation.shared.showHotTab()
+            }
+        }
     }
 
     private func renderMovieItem(_ item: FavouriteItem) -> some View {
@@ -426,6 +539,44 @@ struct WatchListScreen: View {
             }
         }
         .padding(10)
+    }
+}
+
+// MARK: - Empty State View
+struct EmptyStateView: View {
+    @Environment(\.presentationMode) var presentationMode
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Spacer()
+
+            // Empty icon
+            Image("empty_watch_list")
+                .resizable()
+                .frame(width: 100, height: 100)
+
+            // No Results Found text
+            Text("No Results Found")
+                .font(FontUtility.heading2())
+                .foregroundColor(.white)
+
+            // Continue button
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }) {
+                Text("Continue")
+                    .font(FontUtility.body1())
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(Color("pink_Color"))
+                    .cornerRadius(25)
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 8)
+
+            Spacer()
+        }
     }
 }
 

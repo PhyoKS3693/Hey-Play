@@ -149,6 +149,8 @@ enum HomeSectionType {
     case user
     case banner
     case recent  // lastWatchContentList
+    case customAd  // Custom ad banner from API
+    case googleAd  // Google AdMob banner
     case playlist(Playlist)  // Dynamic playlist section
 }
 
@@ -156,9 +158,24 @@ enum HomeSectionType {
 extension HomeViewModel {
 
     /// Get all sections to display in order
-    /// Returns: [user, banner, recent (if has data), playlist1, playlist2, ...]
+    /// Returns: [user, banner, ad, recent (if has data), playlist1, playlist2, ...]
+    /// Ad appears right after banner section
     func getAllSections() -> [HomeSectionType] {
         var sections: [HomeSectionType] = [.user, .banner]
+
+        // Add ad section right after banner
+        // Use custom ad if enabled, otherwise use Google ad
+        let adSection: HomeSectionType
+        if let adsSetting = homeData?.adsSetting,
+           adsSetting.isCustomAds == true,
+           adsSetting.id != nil {
+            // Custom ads are enabled and have valid ID
+            adSection = .customAd
+        } else {
+            // Show Google Ads as fallback
+            adSection = .googleAd
+        }
+        sections.append(adSection)
 
         // Add recent if there's watch history
         if !lastWatchList.isEmpty {

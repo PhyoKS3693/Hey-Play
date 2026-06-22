@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "heart-4 2.png",
+      "filename" : "material-symbols_favorite-rounded.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "heart-4 1.png",
+      "filename" : "material-symbols_favorite-rounded@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "heart-4.png",
+      "filename" : "material-symbols_favorite-rounded@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

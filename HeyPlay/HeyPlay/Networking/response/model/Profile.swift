@@ -8,10 +8,12 @@
 import Foundation
 
 // MARK: - Profile Data
-struct Profile: Decodable {
+struct Profile: Decodable, Equatable {
     let id: Int?
     let name: String?
     let account: String?
+    let email: String?
+    let gender: Int?
     let sessionId: String?
     let referralCode: String?
     let profileImage: String?
@@ -19,6 +21,8 @@ struct Profile: Decodable {
     let activePlanName: String?
     let expiredTime: String?
     let signupType: Int?
+    let dayLeft: Int?
+    let dayLeftDesc: String?
 
     // MARK: - Computed Properties for backward compatibility
     var customerId: Int {
@@ -37,10 +41,11 @@ struct Profile: Decodable {
     var safeName: String { name ?? "Guest" }
     var safePhone: String { account ?? "" }
     var safePlanName: String {
-        if let planName = activePlanName, !planName.isEmpty {
-            return planName
+        // Always show "VIP Package" if user has active subscription
+        if hasActiveSubscription {
+            return "VIP Package"
         }
-        return activePlanTypeName ?? "Free"
+        return "Free"
     }
 
     var isLoggedIn: Bool {
@@ -48,7 +53,10 @@ struct Profile: Decodable {
     }
 
     var hasActiveSubscription: Bool {
-        return !(activePlanName ?? "").isEmpty || !(activePlanTypeName ?? "").isEmpty
+        // Check if there's an active subscription based on dayLeft and expiredTime
+        let daysLeft = dayLeft ?? 0
+        let expireTime = expiredTime ?? ""
+        return daysLeft > 0 && !expireTime.isEmpty
     }
 
     var fullProfileImageURL: String? {

@@ -11,6 +11,7 @@ import Alamofire
 // MARK: - Profile Service Protocol
 protocol ProfileServiceProtocol {
     func getProfile() async -> Result<Profile, Error>
+    func updateProfile(name: String, email: String?, gender: Int?, profileImage: String?) async -> Result<Profile, Error>
 }
 
 // MARK: - Profile Service
@@ -39,10 +40,71 @@ final class ProfileService: ProfileServiceProtocol {
             if apiResponse.isSuccess, let data = apiResponse.data {
                 return .success(data)
             } else {
-                return .failure(APIError.serverError(apiResponse.responseMessage))
+                // Extract error message from errors array if available
+                let errorMessage: String
+                if let errors = apiResponse.errors, let firstError = errors.first {
+                    errorMessage = firstError.errorMessage
+                    print("❌ [ProfileService] Get profile failed with fieldCode \(firstError.fieldCode): \(errorMessage)")
+                } else {
+                    errorMessage = apiResponse.responseMessage
+                    print("❌ [ProfileService] Get profile failed: \(errorMessage)")
+                }
+                return .failure(APIError.serverError(errorMessage))
             }
         case .failure(let error):
             return .failure(error)
         }
     }
+
+    // MARK: - Update Profile
+    func updateProfile(name: String, email: String?, gender: Int?, profileImage: String?) async -> Result<Profile, Error> {
+        let request = UpdateProfileRequest(name: name, email: email, gender: gender, profileImage: profileImage)
+
+        print("📤 [ProfileService] Updating profile - name: \(name), email: \(email ?? "nil"), gender: \(gender?.description ?? "nil"), profileImage: \(profileImage != nil ? "present" : "nil")")
+
+        let response = await APIClient.shared.request(
+            urlConvertible: APIEndpoint.profileUpdate.url,
+            method: .post,
+            parameters: request.asDictionary(),
+            encoding: JSONEncoding.default,
+            headers: HTTPHeaders(APIHeaders.defaultHeaders(
+                customerId: AppDefaultsManager.shared.customerId ?? "",
+                sessionId: AppDefaultsManager.shared.sessionId ?? ""
+            )),
+            responseType: ProfileResponse.self
+        )
+
+        switch response.result {
+        case .success(let apiResponse):
+            print("📥 [ProfileService] API Response - success: \(apiResponse.isSuccess), message: \(apiResponse.responseMessage)")
+
+            if apiResponse.isSuccess {
+                // If successful but no data returned, fetch the updated profile
+                if let data = apiResponse.data {
+                    print("✅ [ProfileService] Profile updated successfully with data")
+                    return .success(data)
+                } else {
+                    print("✅ [ProfileService] Profile updated successfully, fetching updated profile...")
+                    // Fetch the updated profile since the update API didn't return data
+                    return await getProfile()
+                }
+            } else {
+                // Extract error message from errors array if available
+                let errorMessage: String
+                if let errors = apiResponse.errors, let firstError = errors.first {
+                    errorMessage = firstError.errorMessage
+                    print("❌ [ProfileService] Update failed with fieldCode \(firstError.fieldCode): \(errorMessage)")
+                } else {
+                    errorMessage = apiResponse.responseMessage
+                    print("❌ [ProfileService] Update failed: \(errorMessage)")
+                }
+                return .failure(APIError.serverError(errorMessage))
+            }
+        case .failure(let error):
+            print("❌ [ProfileService] Network error: \(error.localizedDescription)")
+            return .failure(error)
+        }
+    }
 }
+
+

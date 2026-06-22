@@ -10,7 +10,7 @@ import Alamofire
 
 // MARK: - Content Service Protocol
 protocol ContentServiceProtocol {
-    func getContentDetail(movieId: Int, seasonId: String?) async -> Result<ContentDetail, Error>
+    func getContentDetail(movieId: Int) async -> Result<ContentDetail, Error>
     func watchContent(movieId: Int, episodeId: String?) async -> Result<WatchData, Error>
 }
 
@@ -22,8 +22,10 @@ final class ContentService: ContentServiceProtocol {
     private init() {}
 
     // MARK: - Get Content Detail
-    func getContentDetail(movieId: Int, seasonId: String? = nil) async -> Result<ContentDetail, Error> {
-        let request = ContentDetailRequest(movieId: movieId, seasonId: seasonId)
+    func getContentDetail(movieId: Int) async -> Result<ContentDetail, Error> {
+        print("🌐 [ContentService] getContentDetail called with movieId: \(movieId)")
+        let request = ContentDetailRequest(movieId: movieId)
+        print("🌐 [ContentService] Request parameters: \(request.asDictionary())")
 
         let response = await APIClient.shared.request(
             urlConvertible: APIEndpoint.contentDetail.url,
@@ -39,12 +41,16 @@ final class ContentService: ContentServiceProtocol {
 
         switch response.result {
         case .success(let apiResponse):
+            print("🌐 [ContentService] API Response - Success: \(apiResponse.isSuccess)")
             if apiResponse.isSuccess, let data = apiResponse.data {
+                print("🌐 [ContentService] Returned data - movieId: \(data.id), title: \(data.title ?? "N/A")")
                 return .success(data)
             } else {
+                print("🌐 [ContentService] API Error: \(apiResponse.responseMessage)")
                 return .failure(APIError.serverError(apiResponse.responseMessage))
             }
         case .failure(let error):
+            print("🌐 [ContentService] Network Error: \(error.localizedDescription)")
             return .failure(error)
         }
     }

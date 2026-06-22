@@ -55,8 +55,16 @@ final class PhoneChangeService: PhoneChangeServiceProtocol {
                 print("✅ [PhoneChangeService] Data received - SecurityKey: \(data.securityKey ?? "nil")")
                 return .success(data)
             } else {
-                print("❌ [PhoneChangeService] API returned error: \(apiResponse.responseMessage)")
-                return .failure(APIError.serverError(apiResponse.responseMessage))
+                // Extract error message from errors array if available
+                let errorMessage: String
+                if let errors = apiResponse.errors, let firstError = errors.first {
+                    errorMessage = firstError.errorMessage
+                    print("❌ [PhoneChangeService] Validation failed with fieldCode \(firstError.fieldCode): \(errorMessage)")
+                } else {
+                    errorMessage = apiResponse.responseMessage
+                    print("❌ [PhoneChangeService] Validation failed: \(errorMessage)")
+                }
+                return .failure(APIError.serverError(errorMessage))
             }
         case .failure(let error):
             print("❌ [PhoneChangeService] Network/API failure: \(error.localizedDescription)")
@@ -85,7 +93,16 @@ final class PhoneChangeService: PhoneChangeServiceProtocol {
             if apiResponse.isSuccess {
                 return .success(())
             } else {
-                return .failure(APIError.serverError(apiResponse.responseMessage))
+                // Extract error message from errors array if available
+                let errorMessage: String
+                if let errors = apiResponse.errors, let firstError = errors.first {
+                    errorMessage = firstError.errorMessage
+                    print("❌ [PhoneChangeService] OTP verify failed with fieldCode \(firstError.fieldCode): \(errorMessage)")
+                } else {
+                    errorMessage = apiResponse.responseMessage
+                    print("❌ [PhoneChangeService] OTP verify failed: \(errorMessage)")
+                }
+                return .failure(APIError.serverError(errorMessage))
             }
         case .failure(let error):
             return .failure(error)

@@ -14,6 +14,11 @@ struct OTPView : View {
     @State var timeCount : Int = 60
     @State var canResend : Bool = false
     @State private var timer: Timer?
+    @State private var showWrongOTPAlert = false
+    @State private var isCancel = false
+    @State private var isResend = false
+    @State private var alertTitle = "Error"
+    @State private var alertMessage = "Your OTP code is wrong"
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -85,6 +90,23 @@ struct OTPView : View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
                     .scaleEffect(1.5)
             }
+
+            // Wrong OTP Alert
+            if showWrongOTPAlert {
+                Color.black.opacity(0.5)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        // Dismiss on background tap
+                    }
+
+                WrongOTPAlertView(
+                    isCancel: $isCancel,
+                    isResend: $isResend,
+                    title: $alertTitle,
+                    message: $alertMessage,
+                    showWrongAlert: $showWrongOTPAlert
+                )
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
@@ -112,15 +134,29 @@ struct OTPView : View {
                 }
             }
         }
-        .alert(isPresented: Binding<Bool>(
-            get: { viewModel.errorMessage != nil },
-            set: { if !$0 { viewModel.errorMessage = nil } }
-        )) {
-            Alert(
-                title: Text("Error"),
-                message: Text(viewModel.errorMessage ?? ""),
-                dismissButton: .default(Text("OK"))
-            )
+        .onChange(of: viewModel.errorMessage) { error in
+            if let errorMsg = error {
+                print("❌ [OTPView] Error occurred: \(errorMsg)")
+                alertTitle = "Error"
+                alertMessage = errorMsg
+                showWrongOTPAlert = true
+            }
+        }
+        .onChange(of: isCancel) { cancel in
+            if cancel {
+                print("🚫 [OTPView] User cancelled, clearing OTP")
+                viewModel.otpCode = ""
+                viewModel.errorMessage = nil
+                isCancel = false
+            }
+        }
+        .onChange(of: isResend) { resend in
+            if resend {
+                print("🔄 [OTPView] User requested resend OTP")
+                viewModel.resendOTP()
+                startCountdown()
+                isResend = false
+            }
         }
     }
 

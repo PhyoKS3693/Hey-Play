@@ -14,22 +14,26 @@ struct MovieDetailTopView: View {
     var imageURL: String = ""
 
     var body: some View {
-        // Movie poster image (no overlay badge)
+        // Movie poster image - landscape header image with fixed height
         if let url = URL(string: imageURL), !imageURL.isEmpty {
             KFImage(url)
                 .placeholder {
                     Image("image2")
                         .resizable()
-                        .frame(maxWidth: .infinity, maxHeight: 400)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: UIScreen.main.bounds.width, height: 400)
+                        .clipped()
                 }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(maxWidth: .infinity, maxHeight: 400)
+                .frame(width: UIScreen.main.bounds.width, height: 400)
                 .clipped()
         } else {
             Image("image2")
                 .resizable()
-                .frame(maxWidth: .infinity, maxHeight: 400)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: UIScreen.main.bounds.width, height: 400)
+                .clipped()
         }
     }
 }
@@ -43,24 +47,48 @@ struct MovieDetailInfoView: View {
     @Binding var currentSelectedSeason: String
 
     var body: some View {
-        VStack(spacing: 16) {
-            MovieTitleInfoView(viewModel: viewModel)
-            MovieActionButtonsView(
-                viewModel: viewModel,
-                detailType: $detailType,
-                showUpgradeDialog: $showUpgradeDialog,
-                showSeasonPicker: $showSeasonPicker,
-                currentSelectedSeason: $currentSelectedSeason
-            )
-        }
-        .background(
-            ZStack {
-                Color(red: 59/255, green: 57/255, blue: 59/255)
-                    .opacity(0.5)
+        if #available(iOS 15.0, *) {
+            VStack(spacing: 16) {
+                MovieTitleInfoView(viewModel: viewModel)
+                MovieActionButtonsView(
+                    viewModel: viewModel,
+                    detailType: $detailType,
+                    showUpgradeDialog: $showUpgradeDialog,
+                    showSeasonPicker: $showSeasonPicker,
+                    currentSelectedSeason: $currentSelectedSeason
+                )
             }
-            .cornerRadius(20)
-        )
-        .padding(.horizontal, 10)
+            .background(
+                ZStack {
+                    Color(red: 59/255, green: 57/255, blue: 59/255)
+                        .opacity(0.5)
+                }
+                    .cornerRadius(20)
+            )
+            .padding(.horizontal, 10)
+            .overlay(alignment: .bottomLeading) {
+                // Season dropdown overlay - appears below the info card
+                // Only show if there's more than one season
+                if showSeasonPicker && detailType == .series && viewModel.hasSeasons && viewModel.seasonList.count > 1 {
+                    GeometryReader { geometry in
+                        HStack {
+                            SeasonDropdownList(
+                                viewModel: viewModel,
+                                isOpen: $showSeasonPicker,
+                                currentSelectedSeason: $currentSelectedSeason
+                            )
+                            .frame(width: (geometry.size.width - 20 - 16) / 2)
+                            .padding(.leading, 20)
+
+                            Spacer()
+                        }
+                        .offset(y: 55)
+                    }
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
 
@@ -157,7 +185,8 @@ struct MovieActionButtonsView: View {
                 if viewModel.hasSeasons {
                     SeasonDropdownButton(
                         selectedSeason: $currentSelectedSeason,
-                        isOpen: $showSeasonPicker
+                        isOpen: $showSeasonPicker,
+                        seasonCount: viewModel.seasonList.count
                     )
                 } else {
                     // No seasons available - show disabled button
@@ -201,16 +230,6 @@ struct MovieActionButtonsView: View {
         .padding(.all, 10)
     }
 
-    // MARK: - Helper Methods
-    private func getSelectedSeasonName() -> String {
-        if let selectedId = viewModel.selectedSeasonId,
-           let season = viewModel.seasonList.first(where: { $0.seasonId == selectedId }) {
-            return season.safeSeasonName
-        }
-        // Default to first season if none selected
-        return viewModel.seasonList.first?.safeSeasonName ?? "Season 1"
-    }
-
     // MARK: - Handle Play Tapped
     private func handlePlayTapped() {
         print("🎬 [MovieActionButtonsView] Play tapped")
@@ -243,16 +262,23 @@ struct MovieActionButtonsView: View {
 struct SeasonDropdownButton: View {
     @Binding var selectedSeason: String
     @Binding var isOpen: Bool
+    var seasonCount: Int = 1
 
     var body: some View {
         Button(action: {
-            isOpen.toggle()
+            // Only toggle dropdown if there's more than one season
+            if seasonCount > 1 {
+                isOpen.toggle()
+            }
         }) {
             HStack {
                 Text(selectedSeason)
-                Image(isOpen ? "ic.upArrow" : "ic.downarrow")
-                    .resizable()
-                    .frame(width: 25, height: 25)
+                // Only show arrow if there's more than one season
+                if seasonCount > 1 {
+                    Image(isOpen ? "ic.upArrow" : "ic.downarrow")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                }
             }
             .font(.headline)
             .foregroundColor(.white)
@@ -276,20 +302,19 @@ struct SeasonDropdownList: View {
     var body: some View {
         VStack(spacing: 0) {
             ForEach(viewModel.seasonList, id: \.id) { season in
-                // Only show seasons that are not currently selected
-                if season.safeSeasonName != currentSelectedSeason {
-                    Button(action: {
-                        viewModel.selectSeason(season)
-                        currentSelectedSeason = season.safeSeasonName
-                        isOpen = false
-                    }) {
-                        Text(season.safeSeasonName)
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: itemHeight)
-                            .contentShape(Rectangle())
-                    }
+                Button(action: {
+                    print("📺 [SeasonDropdownList] Season tapped: \(season.safeSeasonName)")
+                    print("📺 [SeasonDropdownList] Season movieId: \(season.movieId ?? -1)")
+                    viewModel.selectSeason(season)
+                    currentSelectedSeason = season.safeSeasonName
+                    isOpen = false
+                }) {
+                    Text(season.safeSeasonName)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: itemHeight)
+                        .contentShape(Rectangle())
                 }
             }
         }
@@ -299,45 +324,6 @@ struct SeasonDropdownList: View {
     }
 }
 
-// MARK: - Custom Season Picker (Legacy - can be removed)
-@available(iOS 14.0, *)
-struct CustomSeasonPicker: View {
-    @ObservedObject var viewModel: MovieDetailViewModel
-    @Binding var isPresented: Bool
-
-    var body: some View {
-        VStack(spacing: 0) {
-            ForEach(viewModel.seasonList, id: \.id) { season in
-                // Only show seasons that are not currently selected
-                if viewModel.selectedSeasonId != season.seasonId {
-                    Button(action: {
-                        viewModel.selectSeason(season)
-                        isPresented = false
-                    }) {
-                        Text(season.safeSeasonName)
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .contentShape(Rectangle())
-                    }
-                }
-            }
-        }
-        .background(Color.black)
-        .cornerRadius(20)
-    }
-}
-
-// MARK: - Dashed Line Shape
-struct DashedLine: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.move(to: CGPoint(x: 0, y: 0))
-        path.addLine(to: CGPoint(x: rect.width, y: 0))
-        return path
-    }
-}
 
 #if DEBUG
 @available(iOS 14.0, *)

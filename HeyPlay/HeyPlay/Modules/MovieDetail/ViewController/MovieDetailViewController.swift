@@ -34,6 +34,15 @@ class MovieDetailViewController: BaseViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ViewNavigation.shared.currentViewController = self
+
+        // Fetch data when view appears to ensure fresh data
+        print("🎬 [MovieDetail] ViewWillAppear - MovieId: \(movieId), DetailType: \(detailType)")
+        viewModel.fetchContentDetail()
+    }
+
     private func setupSwiftUIView() {
         if #available(iOS 14.0, *) {
             let detailView = MovieDetailView(

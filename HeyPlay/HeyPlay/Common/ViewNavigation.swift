@@ -30,6 +30,58 @@ class ViewNavigation {
         return (UIApplication.shared.delegate as? AppDelegate)?.window
     }
 
+    // MARK: - Session Expired Handling
+    func handleSessionExpired() {
+        print("🚨 [ViewNavigation] Session expired - showing dialog")
+
+        // Clear all cache data
+        AppDefaultsManager.shared.clearAllData()
+
+        // Show session expired dialog
+        DispatchQueue.main.async {
+            self.showSessionExpiredDialog()
+        }
+    }
+
+    private func showSessionExpiredDialog() {
+        guard let window = appWindow,
+              let rootVC = window.rootViewController else {
+            print("❌ [ViewNavigation] Cannot show session expired dialog - no rootViewController")
+            // Fallback: directly go to login
+            showLoginView()
+            return
+        }
+
+        // Get the topmost view controller
+        var topVC = rootVC
+        while let presented = topVC.presentedViewController {
+            topVC = presented
+        }
+
+        if #available(iOS 14.0, *) {
+            let sessionExpiredView = SessionExpiredDialog(isPresented: .constant(true)) {
+                self.showLoginView()
+            }
+            let hostingController = UIHostingController(rootView: sessionExpiredView)
+            hostingController.view.backgroundColor = .clear
+            hostingController.modalPresentationStyle = .overFullScreen
+            hostingController.modalTransitionStyle = .crossDissolve
+
+            topVC.present(hostingController, animated: true)
+        } else {
+            // Fallback for older iOS versions - show alert
+            let alert = UIAlertController(
+                title: "Session Expired",
+                message: "You will be redirected to the Login page.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                self.showLoginView()
+            })
+            topVC.present(alert, animated: true)
+        }
+    }
+
     func showMainTabBar() {
         print("✅ ViewNavigation.showMainTabBar() called")
         guard let window = appWindow else {
@@ -169,6 +221,20 @@ class ViewNavigation {
         controller.episodeId = episodeId
         controller.modalPresentationStyle = .fullScreen
         vc.present(controller, animated: true)
+    }
+
+    func showSubscriptionPlan() {
+        guard let vc = currentViewController else { return }
+        let controller = SubscriptionViewController()
+        vc.navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func showHotTab() {
+        let vc = HotViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.navigationBar.isHidden = false
+        appWindow?.rootViewController = navVC
+        appWindow?.makeKeyAndVisible()
     }
 
 }

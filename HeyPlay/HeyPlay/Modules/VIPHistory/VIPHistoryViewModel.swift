@@ -46,10 +46,10 @@ final class VIPHistoryViewModel: ObservableObject {
 
     // MARK: - Init
     init() {
-        // Set default date range (e.g., last 30 days to today)
+        // Set default date range (last 7 days to today)
         let calendar = Calendar.current
-        if let thirtyDaysAgo = calendar.date(byAdding: .day, value: -30, to: Date()) {
-            startDate = thirtyDaysAgo
+        if let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: Date()) {
+            startDate = sevenDaysAgo
         }
         endDate = Date()
     }

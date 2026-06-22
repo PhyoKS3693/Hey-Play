@@ -26,14 +26,7 @@ struct NotificationListView : View {
                 ForEach(viewModel.notifications) { notification in
                     NotificationItemCard(notification: notification)
                         .onTapGesture {
-                            // Navigate to detail
-                            Task {
-                                if let detail = await viewModel.getNotificationDetail(notiId: notification.id) {
-                                    await MainActor.run {
-                                        ViewNavigation.shared.showNotificationDetail(notificationDetail: detail)
-                                    }
-                                }
-                            }
+                            handleNotificationTap(notification)
                         }
                         .onAppear {
                             // Load more when reaching last item
@@ -58,6 +51,63 @@ struct NotificationListView : View {
         }
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
+    }
+
+    // MARK: - Handle Notification Tap
+    private func handleNotificationTap(_ notification: APINotification) {
+        print("📬 [NotificationList] Tapped notification: \(notification.id)")
+
+        guard let type = notification.type else {
+            print("⚠️ [NotificationList] Unknown notification type, showing detail")
+            // Fallback to detail screen for unknown types
+            Task {
+                if let detail = await viewModel.getNotificationDetail(notiId: notification.id) {
+                    await MainActor.run {
+                        ViewNavigation.shared.showNotificationDetail(notificationDetail: detail)
+                    }
+                }
+            }
+            return
+        }
+
+        print("📬 [NotificationList] Notification type: \(type.description)")
+
+        switch type {
+        case .normal:
+            // Announcements - Show notification detail screen
+            Task {
+                if let detail = await viewModel.getNotificationDetail(notiId: notification.id) {
+                    await MainActor.run {
+                        ViewNavigation.shared.showNotificationDetail(notificationDetail: detail)
+                    }
+                }
+            }
+
+        case .movie:
+            // Movie Detail - Navigate directly to movie detail screen
+            guard let detailViewId = notification.detailViewId else {
+                print("⚠️ [NotificationList] Movie notification missing detailViewId")
+                return
+            }
+            print("🎬 [NotificationList] Navigating to movie detail: \(detailViewId)")
+            ViewNavigation.shared.showMovieDetail(detailType: .movie, movieId: detailViewId)
+
+        case .series:
+            // Series Detail - Navigate directly to series detail screen
+            guard let detailViewId = notification.detailViewId else {
+                print("⚠️ [NotificationList] Series notification missing detailViewId")
+                return
+            }
+            print("📺 [NotificationList] Navigating to series detail: \(detailViewId)")
+
+            if let episodeId = notification.episodeId {
+                print("📺 [NotificationList] Should auto-select episode: \(episodeId)")
+                // TODO: Pass episode ID for auto-selection
+                ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
+            } else {
+                ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
+            }
+        }
     }
 }
 

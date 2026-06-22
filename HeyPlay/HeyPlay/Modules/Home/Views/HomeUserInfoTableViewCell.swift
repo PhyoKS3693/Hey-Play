@@ -20,6 +20,11 @@ class HomeUserInfoTableViewCell: UITableViewCell {
 
     private var isLoggedIn: Bool = false
 
+    // VIP Package Info Labels (programmatically added)
+    private var lblVIPPackage: UILabel?
+    private var lblExpireDate: UILabel?
+    private var vipInfoContainer: UIStackView?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
@@ -58,16 +63,28 @@ class HomeUserInfoTableViewCell: UITableViewCell {
                 imgUser?.image = UIImage(named: "ic-user")
             }
 
-            // Update subscribe button based on subscription status
-            updateSubscribeButton(for: profile.subscriptionStatus)
+            // Show VIP Package info OR Subscribe button (mutually exclusive)
+            if profile.hasActiveSubscription {
+                // Has VIP Package - show VIP info, hide Subscribe button
+                showVIPPackageInfo(planName: profile.safePlanName, expireDate: profile.expiredTime ?? "")
+                btnSubscribe?.isHidden = true
+            } else {
+                // No VIP Package - hide VIP info, show Subscribe button
+                hideVIPPackageInfo()
+                btnSubscribe?.isHidden = false
+                updateSubscribeButton(for: profile.subscriptionStatus)
+            }
         } else {
-            // Guest user
+            // Guest user - show Login button, hide VIP info
             lblGreeting?.text = getGreeting()
             lblUserName?.text = "Guest"
             imgUser?.image = UIImage(named: "ic-user")
 
+            btnSubscribe?.isHidden = false
             btnSubscribe?.setTitle("Login", for: .normal)
             btnSubscribe?.backgroundColor = UIColor(named: "neon_Color")
+
+            hideVIPPackageInfo()
         }
     }
 
@@ -103,5 +120,61 @@ class HomeUserInfoTableViewCell: UITableViewCell {
         } else {
             onLoginTapped?()
         }
+    }
+
+    // MARK: - VIP Package Info Methods
+    private func showVIPPackageInfo(planName: String, expireDate: String) {
+        // Create labels if they don't exist
+        if vipInfoContainer == nil {
+            createVIPInfoLabels()
+        }
+
+        // Update labels
+        lblVIPPackage?.text = planName
+        lblExpireDate?.text = "Expire Date : \(expireDate)"
+
+        // Show container
+        vipInfoContainer?.isHidden = false
+    }
+
+    private func hideVIPPackageInfo() {
+        vipInfoContainer?.isHidden = true
+    }
+
+    private func createVIPInfoLabels() {
+        // Create VIP Package label
+        let vipLabel = UILabel()
+        vipLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        vipLabel.textColor = UIColor(named: "pink_Color")
+        vipLabel.textAlignment = .right
+        vipLabel.numberOfLines = 1
+
+        // Create Expire Date label
+        let expireLabel = UILabel()
+        expireLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        expireLabel.textColor = .white
+        expireLabel.textAlignment = .right
+        expireLabel.numberOfLines = 1
+
+        // Create container stack view
+        let stackView = UIStackView(arrangedSubviews: [vipLabel, expireLabel])
+        stackView.axis = .vertical
+        stackView.alignment = .trailing
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add to content view
+        contentView.addSubview(stackView)
+
+        // Set constraints (position on right side, aligned with greeting label top)
+        NSLayoutConstraint.activate([
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            stackView.topAnchor.constraint(equalTo: lblGreeting.topAnchor)
+        ])
+
+        // Store references
+        lblVIPPackage = vipLabel
+        lblExpireDate = expireLabel
+        vipInfoContainer = stackView
     }
 }

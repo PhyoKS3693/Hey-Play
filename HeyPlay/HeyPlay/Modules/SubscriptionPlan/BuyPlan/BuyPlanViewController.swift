@@ -54,8 +54,8 @@ final class BuyPlanViewController: UIHostingController<BuyPlanViewScreen> {
         viewModel.packageName = packageName
         viewModel.packageType = packageType
         viewModel.chargedAmount = chargedAmount
-        viewModel.paymentMethodId = paymentMethodId
-        viewModel.paymentMethodName = paymentMethodName
+        // Note: paymentMethodId and paymentMethodName are now computed properties
+        // The user will select from the fetched payment methods list
     }
  
     required init?(coder aDecoder: NSCoder) {
@@ -93,6 +93,18 @@ final class BuyPlanViewController: UIHostingController<BuyPlanViewScreen> {
                 }
             }
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar completely
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }
 

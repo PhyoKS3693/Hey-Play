@@ -45,7 +45,8 @@ final class MenuViewModel: ObservableObject {
     }
 
     var hasActiveSubscription: Bool {
-        return isVIP || isPremium
+        // Use Profile's hasActiveSubscription which checks dayLeft > 0 and expiredTime not empty
+        return profile?.hasActiveSubscription ?? false
     }
 
     var subscriptionPlanName: String {
@@ -60,29 +61,9 @@ final class MenuViewModel: ObservableObject {
         return profile?.fullProfileImageURL
     }
 
-    // Calculate days remaining until expiration
+    // Get days remaining from API response (dayLeft field)
     var daysRemaining: Int {
-        guard let expireString = profile?.expiredTime, !expireString.isEmpty else {
-            return 0
-        }
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd | HH:mm:ss"
-
-        // Try alternative format
-        if let expireDate = dateFormatter.date(from: expireString) {
-            let days = Calendar.current.dateComponents([.day], from: Date(), to: expireDate).day ?? 0
-            return max(0, days)
-        }
-
-        // Try another format
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        if let expireDate = dateFormatter.date(from: expireString) {
-            let days = Calendar.current.dateComponents([.day], from: Date(), to: expireDate).day ?? 0
-            return max(0, days)
-        }
-
-        return 0
+        return profile?.dayLeft ?? 0
     }
 
     var daysRemainingText: String {

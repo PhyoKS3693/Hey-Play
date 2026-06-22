@@ -14,6 +14,8 @@ protocol AuthServiceProtocol {
     func loginOTPVerify(phoneNo: String, securityKey: String, otpCode: String, otpType: Int, deviceToken: String?) async -> Result<LoginData, Error>
     func loginWithGoogle(googleId: String, email: String, name: String, profileImage: String?, deviceToken: String?) async -> Result<LoginData, Error>
     func loginWithApple(appleId: String, email: String, name: String, deviceToken: String?) async -> Result<LoginData, Error>
+    func loginWithLine(lineUserId: String, name: String, deviceToken: String?) async -> Result<LoginData, Error>
+    func registerDeviceToken(fcmToken: String, deviceType: String) async -> Result<Void, Error>
 }
 
 // MARK: - Auth Service
@@ -78,7 +80,16 @@ final class AuthService: AuthServiceProtocol {
             if apiResponse.isSuccess, let data = apiResponse.data {
                 return .success(data)
             } else {
-                return .failure(APIError.serverError(apiResponse.responseMessage))
+                // Extract error message from errors array if available
+                let errorMessage: String
+                if let errors = apiResponse.errors, let firstError = errors.first {
+                    errorMessage = firstError.errorMessage
+                    print("❌ [AuthService] OTP verify failed with fieldCode \(firstError.fieldCode): \(errorMessage)")
+                } else {
+                    errorMessage = apiResponse.responseMessage
+                    print("❌ [AuthService] OTP verify failed: \(errorMessage)")
+                }
+                return .failure(APIError.serverError(errorMessage))
             }
         case .failure(let error):
             return .failure(error)
@@ -159,6 +170,93 @@ final class AuthService: AuthServiceProtocol {
                 return .failure(APIError.serverError(apiResponse.responseMessage))
             }
         case .failure(let error):
+            return .failure(error)
+        }
+    }
+
+    // MARK: - Login With LINE
+    func loginWithLine(
+        lineUserId: String,
+        name: String,
+        deviceToken: String? = nil
+    ) async -> Result<LoginData, Error> {
+        print("📱 [AuthService] LINE Login with deviceType: 2 (iOS)")
+
+        let request = LineLoginRequest(
+            lineUserId: lineUserId,
+            name: name,
+            deviceToken: deviceToken,
+            deviceType: 2
+        )
+
+        let response = await APIClient.shared.request(
+            urlConvertible: APIEndpoint.loginWithLine.url,
+            method: .post,
+            parameters: request.asDictionary(),
+            encoding: JSONEncoding.default,
+            headers: HTTPHeaders(APIHeaders.authHeaders()),
+            responseType: LoginResponse.self
+        )
+
+        switch response.result {
+        case .success(let apiResponse):
+            if apiResponse.isSuccess, let data = apiResponse.data {
+                print("✅ [AuthService] LINE login successful")
+                return .success(data)
+            } else {
+                print("❌ [AuthService] LINE login failed: \(apiResponse.responseMessage)")
+                return .failure(APIError.serverError(apiResponse.responseMessage))
+            }
+        case .failure(let error):
+            print("❌ [AuthService] LINE login network error: \(error.localizedDescription)")
+            return .failure(error)
+        }
+    }
+
+    // MARK: - Register Device Token
+    func registerDeviceToken(
+        fcmToken: String,
+        deviceType: String = "2"
+    ) async -> Result<Void, Error> {
+        guard let customerId = AppDefaultsManager.shared.customerId,
+              let sessionId = AppDefaultsManager.shared.sessionId else {
+            print("⚠️ [AuthService] Cannot register device token - no customerId or sessionId")
+            return .failure(APIError.serverError("Not logged in"))
+        }
+
+        print("📤 [AuthService] Registering device token with backend")
+        print("   FCM Token: \(fcmToken)")
+        print("   Customer ID: \(customerId)")
+        print("   Device Type: \(deviceType)")
+
+        let request = RegisterDeviceTokenRequest(
+            fcmToken: fcmToken,
+            deviceType: deviceType
+        )
+
+        let response = await APIClient.shared.request(
+            urlConvertible: APIEndpoint.registerDeviceToken.url,
+            method: .post,
+            parameters: request.asDictionary(),
+            encoding: JSONEncoding.default,
+            headers: HTTPHeaders(APIHeaders.defaultHeaders(
+                customerId: customerId,
+                sessionId: sessionId
+            )),
+            responseType: BaseAPIResponse<EmptyData>.self
+        )
+
+        switch response.result {
+        case .success(let apiResponse):
+            if apiResponse.isSuccess {
+                print("✅ [AuthService] Device token registered successfully")
+                return .success(())
+            } else {
+                print("❌ [AuthService] Device token registration failed: \(apiResponse.responseMessage)")
+                return .failure(APIError.serverError(apiResponse.responseMessage))
+            }
+        case .failure(let error):
+            print("❌ [AuthService] Device token registration network error: \(error.localizedDescription)")
             return .failure(error)
         }
     }
