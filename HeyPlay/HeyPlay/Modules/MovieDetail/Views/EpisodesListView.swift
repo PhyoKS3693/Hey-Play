@@ -15,6 +15,9 @@ struct EpisodesListView : View {
     var movieTitle: String = ""
     var movieId: Int = 0
     @Binding var showUpgradeDialog: Bool
+    @Binding var showLoginDialog: Bool
+    @Binding var selectedEpisodeId: Int?
+    var onEpisodeSelected: ((Episode?) -> Void)?
 
     var body: some View {
         ScrollView {
@@ -29,7 +32,19 @@ struct EpisodesListView : View {
                         movieTitle: movieTitle,
                         movieId: movieId,
                         episodeId: String(episode.episodeId ?? 0),
-                        showUpgradeDialog: $showUpgradeDialog
+                        showUpgradeDialog: $showUpgradeDialog,
+                        showLoginDialog: $showLoginDialog,
+                        isSelected: selectedEpisodeId == episode.id,
+                        onTap: {
+                            // Toggle selection - if already selected, deselect it
+                            if selectedEpisodeId == episode.id {
+                                selectedEpisodeId = nil
+                                onEpisodeSelected?(nil)
+                            } else {
+                                selectedEpisodeId = episode.id
+                                onEpisodeSelected?(episode)
+                            }
+                        }
                     )
                 }
             }
@@ -51,8 +66,20 @@ struct EpisodeItemView : View {
     var movieId: Int = 0
     var episodeId: String? = nil
     @Binding var showUpgradeDialog: Bool
+    @Binding var showLoginDialog: Bool
+    var isSelected: Bool = false
+    var onTap: (() -> Void)?
 
     var body: some View {
+        Button(action: {
+            onTap?()
+        }) {
+            episodeContent
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+
+    var episodeContent: some View {
         HStack(spacing: 12) {
             // Thumbnail with FREE/VIP badge overlay
             ZStack(alignment: .bottomLeading) {
@@ -118,13 +145,25 @@ struct EpisodeItemView : View {
 
             Spacer()
 
-            // Play button
+            // Play button or Buy VIP button
             Button {
                 handlePlayTapped()
             } label: {
-                Image("ic.series.play")
-                    .resizable()
-                    .frame(width: 40, height: 40)
+                if isPlayable {
+                    // Free episode - show play icon
+                    Image("ic.series.play")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                } else {
+                    // VIP episode - show "Buy VIP" button
+                    Text("Buy VIP")
+                        .font(FontUtility.smallText1())
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(Color("primaryBgColor"))
+                        .cornerRadius(22)
+                }
             }
         }
         .padding(.horizontal, 12)
@@ -132,6 +171,10 @@ struct EpisodeItemView : View {
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.darkGrey)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(isSelected ? Color("pink_Color") : Color.clear, lineWidth: 3)
         )
     }
 
@@ -152,9 +195,15 @@ struct EpisodeItemView : View {
                 episodeId: episodeId
             )
         } else {
-            // Not playable - show upgrade dialog
-            print("⚠️ [EpisodeItemView] Episode not playable, showing upgrade dialog")
-            showUpgradeDialog = true
+            // Not playable - check if user is logged in
+            if !AppDefaultsManager.shared.isLoggedIn {
+                print("⚠️ [EpisodeItemView] User not logged in, showing login dialog")
+                showLoginDialog = true
+            } else {
+                // Logged in but not VIP - show upgrade dialog
+                print("⚠️ [EpisodeItemView] Episode not playable, showing upgrade dialog")
+                showUpgradeDialog = true
+            }
         }
     }
 }
@@ -168,7 +217,10 @@ struct EpisodesListView_Previews: PreviewProvider {
             episodes: [],
             movieTitle: "Movie Title",
             movieId: 0,
-            showUpgradeDialog: .constant(false)
+            showUpgradeDialog: .constant(false),
+            showLoginDialog: .constant(false),
+            selectedEpisodeId: .constant(nil),
+            onEpisodeSelected: nil
         )
     }
 }

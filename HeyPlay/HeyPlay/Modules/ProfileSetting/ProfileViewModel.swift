@@ -154,6 +154,158 @@ final class ProfileViewModel: ObservableObject {
         return newImage ?? image
     }
 
+    // MARK: - Link Account
+    func linkGoogleAccount(googleId: String, email: String) {
+        guard !isLoading else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        print("📤 [ProfileViewModel] Linking Google account - googleId: \(googleId), email: \(email)")
+
+        Task { @MainActor in
+            let request = LinkAccountRequest.google(googleId: googleId, email: email)
+            let result = await ProfileService.shared.linkAccount(request: request)
+
+            isLoading = false
+
+            switch result {
+            case .success(let updatedProfile):
+                print("✅ [ProfileViewModel] Google account linked successfully")
+                self.profile = updatedProfile
+            case .failure(let error):
+                print("❌ [ProfileViewModel] Link Google account failed: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    func linkAppleAccount(appleId: String) {
+        guard !isLoading else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        print("📤 [ProfileViewModel] Linking Apple account - appleId: \(appleId)")
+
+        Task { @MainActor in
+            let request = LinkAccountRequest.apple(appleId: appleId)
+            let result = await ProfileService.shared.linkAccount(request: request)
+
+            isLoading = false
+
+            switch result {
+            case .success(let updatedProfile):
+                print("✅ [ProfileViewModel] Apple account linked successfully")
+                self.profile = updatedProfile
+            case .failure(let error):
+                print("❌ [ProfileViewModel] Link Apple account failed: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    func linkLineAccount(lineUserId: String) {
+        guard !isLoading else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        print("📤 [ProfileViewModel] Linking LINE account - lineUserId: \(lineUserId)")
+
+        Task { @MainActor in
+            let request = LinkAccountRequest.line(lineUserId: lineUserId)
+            let result = await ProfileService.shared.linkAccount(request: request)
+
+            isLoading = false
+
+            switch result {
+            case .success(let updatedProfile):
+                print("✅ [ProfileViewModel] LINE account linked successfully")
+                self.profile = updatedProfile
+            case .failure(let error):
+                print("❌ [ProfileViewModel] Link LINE account failed: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    // MARK: - Unlink Account
+    func unlinkGoogleAccount() {
+        guard !isLoading else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        print("📤 [ProfileViewModel] Unlinking Google account")
+
+        Task { @MainActor in
+            let request = UnlinkAccountRequest.google()
+            let result = await ProfileService.shared.unlinkAccount(request: request)
+
+            isLoading = false
+
+            switch result {
+            case .success(let updatedProfile):
+                print("✅ [ProfileViewModel] Google account unlinked successfully")
+                self.profile = updatedProfile
+            case .failure(let error):
+                print("❌ [ProfileViewModel] Unlink Google account failed: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    func unlinkAppleAccount() {
+        guard !isLoading else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        print("📤 [ProfileViewModel] Unlinking Apple account")
+
+        Task { @MainActor in
+            let request = UnlinkAccountRequest.apple()
+            let result = await ProfileService.shared.unlinkAccount(request: request)
+
+            isLoading = false
+
+            switch result {
+            case .success(let updatedProfile):
+                print("✅ [ProfileViewModel] Apple account unlinked successfully")
+                self.profile = updatedProfile
+            case .failure(let error):
+                print("❌ [ProfileViewModel] Unlink Apple account failed: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    func unlinkLineAccount() {
+        guard !isLoading else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        print("📤 [ProfileViewModel] Unlinking LINE account")
+
+        Task { @MainActor in
+            let request = UnlinkAccountRequest.line()
+            let result = await ProfileService.shared.unlinkAccount(request: request)
+
+            isLoading = false
+
+            switch result {
+            case .success(let updatedProfile):
+                print("✅ [ProfileViewModel] LINE account unlinked successfully")
+                self.profile = updatedProfile
+            case .failure(let error):
+                print("❌ [ProfileViewModel] Unlink LINE account failed: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
     // MARK: - Logout
     func logout() {
         AppDefaultsManager.shared.logout()

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import GoogleSignIn
 import FirebaseCore
 import FirebaseMessaging
@@ -192,6 +193,90 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         print("📱 ========================================")
+
+        // Check app version when returning from background
+        checkAppVersionIfNeeded()
+    }
+
+    // MARK: - Version Check
+    private func checkAppVersionIfNeeded() {
+        // Only check if we're past the splash screen (user is in the app)
+        guard let rootViewController = window?.rootViewController else { return }
+
+        // Don't check if we're still on splash screen
+        if let navController = rootViewController as? UINavigationController,
+           navController.viewControllers.first is SplashViewController {
+            print("📱 [AppDelegate] Still on splash screen, skipping version check")
+            return
+        }
+
+        print("📱 [AppDelegate] Checking app version on app become active...")
+
+        Task {
+            let result = await VersionCheckService.shared.checkAppVersion()
+
+            await MainActor.run {
+                switch result {
+                case .success(let versionData):
+                    if versionData.isForceUpdate {
+                        // Show force update dialog on current screen
+                        showForceUpdateDialog(versionData: versionData)
+                    } else {
+                        print("✅ [AppDelegate] No force update required")
+                    }
+
+                case .failure(let error):
+                    print("⚠️ [AppDelegate] Version check failed: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    private func showForceUpdateDialog(versionData: VersionCheckData) {
+        print("🚨 [AppDelegate] Showing force update dialog")
+
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let topViewController = windowScene.windows.first?.rootViewController?.topMostViewController() else {
+            print("⚠️ [AppDelegate] Could not get top view controller")
+            return
+        }
+
+        if #available(iOS 14.0, *) {
+            let dialogView = CustomDialogView(
+                iconName: "ic_force_update",
+                title: versionData.safeTitle,
+                message: versionData.safeMessage,
+                showCloseButton: false,
+                closeAction: nil,
+                primaryButtonTitle: "Update Now",
+                primaryAction: {
+                    self.openAppStore(url: versionData.safeStoreUrl)
+                },
+                primaryButtonDisabled: false,
+                secondaryButtonTitle: nil,
+                secondaryAction: nil
+            ) {
+                EmptyView()
+            }
+
+            let hostingController = UIHostingController(rootView: AnyView(dialogView))
+            hostingController.view.backgroundColor = .clear
+            hostingController.modalPresentationStyle = .overFullScreen
+            hostingController.modalTransitionStyle = .crossDissolve
+            hostingController.isModalInPresentation = true
+
+            topViewController.present(hostingController, animated: true)
+        }
+    }
+
+    private func openAppStore(url: String) {
+        guard !url.isEmpty, let storeURL = URL(string: url) else {
+            print("⚠️ [AppDelegate] Invalid App Store URL")
+            return
+        }
+
+        print("📱 [AppDelegate] Opening App Store: \(url)")
+        UIApplication.shared.open(storeURL)
     }
 
     // MARK: - URL Handling for Google Sign-In and LINE Login
@@ -322,9 +407,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                     // Check for episode ID
                     if let episodeIdString = userInfo["episodeId"] as? String,
                        let episodeId = Int(episodeIdString) {
-                        print("📺 [Notification] Should auto-select episode: \(episodeId)")
-                        // TODO: Pass episode ID to auto-select
-                        ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
+                        print("📺 [Notification] Navigating with episodeId: \(episodeId)")
+                        ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId, episodeId: episodeId)
                     } else {
                         ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
                     }
@@ -334,6 +418,25 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 }
             }
         }
+    }
+}
+
+// MARK: - UIViewController Extension
+extension UIViewController {
+    func topMostViewController() -> UIViewController {
+        if let presented = self.presentedViewController {
+            return presented.topMostViewController()
+        }
+
+        if let navigation = self as? UINavigationController {
+            return navigation.visibleViewController?.topMostViewController() ?? navigation
+        }
+
+        if let tab = self as? UITabBarController {
+            return tab.selectedViewController?.topMostViewController() ?? tab
+        }
+
+        return self
     }
 }
 

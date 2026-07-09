@@ -72,40 +72,13 @@ struct NotificationListView : View {
 
         print("📬 [NotificationList] Notification type: \(type.description)")
 
-        switch type {
-        case .normal:
-            // Announcements - Show notification detail screen
-            Task {
-                if let detail = await viewModel.getNotificationDetail(notiId: notification.id) {
-                    await MainActor.run {
-                        ViewNavigation.shared.showNotificationDetail(notificationDetail: detail)
-                    }
+        // All notification types go to detail screen first
+        // The "Watch Content" button on detail screen handles navigation to content
+        Task {
+            if let detail = await viewModel.getNotificationDetail(notiId: notification.id) {
+                await MainActor.run {
+                    ViewNavigation.shared.showNotificationDetail(notificationDetail: detail)
                 }
-            }
-
-        case .movie:
-            // Movie Detail - Navigate directly to movie detail screen
-            guard let detailViewId = notification.detailViewId else {
-                print("⚠️ [NotificationList] Movie notification missing detailViewId")
-                return
-            }
-            print("🎬 [NotificationList] Navigating to movie detail: \(detailViewId)")
-            ViewNavigation.shared.showMovieDetail(detailType: .movie, movieId: detailViewId)
-
-        case .series:
-            // Series Detail - Navigate directly to series detail screen
-            guard let detailViewId = notification.detailViewId else {
-                print("⚠️ [NotificationList] Series notification missing detailViewId")
-                return
-            }
-            print("📺 [NotificationList] Navigating to series detail: \(detailViewId)")
-
-            if let episodeId = notification.episodeId {
-                print("📺 [NotificationList] Should auto-select episode: \(episodeId)")
-                // TODO: Pass episode ID for auto-selection
-                ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
-            } else {
-                ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
             }
         }
     }

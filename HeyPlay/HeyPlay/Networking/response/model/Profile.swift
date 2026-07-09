@@ -21,8 +21,13 @@ struct Profile: Decodable, Equatable {
     let activePlanName: String?
     let expiredTime: String?
     let signupType: Int?
+    let registerType: Int?
     let dayLeft: Int?
     let dayLeftDesc: String?
+    let isLinkedToGoogle: Bool?
+    let isLinkedToApple: Bool?
+    let isLinkedToLine: Bool?
+    let isLinkedToFacebook: Bool?
 
     // MARK: - Computed Properties for backward compatibility
     var customerId: Int {

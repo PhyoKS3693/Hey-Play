@@ -117,24 +117,18 @@ struct NotificationDetailView: View {
                             .foregroundColor(.white.opacity(0.9))
                             .lineSpacing(6)
 
-                        // Action Button (for Movie/Series notifications)
-                        if let type = detail.type, type != .normal, let actionLabel = detail.actionLabel {
+                        // Action Button (for Movie/Series notifications only)
+                        if let type = detail.type, type == .movie || type == .series {
                             Button(action: {
                                 handleActionTap(detail)
                             }) {
-                                Text(actionLabel)
+                                Text("Watch Content")
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 50)
-                                    .background(
-                                        LinearGradient(
-                                            gradient: Gradient(colors: [Color(red: 0.8, green: 0.2, blue: 0.4), Color(red: 0.6, green: 0.1, blue: 0.3)]),
-                                            startPoint: .leading,
-                                            endPoint: .trailing
-                                        )
-                                    )
-                                    .cornerRadius(12)
+                                    .background(Color("primaryBgColor"))
+                                    .cornerRadius(20)
                             }
                             .padding(.top, 20)
                         }
@@ -158,13 +152,8 @@ struct NotificationDetailView: View {
     private func handleActionTap(_ detail: APINotificationDetail) {
         print("📬 [NotificationDetail] Action button tapped")
 
-        // Close the detail screen first
-        onBack?()
-
-        // Small delay to allow navigation to complete
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            detail.navigate()
-        }
+        // Navigate directly to content detail (don't go back to notification list)
+        detail.navigate()
     }
 }
 

@@ -118,13 +118,13 @@ struct CustomDialogView<Content: View>: View {
                         Text(secondaryButtonTitle)
                             .font(FontUtility.body1())
                             .foregroundColor(Color.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 56)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
                     .background(Color.black)
-                    .cornerRadius(20)
+                    .cornerRadius(28)
                 }
-                
+
                 if let primaryButtonTitle = primaryButtonTitle {
 
                     Button {
@@ -133,11 +133,11 @@ struct CustomDialogView<Content: View>: View {
                         Text(primaryButtonTitle)
                             .font(FontUtility.body1())
                             .foregroundColor(Color.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 56)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
                     .background(primaryButtonDisabled ? Color.gray : Color("primaryBgColor"))
-                    .cornerRadius(20)
+                    .cornerRadius(28)
                     .disabled(primaryButtonDisabled)
                 }
             }

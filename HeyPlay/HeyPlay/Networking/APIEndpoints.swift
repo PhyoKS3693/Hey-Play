@@ -39,6 +39,8 @@ enum APIEndpoint {
     // MARK: - Profile
     case profile
     case profileUpdate
+    case linkedAccount
+    case unlinkAccount
 
     // MARK: - Last Watch
     case lastWatchAdd
@@ -125,6 +127,10 @@ enum APIEndpoint {
             return "/api/customer/profile"
         case .profileUpdate:
             return "/api/customer/updateProfile"
+        case .linkedAccount:
+            return "/api/customer/linkedAccount"
+        case .unlinkAccount:
+            return "/api/customer/unlinkAccount"
 
         // Last Watch
         case .lastWatchAdd:

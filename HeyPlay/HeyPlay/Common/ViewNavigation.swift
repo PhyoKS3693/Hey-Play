@@ -116,11 +116,12 @@ class ViewNavigation {
         vc.navigationController?.pushViewController(controller, animated: true)
     }
 
-    func showMovieDetail(detailType: DetailType, movieId: Int) {
+    func showMovieDetail(detailType: DetailType, movieId: Int, episodeId: Int? = nil) {
         guard let vc = currentViewController else { return }
         let controller = MovieDetailViewController()
         controller.detailType = detailType
         controller.movieId = movieId
+        controller.episodeId = episodeId
         vc.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -229,8 +230,9 @@ class ViewNavigation {
         vc.navigationController?.pushViewController(controller, animated: true)
     }
 
-    func showHotTab() {
+    func showHotTab(reelId: Int? = nil) {
         let vc = HotViewController()
+        vc.reelId = reelId
         let navVC = UINavigationController(rootViewController: vc)
         navVC.navigationBar.isHidden = false
         appWindow?.rootViewController = navVC

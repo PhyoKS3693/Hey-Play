@@ -25,13 +25,13 @@ struct LoginOTPVerifyRequest: Encodable {
         securityKey: String,
         otpCode: String,
         otpType: Int = 1,
-        deviceToken: String? = ""
+        deviceToken: String? = nil
     ) {
         self.phoneNo = phoneNo
         self.securityKey = securityKey
         self.otpCode = otpCode
         self.otpType = otpType
-        self.deviceToken = deviceToken
+        self.deviceToken = (deviceToken == nil || deviceToken?.isEmpty == true) ? nil : deviceToken
     }
 }
 
@@ -47,14 +47,14 @@ struct GoogleLoginRequest: Encodable {
         googleId: String,
         email: String,
         name: String,
-        profileImage: String? = "",
-        deviceToken: String? = ""
+        profileImage: String? = nil,
+        deviceToken: String? = nil
     ) {
         self.googleId = googleId
         self.email = email
         self.name = name
-        self.profileImage = profileImage
-        self.deviceToken = deviceToken
+        self.profileImage = (profileImage == nil || profileImage?.isEmpty == true) ? nil : profileImage
+        self.deviceToken = (deviceToken == nil || deviceToken?.isEmpty == true) ? nil : deviceToken
     }
 }
 
@@ -70,13 +70,13 @@ struct AppleLoginRequest: Encodable {
         appleId: String,
         email: String,
         name: String,
-        deviceToken: String? = "",
+        deviceToken: String? = nil,
         deviceType: Int = 2
     ) {
         self.appleId = appleId
         self.email = email
         self.name = name
-        self.deviceToken = deviceToken
+        self.deviceToken = (deviceToken == nil || deviceToken?.isEmpty == true) ? nil : deviceToken
         self.deviceType = deviceType
     }
 }
@@ -91,12 +91,13 @@ struct LineLoginRequest: Encodable {
     init(
         lineUserId: String,
         name: String,
-        deviceToken: String? = "",
+        deviceToken: String? = nil,
         deviceType: Int = 2
     ) {
         self.lineUserId = lineUserId
         self.name = name
-        self.deviceToken = deviceToken
+        // Don't send empty string, send nil if no token
+        self.deviceToken = (deviceToken == nil || deviceToken?.isEmpty == true) ? nil : deviceToken
         self.deviceType = deviceType
     }
 }

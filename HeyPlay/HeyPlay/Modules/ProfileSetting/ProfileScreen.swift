@@ -21,6 +21,9 @@ struct ProfileScreen: View {
     @State private var selectedImage: UIImage?
     @State private var showCamera = false
     @State private var showPhotoLibrary = false
+    @State private var tapGoogle = false
+    @State private var tapApple = false
+    @State private var tapLine = false
 
     init(_ viewModel: ProfileViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -131,14 +134,27 @@ struct ProfileScreen: View {
                             .font(FontUtility.headline2())
                             .foregroundColor(Color.white)
                             .padding(.vertical, 10)
-                        
-                        renderLinkedAccount("ic.facebook", "Facebook", "www.facebook.com")
-                        
-                        renderLinkedAccount("ic.apple", "Apple", nil)
-                        
-                        renderLinkedAccount("ic.google", "Google", "www.google.com")
-                        
-                        renderLinkedAccount("ic.line", "Line", nil)
+
+                        renderLinkedAccount(
+                            "ic.google",
+                            "Google",
+                            isLinked: viewModel.profile?.isLinkedToGoogle ?? false,
+                            linkType: .google
+                        )
+
+                        renderLinkedAccount(
+                            "ic.apple",
+                            "Apple",
+                            isLinked: viewModel.profile?.isLinkedToApple ?? false,
+                            linkType: .apple
+                        )
+
+                        renderLinkedAccount(
+                            "ic.line",
+                            "Line",
+                            isLinked: viewModel.profile?.isLinkedToLine ?? false,
+                            linkType: .line
+                        )
 
                         Spacer()
                             .frame(height: 80)
@@ -231,6 +247,24 @@ struct ProfileScreen: View {
             .onChange(of: showPhotoLibrary) { value in
                 print("📚 [ProfileScreen] showPhotoLibrary changed to: \(value)")
             }
+            .onChange(of: tapGoogle) { newValue in
+                if newValue {
+                    handleGoogleSignIn()
+                    tapGoogle = false
+                }
+            }
+            .onChange(of: tapApple) { newValue in
+                if newValue {
+                    handleAppleSignIn()
+                    tapApple = false
+                }
+            }
+            .onChange(of: tapLine) { newValue in
+                if newValue {
+                    handleLineSignIn()
+                    tapLine = false
+                }
+            }
         } else {
             // Fallback on earlier versions
         }
@@ -262,39 +296,58 @@ struct ProfileScreen: View {
         .padding(10)
     }
     
-    private func renderLinkedAccount(_ icon: String,_ name: String,_ url :String?) -> some View {
-        Button{
-            print()
-        } label: {
-            HStack {
-                Image(icon)
-                    .frame(width: 20, height: 20)
-                    .padding(8)
-                
-                VStack (alignment: .leading) {
-                    Text(name)
-                        .font(FontUtility.caption())
-                        .foregroundColor(.white)
-                        .padding(.top, 8)
-                        .padding(.bottom, 4)
-                    
-                    if url != nil {
-                        Text(url ?? "")
-                            .font(FontUtility.body1())
-                            .foregroundColor(.white)
-                            .padding(.bottom, 8)
+    enum LinkType {
+        case google
+        case apple
+        case line
+    }
+
+    private func renderLinkedAccount(_ icon: String, _ name: String, isLinked: Bool, linkType: LinkType) -> some View {
+        HStack {
+            Image(icon)
+                .frame(width: 20, height: 20)
+                .padding(8)
+
+            Text(name)
+                .font(FontUtility.caption())
+                .foregroundColor(.white)
+                .padding(.vertical, 8)
+
+            Spacer()
+
+            if !isLinked {
+                // Add button for linking
+                Button {
+                    // Trigger sign-in flow for unlinked accounts
+                    switch linkType {
+                    case .google:
+                        tapGoogle = true
+                    case .apple:
+                        tapApple = true
+                    case .line:
+                        tapLine = true
                     }
-                }
-                
-                Spacer()
-                
-                if url != nil {
-                    Image("ic-delete")
-                        .frame(width: 20, height: 20)
-                        .padding(8)
-                }else {
+                } label: {
                     Image("btn_add")
                         .frame(width: 69, height: 26)
+                        .padding(8)
+                }
+            } else {
+                // Trash button for unlinking
+                Button {
+                    // Trigger unlink flow
+                    switch linkType {
+                    case .google:
+                        viewModel.unlinkGoogleAccount()
+                    case .apple:
+                        viewModel.unlinkAppleAccount()
+                    case .line:
+                        viewModel.unlinkLineAccount()
+                    }
+                } label: {
+                    Image(systemName: "trash.fill")
+                        .font(.system(size: 18))
+                        .foregroundColor(.red)
                         .padding(8)
                 }
             }
@@ -306,6 +359,103 @@ struct ProfileScreen: View {
                 .stroke(Color.white, lineWidth: 1)
         )
         .foregroundColor(.white)
+    }
+
+    // MARK: - Google Sign In Handler
+    private func handleGoogleSignIn() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            errorManager.showError(title: "Error", message: "Unable to present Google Sign-In")
+            return
+        }
+
+        var topController = rootViewController
+        while let presented = topController.presentedViewController {
+            topController = presented
+        }
+
+        GoogleSignInHelper.shared.signIn(presenting: topController) { result in
+            switch result {
+            case .success(let userInfo):
+                print("✅ [ProfileScreen] Google Sign-In successful")
+                print("   Google ID: \(userInfo.googleId)")
+                print("   Email: \(userInfo.email)")
+
+                // Call link account API
+                self.viewModel.linkGoogleAccount(googleId: userInfo.googleId, email: userInfo.email)
+
+            case .failure(let error):
+                let nsError = error as NSError
+                if nsError.domain == "com.google.GIDSignIn" && nsError.code == -5 {
+                    print("ℹ️ [ProfileScreen] Google Sign-In cancelled by user")
+                    return
+                }
+
+                print("❌ [ProfileScreen] Google Sign-In failed: \(error.localizedDescription)")
+                self.errorManager.showError(title: "Error", message: error.localizedDescription)
+            }
+        }
+    }
+
+    // MARK: - Apple Sign In Handler
+    private func handleAppleSignIn() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            errorManager.showError(title: "Error", message: "Unable to present Apple Sign-In")
+            return
+        }
+
+        var topController = rootViewController
+        while let presented = topController.presentedViewController {
+            topController = presented
+        }
+
+        AppleSignInHelper.shared.signIn(presenting: topController) { result in
+            switch result {
+            case .success(let userInfo):
+                print("✅ [ProfileScreen] Apple Sign-In successful")
+                print("   Apple ID: \(userInfo.appleId)")
+
+                // Call link account API
+                self.viewModel.linkAppleAccount(appleId: userInfo.appleId)
+
+            case .failure(let error):
+                let nsError = error as NSError
+                if nsError.code == 1001 {
+                    print("ℹ️ [ProfileScreen] Apple Sign-In cancelled by user")
+                    return
+                }
+
+                print("❌ [ProfileScreen] Apple Sign-In failed: \(error.localizedDescription)")
+                self.errorManager.showError(title: "Error", message: error.localizedDescription)
+            }
+        }
+    }
+
+    // MARK: - LINE Sign In Handler
+    private func handleLineSignIn() {
+        Task { @MainActor in
+            LineSignInHelper.shared.signIn { result in
+                switch result {
+                case .success(let userInfo):
+                    print("✅ [ProfileScreen] LINE Sign-In successful")
+                    print("   LINE User ID: \(userInfo.lineUserId)")
+
+                    // Call link account API
+                    self.viewModel.linkLineAccount(lineUserId: userInfo.lineUserId)
+
+                case .failure(let error):
+                    let nsError = error as NSError
+                    if nsError.code == 2 {
+                        print("ℹ️ [ProfileScreen] LINE Sign-In cancelled by user")
+                        return
+                    }
+
+                    print("❌ [ProfileScreen] LINE Sign-In failed: \(error.localizedDescription)")
+                    self.errorManager.showError(title: "Error", message: error.localizedDescription)
+                }
+            }
+        }
     }
 }
 

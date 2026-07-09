@@ -12,6 +12,8 @@ import Alamofire
 protocol ProfileServiceProtocol {
     func getProfile() async -> Result<Profile, Error>
     func updateProfile(name: String, email: String?, gender: Int?, profileImage: String?) async -> Result<Profile, Error>
+    func linkAccount(request: LinkAccountRequest) async -> Result<Profile, Error>
+    func unlinkAccount(request: UnlinkAccountRequest) async -> Result<Profile, Error>
 }
 
 // MARK: - Profile Service
@@ -97,6 +99,102 @@ final class ProfileService: ProfileServiceProtocol {
                 } else {
                     errorMessage = apiResponse.responseMessage
                     print("❌ [ProfileService] Update failed: \(errorMessage)")
+                }
+                return .failure(APIError.serverError(errorMessage))
+            }
+        case .failure(let error):
+            print("❌ [ProfileService] Network error: \(error.localizedDescription)")
+            return .failure(error)
+        }
+    }
+
+    // MARK: - Link Account
+    func linkAccount(request: LinkAccountRequest) async -> Result<Profile, Error> {
+        print("📤 [ProfileService] Linking account - accountType: \(request.accountType)")
+
+        let response = await APIClient.shared.request(
+            urlConvertible: APIEndpoint.linkedAccount.url,
+            method: .post,
+            parameters: request.asDictionary(),
+            encoding: JSONEncoding.default,
+            headers: HTTPHeaders(APIHeaders.defaultHeaders(
+                customerId: AppDefaultsManager.shared.customerId ?? "",
+                sessionId: AppDefaultsManager.shared.sessionId ?? ""
+            )),
+            responseType: ProfileResponse.self
+        )
+
+        switch response.result {
+        case .success(let apiResponse):
+            print("📥 [ProfileService] Link Account Response - success: \(apiResponse.isSuccess), message: \(apiResponse.responseMessage)")
+
+            if apiResponse.isSuccess {
+                // If successful but no data returned, fetch the updated profile
+                if let data = apiResponse.data {
+                    print("✅ [ProfileService] Account linked successfully with data")
+                    return .success(data)
+                } else {
+                    print("✅ [ProfileService] Account linked successfully, fetching updated profile...")
+                    // Fetch the updated profile since the link API didn't return data
+                    return await getProfile()
+                }
+            } else {
+                // Extract error message from errors array if available
+                let errorMessage: String
+                if let errors = apiResponse.errors, let firstError = errors.first {
+                    errorMessage = firstError.errorMessage
+                    print("❌ [ProfileService] Link account failed with fieldCode \(firstError.fieldCode): \(errorMessage)")
+                } else {
+                    errorMessage = apiResponse.responseMessage
+                    print("❌ [ProfileService] Link account failed: \(errorMessage)")
+                }
+                return .failure(APIError.serverError(errorMessage))
+            }
+        case .failure(let error):
+            print("❌ [ProfileService] Network error: \(error.localizedDescription)")
+            return .failure(error)
+        }
+    }
+
+    // MARK: - Unlink Account
+    func unlinkAccount(request: UnlinkAccountRequest) async -> Result<Profile, Error> {
+        print("📤 [ProfileService] Unlinking account - accountType: \(request.accountType)")
+
+        let response = await APIClient.shared.request(
+            urlConvertible: APIEndpoint.unlinkAccount.url,
+            method: .post,
+            parameters: request.asDictionary(),
+            encoding: JSONEncoding.default,
+            headers: HTTPHeaders(APIHeaders.defaultHeaders(
+                customerId: AppDefaultsManager.shared.customerId ?? "",
+                sessionId: AppDefaultsManager.shared.sessionId ?? ""
+            )),
+            responseType: ProfileResponse.self
+        )
+
+        switch response.result {
+        case .success(let apiResponse):
+            print("📥 [ProfileService] Unlink Account Response - success: \(apiResponse.isSuccess), message: \(apiResponse.responseMessage)")
+
+            if apiResponse.isSuccess {
+                // If successful but no data returned, fetch the updated profile
+                if let data = apiResponse.data {
+                    print("✅ [ProfileService] Account unlinked successfully with data")
+                    return .success(data)
+                } else {
+                    print("✅ [ProfileService] Account unlinked successfully, fetching updated profile...")
+                    // Fetch the updated profile since the unlink API didn't return data
+                    return await getProfile()
+                }
+            } else {
+                // Extract error message from errors array if available
+                let errorMessage: String
+                if let errors = apiResponse.errors, let firstError = errors.first {
+                    errorMessage = firstError.errorMessage
+                    print("❌ [ProfileService] Unlink account failed with fieldCode \(firstError.fieldCode): \(errorMessage)")
+                } else {
+                    errorMessage = apiResponse.responseMessage
+                    print("❌ [ProfileService] Unlink account failed: \(errorMessage)")
                 }
                 return .failure(APIError.serverError(errorMessage))
             }

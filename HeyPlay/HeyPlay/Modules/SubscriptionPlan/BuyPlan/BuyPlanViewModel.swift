@@ -102,6 +102,10 @@ final class BuyPlanViewModel: ObservableObject {
                 print("✅ Purchase successful - PaymentURL: \(data.paymentUrl ?? "nil")")
                 self.paymentUrl = data.paymentUrl
                 self.purchaseSuccess = true
+
+                // Notify Home tab to refresh user info
+                NotificationCenter.default.post(name: NSNotification.Name("SubscriptionChanged"), object: nil)
+
             case .failure(let error):
                 print("❌ Purchase failed: \(error.localizedDescription)")
                 self.errorMessage = error.localizedDescription

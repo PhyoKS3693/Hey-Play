@@ -15,6 +15,7 @@ final class MovieDetailViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var contentDetail: ContentDetail?
     @Published var toast: ToastModel?
+    @Published var showLoginDialog: Bool = false
 
     // MARK: - Content Info
     private var movieId: Int = 0
@@ -34,7 +35,7 @@ final class MovieDetailViewModel: ObservableObject {
     }
 
     var imageURL: String {
-        return contentDetail?.safeLandscapeImage ?? ""
+        return contentDetail?.detailImage ?? ""
     }
 
     var releaseDate: String {
@@ -175,7 +176,8 @@ final class MovieDetailViewModel: ObservableObject {
 
         // Check if user is logged in
         guard AppDefaultsManager.shared.isLoggedIn else {
-            print("⚠️ [MovieDetailViewModel] User not logged in, cannot toggle favourite")
+            print("⚠️ [MovieDetailViewModel] User not logged in - showing login dialog")
+            showLoginDialog = true
             return
         }
 
@@ -238,6 +240,13 @@ final class MovieDetailViewModel: ObservableObject {
 
     // MARK: - Toggle Watch List
     func toggleWatchList() {
+        // Check if user is logged in
+        guard AppDefaultsManager.shared.isLoggedIn else {
+            print("⚠️ [MovieDetailViewModel] User not logged in - showing login dialog")
+            showLoginDialog = true
+            return
+        }
+
         guard movieId > 0 else {
             print("❌ [MovieDetailViewModel] Invalid movieId: \(movieId)")
             return

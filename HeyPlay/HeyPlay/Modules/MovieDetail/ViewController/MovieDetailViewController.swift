@@ -17,6 +17,7 @@ class MovieDetailViewController: BaseViewController {
 
     var detailType: DetailType = .movie
     var movieId: Int = 0
+    var episodeId: Int? = nil
 
     // ViewModel - initialized as optional, created in viewDidLoad
     private var viewModel: MovieDetailViewModel!
@@ -47,7 +48,8 @@ class MovieDetailViewController: BaseViewController {
         if #available(iOS 14.0, *) {
             let detailView = MovieDetailView(
                 viewModel: viewModel,
-                detailType: detailType
+                detailType: detailType,
+                initialEpisodeId: episodeId
             )
             let hostingController = UIHostingController(rootView: detailView)
 

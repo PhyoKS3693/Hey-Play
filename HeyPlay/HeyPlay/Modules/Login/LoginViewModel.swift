@@ -101,6 +101,10 @@ final class LoginViewModel: ObservableObject {
                 self.loginData = data
                 self.saveLoginData(data)
                 self.loginSuccess = true
+
+                // Notify Home tab to refresh user info
+                NotificationCenter.default.post(name: NSNotification.Name("LoginStatusChanged"), object: nil)
+
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
@@ -128,6 +132,10 @@ final class LoginViewModel: ObservableObject {
                 self.loginData = data
                 self.saveLoginData(data)
                 self.loginSuccess = true
+
+                // Notify Home tab to refresh user info
+                NotificationCenter.default.post(name: NSNotification.Name("LoginStatusChanged"), object: nil)
+
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
@@ -154,6 +162,10 @@ final class LoginViewModel: ObservableObject {
                 self.loginData = data
                 self.saveLoginData(data)
                 self.loginSuccess = true
+
+                // Notify Home tab to refresh user info
+                NotificationCenter.default.post(name: NSNotification.Name("LoginStatusChanged"), object: nil)
+
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
@@ -179,6 +191,10 @@ final class LoginViewModel: ObservableObject {
                 self.loginData = data
                 self.saveLoginData(data)
                 self.loginSuccess = true
+
+                // Notify Home tab to refresh user info
+                NotificationCenter.default.post(name: NSNotification.Name("LoginStatusChanged"), object: nil)
+
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }

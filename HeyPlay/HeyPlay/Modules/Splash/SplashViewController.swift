@@ -56,9 +56,12 @@ class SplashViewController: BaseViewController {
     }
 
     private func navigateBasedOnSession() {
+        print("📱 [Splash] navigateBasedOnSession called")
         // Check app version first
         Task {
+            print("📱 [Splash] Starting version check Task")
             await checkAppVersion()
+            print("📱 [Splash] Version check Task completed")
         }
     }
 
@@ -93,16 +96,21 @@ class SplashViewController: BaseViewController {
         let result = await VersionCheckService.shared.checkAppVersion()
 
         await MainActor.run {
+            print("📱 [Splash] Version check API response received")
             switch result {
             case .success(let versionData):
+                print("📱 [Splash] Version check success - isForceUpdate: \(versionData.isForceUpdate), isNormalUpdate: \(versionData.isNormalUpdate)")
                 if versionData.isForceUpdate {
                     // Show force update dialog (non-dismissible)
+                    print("🚨 [Splash] Showing force update dialog")
                     showForceUpdateDialog(versionData: versionData)
                 } else if versionData.isNormalUpdate {
                     // Show normal update dialog (dismissible)
+                    print("📢 [Splash] Showing normal update dialog")
                     showNormalUpdateDialog(versionData: versionData)
                 } else {
                     // No update needed, proceed to normal navigation
+                    print("✅ [Splash] No update needed, proceeding to app")
                     proceedToApp()
                 }
 
@@ -118,18 +126,28 @@ class SplashViewController: BaseViewController {
         print("🚨 [Splash] Showing force update dialog")
 
         if #available(iOS 14.0, *) {
-            let dialogView = ForceUpdateDialog(
+            let dialogView = CustomDialogView(
+                iconName: "ic_force_update",
                 title: versionData.safeTitle,
                 message: versionData.safeMessage,
-                onUpdate: {
+                showCloseButton: false, // Force update - no close button
+                closeAction: nil,
+                primaryButtonTitle: "Update Now",
+                primaryAction: {
                     self.openAppStore(url: versionData.safeStoreUrl)
-                }
-            )
+                },
+                primaryButtonDisabled: false,
+                secondaryButtonTitle: nil,
+                secondaryAction: nil
+            ) {
+                EmptyView()
+            }
 
             let hostingController = UIHostingController(rootView: AnyView(dialogView))
             hostingController.view.backgroundColor = .clear
             hostingController.modalPresentationStyle = .overFullScreen
             hostingController.modalTransitionStyle = .crossDissolve
+            hostingController.isModalInPresentation = true // Prevent dismiss
 
             self.updateDialogHostingController = hostingController
             self.present(hostingController, animated: true)
@@ -140,26 +158,31 @@ class SplashViewController: BaseViewController {
         print("📢 [Splash] Showing normal update dialog")
 
         if #available(iOS 14.0, *) {
-            // Create a binding that can dismiss the dialog
-            let isPresented = Binding<Bool>(
-                get: { true },
-                set: { newValue in
-                    if !newValue {
-                        self.updateDialogHostingController?.dismiss(animated: true) {
-                            self.proceedToApp()
-                        }
-                    }
-                }
-            )
-
-            let dialogView = NormalUpdateDialog(
-                isPresented: isPresented,
+            let dialogView = CustomDialogView(
+                iconName: "ic_force_update",
                 title: versionData.safeTitle,
                 message: versionData.safeMessage,
-                onUpdate: {
+                showCloseButton: true, // Normal update - allow close
+                closeAction: {
+                    self.updateDialogHostingController?.dismiss(animated: true) {
+                        self.proceedToApp()
+                    }
+                },
+                primaryButtonTitle: "Update Now",
+                primaryAction: {
+                    self.updateDialogHostingController?.dismiss(animated: true)
                     self.openAppStore(url: versionData.safeStoreUrl)
+                },
+                primaryButtonDisabled: false,
+                secondaryButtonTitle: "Later",
+                secondaryAction: {
+                    self.updateDialogHostingController?.dismiss(animated: true) {
+                        self.proceedToApp()
+                    }
                 }
-            )
+            ) {
+                EmptyView()
+            }
 
             let hostingController = UIHostingController(rootView: AnyView(dialogView))
             hostingController.view.backgroundColor = .clear

@@ -10,6 +10,7 @@ import Foundation
 // MARK: - Reel Data
 struct ReelData: Decodable {
     let reels: [Reel]?
+    let seed: Int?
 
     var safeReelList: [Reel] { reels ?? [] }
 }

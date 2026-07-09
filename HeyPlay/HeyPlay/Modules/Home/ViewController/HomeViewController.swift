@@ -21,19 +21,17 @@ class HomeViewController: BaseViewController {
     private let loadMoreFooter = LoadMoreFooterView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 60))
     private let refreshControl = UIRefreshControl()
 
-    // Force Update Dialog
-    private var forceUpdateDialogHostingController: UIHostingController<AnyView>?
-    private var hasCheckedForceUpdate = false
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         bindViewModel()
         fetchData()
+        setupNotificationObservers()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("📱 [HomeViewController] viewWillAppear")
         // Show navigation bar (in case it was hidden by detail screen)
         navigationController?.navigationBar.isHidden = false
         navigationController?.isNavigationBarHidden = false
@@ -44,12 +42,6 @@ class HomeViewController: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        // Check for force update only once when home screen appears
-        if !hasCheckedForceUpdate {
-            hasCheckedForceUpdate = true
-            checkForForceUpdate()
-        }
     }
 
     override func setupUI() {
@@ -94,18 +86,36 @@ class HomeViewController: BaseViewController {
         // Bind home data
         viewModel.$homeData
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { [weak self] homeData in
+                // Only reload if we have actual data (prevent double reload that causes button flash)
+                guard homeData != nil else {
+                    print("⏭️ [HomeViewController] homeData is nil - skipping reload")
+                    return
+                }
+                print("🔄 [HomeViewController] homeData changed - reloading table (hasData: true)")
                 self?.tblHome.reloadData()
             }
             .store(in: &cancellables)
 
-        // Bind profile data
+        // Bind profile data - only reload user section AFTER initial homeData loads
         viewModel.$profile
+            .dropFirst() // Skip initial nil value
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                // Reload user info section when profile changes
-                if let indexPath = self?.indexPathForUserSection() {
-                    self?.tblHome.reloadRows(at: [indexPath], with: .none)
+            .sink { [weak self] profile in
+                guard let self = self else { return }
+
+                // Only reload user section if homeData has already loaded
+                // This prevents double reload during initial app launch
+                guard self.viewModel.homeData != nil else {
+                    print("⏭️ [HomeViewController] profile changed but homeData not loaded yet - skipping user section reload")
+                    return
+                }
+
+                print("👤 [HomeViewController] profile changed - reloading user section only")
+                if let indexPath = self.indexPathForUserSection() {
+                    UIView.performWithoutAnimation {
+                        self.tblHome.reloadRows(at: [indexPath], with: .none)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -167,6 +177,51 @@ class HomeViewController: BaseViewController {
         })
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(alert, animated: true)
+    }
+
+    // MARK: - Notification Observers
+    private func setupNotificationObservers() {
+        // Observe VIP package purchase/subscription changes
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleSubscriptionChanged),
+            name: NSNotification.Name("SubscriptionChanged"),
+            object: nil
+        )
+
+        // Observe login/logout events
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleLoginStatusChanged),
+            name: NSNotification.Name("LoginStatusChanged"),
+            object: nil
+        )
+    }
+
+    @objc private func handleSubscriptionChanged() {
+        print("📦 [HomeViewController] Subscription changed - refreshing user info")
+        refreshUserInfoSection()
+    }
+
+    @objc private func handleLoginStatusChanged() {
+        print("🔐 [HomeViewController] Login status changed - refreshing user info")
+        refreshUserInfoSection()
+    }
+
+    private func refreshUserInfoSection() {
+        // Fetch latest profile data
+        viewModel.fetchProfile()
+
+        // Update user info cell without animation
+        if let indexPath = indexPathForUserSection() {
+            UIView.performWithoutAnimation {
+                tblHome.reloadRows(at: [indexPath], with: .none)
+            }
+        }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Helper Methods
@@ -235,59 +290,4 @@ class HomeViewController: BaseViewController {
         present(alert, animated: true)
     }
 
-    // MARK: - Force Update Check
-    private func checkForForceUpdate() {
-        print("📱 [Home] Checking for force update...")
-
-        Task {
-            let result = await VersionCheckService.shared.checkAppVersion()
-
-            await MainActor.run {
-                switch result {
-                case .success(let versionData):
-                    if versionData.isForceUpdate {
-                        // Show force update dialog (non-dismissible)
-                        showForceUpdateDialog(versionData: versionData)
-                    } else {
-                        print("✅ [Home] No force update required")
-                    }
-
-                case .failure(let error):
-                    print("⚠️ [Home] Version check failed: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-
-    private func showForceUpdateDialog(versionData: VersionCheckData) {
-        print("🚨 [Home] Showing force update dialog")
-
-        if #available(iOS 14.0, *) {
-            let dialogView = ForceUpdateDialog(
-                title: versionData.safeTitle,
-                message: versionData.safeMessage,
-                onUpdate: {
-                    self.openAppStore(url: versionData.safeStoreUrl)
-                }
-            )
-
-            let hostingController = UIHostingController(rootView: AnyView(dialogView))
-            hostingController.view.backgroundColor = .clear
-            hostingController.modalPresentationStyle = .overFullScreen
-            hostingController.modalTransitionStyle = .crossDissolve
-
-            self.forceUpdateDialogHostingController = hostingController
-            self.present(hostingController, animated: true)
-        }
-    }
-
-    private func openAppStore(url: String) {
-        guard !url.isEmpty, let storeURL = URL(string: url) else {
-            print("⚠️ [Home] Invalid App Store URL")
-            return
-        }
-
-        print("📱 [Home] Opening App Store: \(url)")
-        UIApplication.shared.open(storeURL)
-    }
 }

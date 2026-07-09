@@ -180,7 +180,11 @@ final class AuthService: AuthServiceProtocol {
         name: String,
         deviceToken: String? = nil
     ) async -> Result<LoginData, Error> {
-        print("📱 [AuthService] LINE Login with deviceType: 2 (iOS)")
+        print("📱 [AuthService] LINE Login")
+        print("   LINE User ID: \(lineUserId)")
+        print("   Name: \(name)")
+        print("   Device Token: \(deviceToken ?? "nil")")
+        print("   Device Type: 2 (iOS)")
 
         let request = LineLoginRequest(
             lineUserId: lineUserId,
@@ -188,6 +192,8 @@ final class AuthService: AuthServiceProtocol {
             deviceToken: deviceToken,
             deviceType: 2
         )
+
+        print("📤 [AuthService] Request payload: \(request.asDictionary())")
 
         let response = await APIClient.shared.request(
             urlConvertible: APIEndpoint.loginWithLine.url,
@@ -200,11 +206,15 @@ final class AuthService: AuthServiceProtocol {
 
         switch response.result {
         case .success(let apiResponse):
+            print("📥 [AuthService] Response: \(apiResponse.responseMessage)")
             if apiResponse.isSuccess, let data = apiResponse.data {
                 print("✅ [AuthService] LINE login successful")
                 return .success(data)
             } else {
                 print("❌ [AuthService] LINE login failed: \(apiResponse.responseMessage)")
+                if let errors = apiResponse.errors {
+                    print("❌ [AuthService] Errors: \(errors)")
+                }
                 return .failure(APIError.serverError(apiResponse.responseMessage))
             }
         case .failure(let error):

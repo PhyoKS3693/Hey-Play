@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MenuScreen: View {
 
@@ -219,12 +220,7 @@ struct MenuScreen: View {
     private func loginNormalUser(_ userName: String,_ userPhoneNumber: String,_ userId: String) -> some View {
         VStack {
             HStack {
-                Image("ic-user")
-                    .frame(width: 42, height: 42)
-                    .background(
-                        Circle()
-                            .fill(Color.white.opacity(0.1))
-                    )
+                profileImageView()
                     .padding(12)
                 
                 
@@ -279,16 +275,40 @@ struct MenuScreen: View {
         // Show a brief toast/feedback that ID was copied
         print("User ID copied: \(viewModel.userId)")
     }
+
+    // MARK: - Profile Image View
+    @ViewBuilder
+    private func profileImageView() -> some View {
+        ZStack {
+            Circle()
+                .fill(Color.white.opacity(0.1))
+                .frame(width: 42, height: 42)
+
+            if let profileImageURL = viewModel.profileImageURL, !profileImageURL.isEmpty, let url = URL(string: profileImageURL) {
+                KFImage(url)
+                    .placeholder {
+                        Image("ic-user")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                    }
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 42, height: 42)
+                    .clipShape(Circle())
+            } else {
+                Image("ic-user")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24, height: 24)
+            }
+        }
+    }
     
     private func loginVIPUser(_ userName: String, _ userPhoneNumber: String, _ userId: String, _ planName: String, _ expireDate: String, _ daysRemaining: String) -> some View {
         VStack {
             HStack {
-                Image("ic-user")
-                    .frame(width: 42, height: 42)
-                    .background(
-                        Circle()
-                            .fill(Color.white.opacity(0.1))
-                    )
+                profileImageView()
                     .padding(12)
 
 

@@ -53,18 +53,16 @@ struct CustomNavBar: View {
 
             Spacer()
 
-            // Favorite button - only show when logged in
-            if isLoggedIn {
-                Button(action: {
-                    onFavorite?()
-                }) {
-                    Image(systemName: isFavorite ? "heart.fill" : "heart")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(.white)
-                        .frame(width: 32, height: 32)
-                        .background(Color.grey)
-                        .clipShape(Circle())
-                }
+            // Favorite button - show for all users, login check happens on tap
+            Button(action: {
+                onFavorite?()
+            }) {
+                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundColor(isFavorite ? Color("primaryBgColor") : Color("White_Color"))
+                    .frame(width: 32, height: 32)
+                    .background(Color.grey)
+                    .clipShape(Circle())
             }
 
             // Share button
@@ -92,6 +90,6 @@ struct CustomNavBar: View {
         subscriptionType: "VIP",
         isFree: false,
         isFavorite: false,
-        isLoggedIn: true
+        isLoggedIn: false  // Button now shows for all users
     )
 }

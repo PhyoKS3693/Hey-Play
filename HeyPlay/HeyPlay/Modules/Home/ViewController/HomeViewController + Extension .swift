@@ -48,6 +48,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
         switch sectionType {
         case .user:
+            print("📋 [HomeViewController] Dequeuing HomeUserInfoTableViewCell")
             guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeUserInfoTableViewCell.identifier, for: indexPath) as? HomeUserInfoTableViewCell else {
                 return UITableViewCell()
             }

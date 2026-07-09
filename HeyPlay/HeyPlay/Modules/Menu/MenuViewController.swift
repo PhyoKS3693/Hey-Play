@@ -85,6 +85,8 @@ final class MenuViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Refresh profile data when view appears to show updated profile image
+        viewModel.fetchProfile()
     }
     
     override func setupUI() {

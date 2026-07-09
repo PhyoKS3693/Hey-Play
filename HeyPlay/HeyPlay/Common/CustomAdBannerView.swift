@@ -7,46 +7,32 @@
 
 import SwiftUI
 import Kingfisher
+import SafariServices
 
 @available(iOS 14.0, *)
 struct CustomAdBannerView: View {
 
     let adsSetting: AdsSetting
 
-    @State private var showLoginDialog = false
-
     var body: some View {
-        ZStack {
-            Button(action: {
-                handleAdTap()
-            }) {
-                KFImage(URL(string: adsSetting.safeImage))
-                    .placeholder {
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.3))
-                    }
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .clipped()
-                    .cornerRadius(8)
-            }
-            .buttonStyle(PlainButtonStyle())
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
-
-            // Login Required Dialog
-            if showLoginDialog {
-                LoginRequiredDialog(
-                    isPresented: $showLoginDialog,
-                    onLogin: {
-                        print("📢 [CustomAd] Navigating to login screen")
-                        ViewNavigation.shared.showLoginView()
-                    }
-                )
-            }
+        Button(action: {
+            handleAdTap()
+        }) {
+            KFImage(URL(string: adsSetting.safeImage))
+                .placeholder {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                }
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .clipped()
+                .cornerRadius(8)
         }
+        .buttonStyle(PlainButtonStyle())
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
     }
 
     private func handleAdTap() {
@@ -61,7 +47,7 @@ struct CustomAdBannerView: View {
         if adsSetting.isAuthRequired == true {
             if !AppDefaultsManager.shared.isLoggedIn {
                 print("⚠️ [CustomAd] Auth required but user not logged in - showing login dialog")
-                showLoginDialog = true
+                showLoginDialog()
                 return
             }
         }
@@ -73,9 +59,87 @@ struct CustomAdBannerView: View {
                 print("📢 [CustomAd] Opening in external browser: \(url)")
                 UIApplication.shared.open(url)
             } else {
-                // Open in-app
-                print("📢 [CustomAd] Opening in-app: \(url)")
-                UIApplication.shared.open(url)
+                // Open in internal browser (SFSafariViewController)
+                print("📢 [CustomAd] Opening in internal browser: \(url)")
+                openInternalBrowser(url: url)
+            }
+        }
+    }
+
+    private func showLoginDialog() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            print("⚠️ [CustomAd] Could not get root view controller")
+            return
+        }
+
+        // Get the topmost view controller
+        var topController = rootViewController
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+
+        // Create a binding for the presented state
+        let dialogView = LoginRequiredDialogWrapper(
+            onDismiss: {
+                topController.dismiss(animated: true)
+            },
+            onLogin: {
+                topController.dismiss(animated: true) {
+                    print("📢 [CustomAd] Navigating to login screen")
+                    ViewNavigation.shared.showLoginView()
+                }
+            }
+        )
+
+        let hostingController = UIHostingController(rootView: dialogView)
+        hostingController.view.backgroundColor = .clear
+        hostingController.modalPresentationStyle = .overFullScreen
+        hostingController.modalTransitionStyle = .crossDissolve
+
+        topController.present(hostingController, animated: true)
+    }
+
+    private func openInternalBrowser(url: URL) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            print("⚠️ [CustomAd] Could not get root view controller")
+            return
+        }
+
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.modalPresentationStyle = .pageSheet
+
+        // Present from the topmost view controller
+        var topController = rootViewController
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+
+        topController.present(safariVC, animated: true)
+    }
+}
+
+// MARK: - Login Required Dialog Wrapper
+@available(iOS 14.0, *)
+struct LoginRequiredDialogWrapper: View {
+    let onDismiss: () -> Void
+    let onLogin: () -> Void
+    @State private var isPresented = true
+
+    var body: some View {
+        LoginRequiredDialog(
+            isPresented: $isPresented,
+            onLogin: {
+                onLogin()
+            },
+            onCancel: {
+                onDismiss()
+            }
+        )
+        .onChange(of: isPresented) { newValue in
+            if !newValue {
+                onDismiss()
             }
         }
     }

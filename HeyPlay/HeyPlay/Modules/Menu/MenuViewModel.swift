@@ -133,6 +133,10 @@ final class MenuViewModel: ObservableObject {
         AppDefaultsManager.shared.logout()
         profile = nil
         updateSections()
+
+        // Notify Home tab to refresh user info
+        NotificationCenter.default.post(name: NSNotification.Name("LoginStatusChanged"), object: nil)
+
         ViewNavigation.shared.showLoginView()
     }
 

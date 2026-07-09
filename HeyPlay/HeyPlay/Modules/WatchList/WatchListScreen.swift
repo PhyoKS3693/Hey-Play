@@ -473,8 +473,8 @@ struct WatchListScreen: View {
         }
         .onTapGesture {
             if let reelId = item.reelId {
-                print("🔥 [WatchList] Short tapped - reelId: \(reelId), navigating to Hot tab")
-                ViewNavigation.shared.showHotTab()
+                print("🔥 [WatchList] Short tapped - reelId: \(reelId), navigating to Hot tab with reelId")
+                ViewNavigation.shared.showHotTab(reelId: reelId)
             }
         }
     }

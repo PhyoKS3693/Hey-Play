@@ -45,11 +45,15 @@ struct MovieDetailInfoView: View {
     @Binding var showUpgradeDialog: Bool
     @Binding var showSeasonPicker: Bool
     @Binding var currentSelectedSeason: String
+    var displayTitle: String = ""
 
     var body: some View {
         if #available(iOS 15.0, *) {
             VStack(spacing: 16) {
-                MovieTitleInfoView(viewModel: viewModel)
+                MovieTitleInfoView(
+                    viewModel: viewModel,
+                    displayTitle: displayTitle
+                )
                 MovieActionButtonsView(
                     viewModel: viewModel,
                     detailType: $detailType,
@@ -95,11 +99,12 @@ struct MovieDetailInfoView: View {
 @available(iOS 14.0, *)
 struct MovieTitleInfoView: View {
     @ObservedObject var viewModel: MovieDetailViewModel
+    var displayTitle: String = ""
 
     var body: some View {
         VStack(alignment: .center, spacing: 8) {
-            // MARK: Movie title
-            Text(viewModel.title.isEmpty ? "Movie Title" : viewModel.title)
+            // MARK: Movie title - show episode title if selected, otherwise series title
+            Text(displayTitle.isEmpty ? (viewModel.title.isEmpty ? "Movie Title" : viewModel.title) : displayTitle)
                 .font(FontUtility.heading1())
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
@@ -172,8 +177,12 @@ struct MovieActionButtonsView: View {
                     handlePlayTapped()
                 }) {
                     HStack {
-                        Image(systemName: "play.fill")
-                        Text("Play")
+                        if viewModel.isPlayable {
+                            Image(systemName: "play.fill")
+                            Text("Play")
+                        } else {
+                            Text("Buy VIP")
+                        }
                     }
                     .font(.headline)
                     .foregroundColor(.white)
@@ -250,9 +259,15 @@ struct MovieActionButtonsView: View {
                 episodeId: nil
             )
         } else {
-            // Not playable - show upgrade dialog
-            print("⚠️ [MovieActionButtonsView] Content not playable, showing upgrade dialog")
-            showUpgradeDialog = true
+            // Not playable - check if user is logged in
+            if !AppDefaultsManager.shared.isLoggedIn {
+                print("⚠️ [MovieActionButtonsView] User not logged in, showing login dialog")
+                viewModel.showLoginDialog = true
+            } else {
+                // Logged in but not VIP - show upgrade dialog
+                print("⚠️ [MovieActionButtonsView] Content not playable, showing upgrade dialog")
+                showUpgradeDialog = true
+            }
         }
     }
 }

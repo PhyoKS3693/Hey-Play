@@ -100,9 +100,8 @@ struct APINotification: Decodable, Identifiable {
             print("📺 [Notification] Navigating to series detail: \(detailViewId)")
 
             if let episodeId = episodeId {
-                // TODO: Navigate with episode auto-selection
-                print("📺 [Notification] Should auto-select episode: \(episodeId)")
-                ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
+                print("📺 [Notification] Navigating with episodeId: \(episodeId)")
+                ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId, episodeId: episodeId)
             } else {
                 ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
             }
@@ -184,9 +183,8 @@ struct APINotificationDetail: Decodable {
             let episodeToSelect = episodeId ?? detailEpisodeId
 
             if let episodeId = episodeToSelect {
-                // TODO: Navigate with episode auto-selection
-                print("📺 [Notification] Should auto-select episode: \(episodeId)")
-                ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
+                print("📺 [Notification] Navigating with episodeId: \(episodeId)")
+                ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId, episodeId: episodeId)
             } else {
                 ViewNavigation.shared.showMovieDetail(detailType: .series, movieId: detailViewId)
             }

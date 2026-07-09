@@ -10,7 +10,7 @@ import Alamofire
 
 // MARK: - Reel Service Protocol
 protocol ReelServiceProtocol {
-    func getReelList(pageNo: Int) async -> Result<ReelData, Error>
+    func getReelList(pageNo: Int, reelId: Int?, seed: String?) async -> Result<ReelData, Error>
 }
 
 // MARK: - Reel Service
@@ -21,8 +21,8 @@ final class ReelService: ReelServiceProtocol {
     private init() {}
 
     // MARK: - Get Reel List
-    func getReelList(pageNo: Int = 1) async -> Result<ReelData, Error> {
-        let request = ReelListRequest(pageNo: pageNo)
+    func getReelList(pageNo: Int = 1, reelId: Int? = nil, seed: String? = nil) async -> Result<ReelData, Error> {
+        let request = ReelListRequest(pageNo: pageNo, reelId: reelId, seed: seed)
 
         let response = await APIClient.shared.request(
             urlConvertible: APIEndpoint.reelList.url,
@@ -52,8 +52,12 @@ final class ReelService: ReelServiceProtocol {
 // MARK: - Reel List Request
 struct ReelListRequest: Encodable {
     let pageNo: Int
+    let reelId: Int?
+    let seed: String?
 
-    init(pageNo: Int = 1) {
+    init(pageNo: Int = 1, reelId: Int? = nil, seed: String? = nil) {
         self.pageNo = pageNo
+        self.reelId = reelId
+        self.seed = seed
     }
 }

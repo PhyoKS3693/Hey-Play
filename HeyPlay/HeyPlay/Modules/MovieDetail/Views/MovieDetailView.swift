@@ -22,12 +22,18 @@ struct MovieDetailView: View {
     @State private var showUpgradeDialog = false
     @State private var showSeasonPicker = false
     @State private var currentSelectedSeason: String = "Season 1"
+    @State private var selectedEpisodeId: Int?
+    @State private var displayImageURL: String = ""
+    @State private var displayTitle: String = ""
 
     @Environment(\.presentationMode) var presentationMode
 
-    init(viewModel: MovieDetailViewModel, detailType: DetailType = .series) {
+    var initialEpisodeId: Int?
+
+    init(viewModel: MovieDetailViewModel, detailType: DetailType = .series, initialEpisodeId: Int? = nil) {
         self.viewModel = viewModel
         self._detailType = State(initialValue: detailType)
+        self.initialEpisodeId = initialEpisodeId
     }
 
     var body: some View {
@@ -63,13 +69,16 @@ struct MovieDetailView: View {
 
                 ScrollView(showsIndicators: false) {
                     ZStack(alignment: .bottom, content: {
-                        MovieDetailTopView(imageURL: viewModel.imageURL)
+                        MovieDetailTopView(
+                            imageURL: displayImageURL.isEmpty ? viewModel.imageURL : displayImageURL
+                        )
                         MovieDetailInfoView(
                             viewModel: viewModel,
                             detailType: $detailType,
                             showUpgradeDialog: $showUpgradeDialog,
                             showSeasonPicker: $showSeasonPicker,
-                            currentSelectedSeason: $currentSelectedSeason
+                            currentSelectedSeason: $currentSelectedSeason,
+                            displayTitle: displayTitle
                         )
                         .padding(.bottom, 15)
                     })
@@ -98,7 +107,22 @@ struct MovieDetailView: View {
                         tapRecommend: $tapRecommend,
                         tapEpisodes: $tapEpisodes,
                         detailType: $detailType,
-                        showUpgradeDialog: $showUpgradeDialog
+                        showUpgradeDialog: $showUpgradeDialog,
+                        showLoginDialog: $viewModel.showLoginDialog,
+                        selectedEpisodeId: $selectedEpisodeId,
+                        onEpisodeSelected: { episode in
+                            if let episode = episode {
+                                // Episode selected - show episode info
+                                print("📺 [MovieDetailView] Episode selected: \(episode.name ?? "")")
+                                displayImageURL = episode.safeDetailImage
+                                displayTitle = episode.name ?? ""
+                            } else {
+                                // Episode deselected - show series detail info
+                                print("📺 [MovieDetailView] Episode deselected - showing series info")
+                                displayImageURL = ""
+                                displayTitle = ""
+                            }
+                        }
                     )
 
                     GeometryReader { geo in
@@ -133,6 +157,20 @@ struct MovieDetailView: View {
                     }
                 )
             }
+
+            // Login Required Dialog
+            if viewModel.showLoginDialog {
+                LoginRequiredDialog(
+                    isPresented: $viewModel.showLoginDialog,
+                    onLogin: {
+                        print("📢 [MovieDetailView] Navigating to login screen")
+                        ViewNavigation.shared.showLoginView()
+                    },
+                    onCancel: {
+                        viewModel.showLoginDialog = false
+                    }
+                )
+            }
         }
         .background(Color.black)
         .edgesIgnoringSafeArea(.all)
@@ -163,6 +201,32 @@ struct MovieDetailView: View {
                     currentSelectedSeason = firstSeason.safeSeasonName
                     print("⚠️ [MovieDetailView] No matching season found, using first season: \(firstSeason.safeSeasonName)")
                 }
+            }
+
+            // Reset episode selection and display when content changes
+            selectedEpisodeId = nil
+            displayImageURL = ""
+            displayTitle = ""
+        }
+        .onChange(of: viewModel.episodes) { episodes in
+            // Auto-select episode if initialEpisodeId is provided and not yet selected
+            if let initialEpisodeId = initialEpisodeId,
+               selectedEpisodeId == nil,
+               !episodes.isEmpty {
+                if let episode = episodes.first(where: { $0.episodeId == initialEpisodeId }) {
+                    print("📺 [MovieDetailView] Auto-selecting episode from notification: \(episode.name ?? "")")
+                    selectedEpisodeId = episode.id
+                    displayImageURL = episode.safeDetailImage
+                    displayTitle = episode.name ?? ""
+                } else {
+                    print("⚠️ [MovieDetailView] Episode with ID \(initialEpisodeId) not found in current episode list")
+                }
+            }
+
+            // Reset episode selection when episodes change (e.g., season change)
+            // But only if we're not auto-selecting from notification
+            if initialEpisodeId == nil || selectedEpisodeId != nil {
+                // Don't reset if we just auto-selected
             }
         }
         .sheet(isPresented: $showingShare) {

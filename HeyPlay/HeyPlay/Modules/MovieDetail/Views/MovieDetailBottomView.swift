@@ -18,6 +18,9 @@ struct MovieDetailBottomView: View {
     @Binding var tapEpisodes: Bool
     @Binding var detailType: DetailType
     @Binding var showUpgradeDialog: Bool
+    @Binding var showLoginDialog: Bool
+    @Binding var selectedEpisodeId: Int?
+    var onEpisodeSelected: ((Episode?) -> Void)?
 
     var body: some View {
         VStack(content: {
@@ -27,7 +30,10 @@ struct MovieDetailBottomView: View {
                         episodes: viewModel.episodes,
                         movieTitle: viewModel.title,
                         movieId: viewModel.contentDetail?.id ?? 0,
-                        showUpgradeDialog: $showUpgradeDialog
+                        showUpgradeDialog: $showUpgradeDialog,
+                        showLoginDialog: $showLoginDialog,
+                        selectedEpisodeId: $selectedEpisodeId,
+                        onEpisodeSelected: onEpisodeSelected
                     )
                 } else {
                     EmptyEpisodesView()
@@ -250,7 +256,10 @@ struct MovieDetailBottomView_Previews: PreviewProvider {
             tapRecommend: .constant(false),
             tapEpisodes: .constant(false),
             detailType: .constant(.series),
-            showUpgradeDialog: .constant(false)
+            showUpgradeDialog: .constant(false),
+            showLoginDialog: .constant(false),
+            selectedEpisodeId: .constant(nil),
+            onEpisodeSelected: nil
         )
     }
 }

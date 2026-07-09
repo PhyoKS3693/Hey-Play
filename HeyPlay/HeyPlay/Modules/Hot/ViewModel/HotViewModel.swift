@@ -18,10 +18,12 @@ final class HotViewModel: ObservableObject {
 
     // Callback for favorite toggle updates
     var onFavoriteToggled: ((Int, Bool, Int) -> Void)?  // (index, isFavorite, likeCount)
+    var onLoginRequired: (() -> Void)?  // Callback when login is required
 
     // MARK: - Pagination
     private var currentPage: Int = 1
     private var hasMoreData: Bool = true
+    private var currentSeed: String? = nil
 
     // MARK: - Computed Properties
     var reelCount: Int {
@@ -39,15 +41,16 @@ final class HotViewModel: ObservableObject {
     }
 
     // MARK: - API Calls
-    func fetchReels() {
+    func fetchReels(reelId: Int? = nil) {
         guard !isLoading else { return }
 
         isLoading = true
         errorMessage = nil
         currentPage = 1
+        currentSeed = nil // Reset seed for fresh fetch
 
         Task { @MainActor in
-            let result = await ReelService.shared.getReelList(pageNo: currentPage)
+            let result = await ReelService.shared.getReelList(pageNo: currentPage, reelId: reelId, seed: nil)
 
             isLoading = false
 
@@ -55,6 +58,10 @@ final class HotViewModel: ObservableObject {
             case .success(let data):
                 self.reels = data.safeReelList
                 self.hasMoreData = !data.safeReelList.isEmpty
+                // Store seed from response for pagination
+                if let seed = data.seed {
+                    self.currentSeed = String(seed)
+                }
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
@@ -76,7 +83,7 @@ final class HotViewModel: ObservableObject {
         currentPage += 1
 
         Task { @MainActor in
-            let result = await ReelService.shared.getReelList(pageNo: currentPage)
+            let result = await ReelService.shared.getReelList(pageNo: currentPage, reelId: nil, seed: currentSeed)
 
             isLoadingMore = false
 
@@ -85,6 +92,10 @@ final class HotViewModel: ObservableObject {
                 let newReels = data.safeReelList
                 self.reels.append(contentsOf: newReels)
                 self.hasMoreData = !newReels.isEmpty
+                // Update seed from response for next pagination
+                if let seed = data.seed {
+                    self.currentSeed = String(seed)
+                }
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
                 self.currentPage -= 1 // Revert page on failure
@@ -95,6 +106,13 @@ final class HotViewModel: ObservableObject {
     // MARK: - Toggle Favorite
     func toggleFavorite(at index: Int) {
         guard index < reels.count else { return }
+
+        // Check if user is logged in
+        guard AppDefaultsManager.shared.isLoggedIn else {
+            print("⚠️ [HotViewModel] User not logged in - showing login dialog")
+            onLoginRequired?()
+            return
+        }
 
         let reel = reels[index]
         let reelId = String(reel.id)
@@ -165,6 +183,14 @@ final class HotViewModel: ObservableObject {
     // This is included for completeness but may not be used in UI
     func toggleWatchLater(at index: Int) {
         guard index < reels.count else { return }
+
+        // Check if user is logged in
+        guard AppDefaultsManager.shared.isLoggedIn else {
+            print("⚠️ [HotViewModel] User not logged in - showing login dialog")
+            onLoginRequired?()
+            return
+        }
+
         // Watch Later typically doesn't apply to reels/short videos
         // Reels are meant for quick consumption, not saving for later
         print("Watch Later not applicable for reels")

@@ -65,6 +65,15 @@ class ReelPlayerView: UIView {
         return button
     }()
 
+    // Progress bar
+    private let progressView: UIProgressView = {
+        let progress = UIProgressView(progressViewStyle: .default)
+        progress.progressTintColor = UIColor(named: "primaryBgColor") ?? .systemPink
+        progress.trackTintColor = .white.withAlphaComponent(0.3)
+        progress.translatesAutoresizingMaskIntoConstraints = false
+        return progress
+    }()
+
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -116,6 +125,15 @@ class ReelPlayerView: UIView {
         // Add button actions
         backwardButton.addTarget(self, action: #selector(handleBackward), for: .touchUpInside)
         forwardButton.addTarget(self, action: #selector(handleForward), for: .touchUpInside)
+
+        // Add progress bar at the bottom
+        addSubview(progressView)
+        NSLayoutConstraint.activate([
+            progressView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            progressView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            progressView.heightAnchor.constraint(equalToConstant: 3)
+        ])
 
         // Add tap gesture to play/pause
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -202,6 +220,12 @@ class ReelPlayerView: UIView {
             options: .new,
             context: nil
         )
+
+        // Add periodic time observer for progress tracking
+        let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        timeObserver = player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            self?.updateProgress(currentTime: time)
+        }
     }
 
     // MARK: - KVO
@@ -257,6 +281,7 @@ class ReelPlayerView: UIView {
         player?.pause()
         player?.seek(to: .zero)
         isPlaying = false
+        progressView.progress = 0
         hideSeekButtons()
     }
 
@@ -353,9 +378,22 @@ class ReelPlayerView: UIView {
         }
     }
 
+    // MARK: - Update Progress
+    private func updateProgress(currentTime: CMTime) {
+        guard let duration = playerItem?.duration else { return }
+        guard duration.isNumeric && duration.seconds > 0 else { return }
+
+        let currentSeconds = currentTime.seconds
+        let durationSeconds = duration.seconds
+        let progress = Float(currentSeconds / durationSeconds)
+
+        progressView.progress = progress
+    }
+
     // MARK: - Video Loop
     @objc private func videoDidEnd() {
         print("🔄 [ReelPlayerView] Video ended, looping...")
+        progressView.progress = 0
         player?.seek(to: .zero)
         player?.play()
     }
@@ -368,6 +406,12 @@ class ReelPlayerView: UIView {
         playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
         playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
 
+        // Remove time observer
+        if let timeObserver = timeObserver {
+            player?.removeTimeObserver(timeObserver)
+            self.timeObserver = nil
+        }
+
         // Stop playback
         player?.pause()
         playerLayer?.removeFromSuperlayer()
@@ -375,6 +419,9 @@ class ReelPlayerView: UIView {
         // Hide seek buttons
         backwardButton.alpha = 0
         forwardButton.alpha = 0
+
+        // Reset progress
+        progressView.progress = 0
 
         // Clean up
         player = nil

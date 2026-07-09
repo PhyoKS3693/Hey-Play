@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
 class HotViewController: BaseViewController {
 
@@ -15,8 +16,14 @@ class HotViewController: BaseViewController {
     // ViewModel
     let viewModel = HotViewModel()
 
+    // Optional reelId to load specific reel
+    var reelId: Int?
+
     // Refresh Control
     private let refreshControl = UIRefreshControl()
+
+    // Login dialog hosting controller
+    private var loginDialogHostingController: UIHostingController<AnyView>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,11 +129,16 @@ class HotViewController: BaseViewController {
         viewModel.onFavoriteToggled = { [weak self] index, isFavorite, likeCount in
             self?.updateFavoriteUI(at: index, isFavorite: isFavorite, likeCount: likeCount)
         }
+
+        // Listen to login required
+        viewModel.onLoginRequired = { [weak self] in
+            self?.showLoginRequiredDialog()
+        }
     }
 
     // MARK: - Fetch Data
     private func fetchData() {
-        viewModel.fetchReels()
+        viewModel.fetchReels(reelId: reelId)
     }
 
     // MARK: - Show Error Alert
@@ -155,5 +167,32 @@ class HotViewController: BaseViewController {
         // Update the favorite view
         cell.favoriteView?.updateState(isActive: isFavorite)
         cell.favoriteView?.updateLikeCount(likeCount)
+    }
+
+    // MARK: - Show Login Required Dialog
+    private func showLoginRequiredDialog() {
+        print("📢 [HotViewController] Showing login required dialog")
+
+        if #available(iOS 14.0, *) {
+            let dialogWrapper = LoginRequiredDialogWrapper(
+                onDismiss: { [weak self] in
+                    self?.loginDialogHostingController?.dismiss(animated: true)
+                },
+                onLogin: { [weak self] in
+                    self?.loginDialogHostingController?.dismiss(animated: true) {
+                        print("📢 [HotViewController] Navigating to login screen")
+                        ViewNavigation.shared.showLoginView()
+                    }
+                }
+            )
+
+            let hostingController = UIHostingController(rootView: AnyView(dialogWrapper))
+            hostingController.view.backgroundColor = .clear
+            hostingController.modalPresentationStyle = .overFullScreen
+            hostingController.modalTransitionStyle = .crossDissolve
+
+            self.loginDialogHostingController = hostingController
+            self.present(hostingController, animated: true)
+        }
     }
 }
